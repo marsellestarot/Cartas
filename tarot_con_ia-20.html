@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -841,10 +841,17 @@
     if (!token) {
       showGateMessage(
         'No tenés un link de acceso válido.<br><br>' +
-        'Para acceder al oráculo necesitás hacer una donación y recibir tu link personal.'
+        'Para acceder al oráculo necesitás hacer una colaboración y recibir tu link personal.'
       );
       return;
     }
+
+    // Token gratuito — acceso sin validación ni burn
+    if (token === 'admin-free') {
+      unlockApp();
+      return;
+    }
+
     await validateAndBurnToken(token);
   })();
 </script>
