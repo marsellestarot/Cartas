@@ -1,5 +1,24 @@
 <!DOCTYPE html>
 <html>
+  <!-- lo que ya tienes -->
+
+  <script>
+    (function() {
+      const url = new URL(window.location.href);
+      const trackingParams = ['fbclid', 'gclid', 'utm_source', 'utm_medium', 'utm_campaign'];
+      let changed = false;
+      trackingParams.forEach(param => {
+        if (url.searchParams.has(param)) {
+          url.searchParams.delete(param);
+          changed = true;
+        }
+      });
+      if (changed) {
+        window.history.replaceState({}, document.title, url.toString());
+      }
+    })();
+  </script>
+  </head>
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="refresh" content="0; url=/Cartas/pago.html">
