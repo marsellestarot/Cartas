@@ -1,6 +1,25 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- lo que ya tienes -->
+
+  <script>
+    (function() {
+      const url = new URL(window.location.href);
+      const trackingParams = ['fbclid', 'gclid', 'utm_source', 'utm_medium', 'utm_campaign'];
+      let changed = false;
+      trackingParams.forEach(param => {
+        if (url.searchParams.has(param)) {
+          url.searchParams.delete(param);
+          changed = true;
+        }
+      });
+      if (changed) {
+        window.history.replaceState({}, document.title, url.toString());
+      }
+    })();
+  </script>
+  </head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!--
