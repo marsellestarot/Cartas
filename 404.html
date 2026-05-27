@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-<meta charset="UTF-8">
-<script>
-const path = window.location.pathname.toLowerCase();
-
-if (path.includes("/cartas")) {
-  window.location.replace("/Cartas/");
-}
-</script>
-<title>Redirigiendo...</title>
+  <script>
+    // Redirige /cartas?fbclid=... a /cartas/
+    var path = window.location.pathname;
+    if (!path.endsWith('/')) {
+      path = path + '/';
+    }
+    window.location.replace('https://marsellestarot.github.io' + path);
+  </script>
 </head>
-<body>
-</body>
+<body></body>
 </html>
