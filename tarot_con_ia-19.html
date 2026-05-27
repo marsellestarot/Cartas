@@ -1,0 +1,1709 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--
+  Content-Security-Policy:
+  - default-src 'self'          → solo recursos del mismo origen por defecto
+  - style-src  'self' 'unsafe-inline' fonts.googleapis.com → estilos inline + Google Fonts CSS
+  - font-src   fonts.gstatic.com → archivos de fuente de Google
+  - img-src    marsellestarot.github.io data: blob: → cartas del hosting + canvas (data:/blob:)
+  - connect-src api.groq.com    → llamadas fetch a la API de Groq
+  - script-src 'self' 'unsafe-inline' → script inline del archivo (necesario para SPA en un solo HTML)
+  - object-src 'none'           → bloquea Flash/plugins
+  - base-uri   'self'           → evita inyección de base tag
+-->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  style-src   'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src    https://fonts.gstatic.com;
+  img-src     https://marsellestarot.github.io data: blob:;
+  connect-src https://api.groq.com https://script.google.com https://script.googleusercontent.com;
+  script-src  'self' 'unsafe-inline';
+  object-src  'none';
+  base-uri    'self';
+">
+<title>Tarot Múltiple · Fondos Hiperrealistas IA · Cruz · Línea · Herradura · Estrella · Árbol · Etteilla</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold:    #c9a84c;
+    --gold-lt: #e8cc7a;
+    --ink:     #0a0812;
+  }
+
+  html, body {
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 50% 30%, #1b1035 0%, #0a0812 70%);
+    color: #e8dfc8;
+    font-family: 'Cinzel', serif;
+    overflow-x: auto;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.35;
+  }
+
+  .wrap {
+    position: relative; z-index: 1;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 32px 20px 48px;
+    display: flex; flex-direction: column; align-items: center; gap: 32px;
+  }
+
+  header { text-align: center; }
+  .title-deco {
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    margin-bottom: 6px;
+  }
+  .title-deco span { display: block; width: 60px; height: 1px; background: var(--gold); opacity: .6; }
+  h1 {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    letter-spacing: .12em;
+    background: linear-gradient(135deg, #b8924a, #e8cc7a, #c9a84c);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .subtitle {
+    font-size: .75rem; letter-spacing: .3em; text-transform: uppercase;
+    color: #7a6e5e; margin-top: 8px;
+  }
+
+  .spread-selector {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+    background: rgba(10,8,18,0.6); backdrop-filter: blur(4px);
+    padding: 12px 20px; border-radius: 48px;
+    border: 1px solid rgba(201,168,76,0.25);
+  }
+  .spread-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 30px;
+    background: transparent; border: 1px solid var(--gold); color: var(--gold-lt);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .spread-btn.active {
+    background: var(--gold); color: var(--ink); border-color: var(--gold);
+    box-shadow: 0 0 8px rgba(201,168,76,0.6);
+  }
+  .spread-btn:hover:not(.active) {
+    background: rgba(201,168,76,0.2);
+  }
+
+  .upload-zone {
+    width: 100%;
+    border: 1px solid rgba(201,168,76,.25);
+    border-radius: 4px;
+    padding: 28px 20px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    cursor: pointer;
+    transition: border-color .3s, background .3s;
+    background: rgba(255,255,255,.02);
+    position: relative;
+  }
+  .upload-zone:hover {
+    border-color: rgba(201,168,76,.55);
+    background: rgba(201,168,76,.04);
+  }
+
+  .upload-icon { font-size: 2rem; opacity: .5; }
+  .upload-text { font-size: .8rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+  .upload-sub  { font-size: .7rem; color: #5a5248; letter-spacing: .1em; }
+
+  .thumbs-container {
+    width: 100%; overflow-x: auto; display: flex; justify-content: center;
+  }
+  .thumbs {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+    padding: 8px; min-width: fit-content;
+  }
+  .thumb-slot {
+    width: 80px; height: 130px;
+    border: 1px solid rgba(201,168,76,.3);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,.03);
+    position: relative;
+    font-size: .6rem; color: #4a4238;
+    transition: all 0.1s;
+  }
+  .thumb-slot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .thumb-slot .slot-n {
+    position: absolute; top: 3px; left: 5px;
+    font-size: .6rem; font-weight: bold; color: var(--gold-lt); text-shadow: 0 0 2px black;
+    background: rgba(0,0,0,0.4); padding: 1px 4px; border-radius: 2px;
+  }
+
+  .btn-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .btn {
+    font-family: 'Cinzel', serif;
+    font-size: .7rem; letter-spacing: .25em; text-transform: uppercase;
+    padding: 10px 24px;
+    border: 1px solid var(--gold);
+    background: transparent; color: var(--gold);
+    border-radius: 2px; cursor: pointer;
+    transition: background .25s, color .25s;
+  }
+  .btn:hover:not(:disabled) { background: var(--gold); color: var(--ink); }
+  .btn:disabled { opacity: .3; cursor: not-allowed; }
+  .btn-primary {
+    background: linear-gradient(135deg, #7a5a1e, #c9a84c);
+    color: var(--ink); border-color: transparent;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #c9a84c, #e8cc7a);
+  }
+
+  .preview-wrap {
+    width: 100%;
+    display: flex; justify-content: center;
+    min-height: 280px;
+    background: #0a0812;
+    border-radius: 8px;
+    padding: 12px;
+  }
+  #previewCanvas {
+    max-width: 100%;
+    border-radius: 6px;
+    background-image:
+      linear-gradient(45deg, #2a2030 25%, transparent 25%),
+      linear-gradient(-45deg,#2a2030 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #2a2030 75%),
+      linear-gradient(-45deg,transparent 75%, #2a2030 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+    display: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  }
+
+  #status {
+    font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+    color: #5a5248; min-height: 20px; text-align: center;
+  }
+  #status.ok  { color: #7ab87a; }
+  #status.err { color: #b87a7a; }
+
+  .spread-info {
+    font-size: 0.65rem; letter-spacing: 0.1rem;
+    background: rgba(0,0,0,0.5); padding: 8px 16px; border-radius: 30px;
+    text-align: center; max-width: 90%;
+    color: #bba88a;
+  }
+  .ai-bg-control {
+    display: flex; align-items: center; gap: 15px; flex-wrap: wrap;
+  }
+  .ai-bg-control button {
+    background: #1e1828; border: 1px solid var(--gold); color: #e8dfc8;
+    padding: 6px 18px; border-radius: 30px; font-family: 'Cinzel', serif;
+    font-size: 0.7rem; cursor: pointer;
+  }
+  .ai-bg-control button:hover {
+    background: var(--gold); color: var(--ink);
+  }
+
+  /* ── Sección de nombres de cartas ── */
+  #card-names-section {
+    width: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .card-names-title {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .card-names-title::before,
+  .card-names-title::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+  .card-names-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 900px;
+  }
+  .card-name-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.18);
+    border-radius: 6px;
+    padding: 10px 16px;
+    min-width: 130px;
+    max-width: 180px;
+    flex: 1 1 130px;
+    transition: border-color 0.2s;
+  }
+  .card-name-item:hover {
+    border-color: rgba(201,168,76,0.45);
+  }
+  .card-name-item.reversed {
+    border-color: rgba(180,90,90,0.35);
+    background: rgba(180,90,90,0.05);
+  }
+  .card-name-pos {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.6;
+  }
+  .card-name-main {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: #e8dfc8;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .card-name-sub {
+    font-size: 0.65rem;
+    color: #7a6e5e;
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+
+  /* Drag-over state (mantenido por compatibilidad) */
+  .upload-zone.drag-over {
+    border-color: var(--gold) !important;
+    background: rgba(201,168,76,.08) !important;
+  }
+
+  /* ── Elementos internos ocultos al usuario final ── */
+  #deckStatusBanner,
+  #spreadDescription,
+  .thumbs-container,
+  #status,
+  .btn-row,
+  .preview-wrap,
+  #card-names-section {
+    display: none !important;
+  }
+
+  /* ── Sección de pregunta ── */
+  .question-section {
+    width: 100%;
+    max-width: 680px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .datos-row {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .dato-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1 1 140px;
+  }
+  .dato-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.6;
+  }
+  .dato-input {
+    min-height: unset !important;
+    padding: 10px 14px !important;
+    font-size: 0.78rem !important;
+  }
+  input[type="date"].dato-input {
+    color-scheme: dark;
+  }
+  .question-label {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.85;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .question-label::before,
+  .question-label::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+  .question-input {
+    width: 100%;
+    background: rgba(10,8,18,0.7);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 4px;
+    color: #e8dfc8;
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    padding: 14px 18px;
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+    transition: border-color 0.2s;
+    letter-spacing: 0.04em;
+  }
+  .question-input:focus {
+    border-color: rgba(201,168,76,0.6);
+    background: rgba(10,8,18,0.85);
+  }
+  .question-input::placeholder {
+    color: #4a4238;
+    font-style: italic;
+  }
+
+  /* ── Panel de interpretación ── */
+  .interpretation-section {
+    width: 100%;
+    max-width: 760px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    margin-top: 8px;
+  }
+  .btn-interpret {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    padding: 12px 32px;
+    border: 1px solid var(--gold);
+    background: linear-gradient(135deg, rgba(122,90,30,0.5), rgba(201,168,76,0.25));
+    color: var(--gold-lt);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 0 12px rgba(201,168,76,0.08);
+  }
+  .btn-interpret:hover:not(:disabled) {
+    background: linear-gradient(135deg, #7a5a1e, #c9a84c);
+    color: var(--ink);
+    box-shadow: 0 0 20px rgba(201,168,76,0.3);
+  }
+  .btn-interpret:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .interpretation-output {
+    display: none;
+    width: 100%;
+    background: rgba(10,8,18,0.75);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 6px;
+    padding: 28px 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .interpretation-output::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.04) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .interpretation-title {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.7;
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .interpretation-title::before,
+  .interpretation-title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.35;
+  }
+  .interpretation-text {
+    font-family: 'Cinzel', serif;
+    font-size: 0.82rem;
+    line-height: 1.9;
+    color: #d8cfc0;
+    white-space: pre-wrap;
+    letter-spacing: 0.03em;
+  }
+  .interpretation-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    color: var(--gold);
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 20px;
+  }
+  .loading-dots span {
+    display: inline-block;
+    animation: pulse 1.4s ease-in-out infinite;
+    font-size: 1.4rem;
+    opacity: 0.5;
+  }
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.2; transform: translateY(0); }
+    50% { opacity: 0.8; transform: translateY(-4px); }
+  }
+  .interpretation-error {
+    color: #b87a7a;
+    font-size: 0.75rem;
+    text-align: center;
+    letter-spacing: 0.1em;
+    padding: 12px;
+    display: none;
+  }
+
+  /* ── Descripción de tirada ── */
+  .spread-desc-box {
+    width: 100%;
+    max-width: 680px;
+    background: rgba(201,168,76,0.05);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 6px;
+    padding: 14px 20px;
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    animation: fadeInDown 0.3s ease;
+  }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .spread-desc-name {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .spread-desc-text {
+    font-size: 0.75rem;
+    line-height: 1.7;
+    color: #bba88a;
+    letter-spacing: 0.04em;
+  }
+  .spread-desc-positions {
+    font-size: 0.68rem;
+    color: #7a6e5e;
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+
+  /* ── Mini panel de cartas post-lectura ── */
+  .cards-after-reading {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-top: 4px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(201,168,76,0.12);
+  }
+  .cards-after-title {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cards-after-title::before,
+  .cards-after-title::after {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.35;
+  }
+  .cards-after-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+  }
+  .car-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 68px;
+  }
+  .car-img-wrap {
+    width: 68px;
+    height: 110px;
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.25);
+    background: rgba(0,0,0,0.3);
+    position: relative;
+  }
+  .car-img-wrap.reversed img {
+    transform: rotate(180deg);
+  }
+  .car-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .car-pos {
+    font-size: 0.52rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.6;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .car-name {
+    font-size: 0.6rem;
+    color: #d8cfc0;
+    text-align: center;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+  }
+  .car-rev {
+    font-size: 0.55rem;
+    color: #b87a7a;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── Paso 2: Asignación de cartas (reservado) ── */
+
+  /* ── Gate de token ── */
+  #tokenGate {
+    position: fixed; inset: 0; z-index: 9999;
+    background: radial-gradient(ellipse at 50% 30%, #1b1035 0%, #0a0812 70%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 20px; padding: 32px;
+    text-align: center;
+  }
+  #tokenGate .gate-icon { font-size: 2.8rem; opacity: .6; }
+  #tokenGate .gate-title {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    letter-spacing: .15em;
+    background: linear-gradient(135deg, #b8924a, #e8cc7a, #c9a84c);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  #tokenGate .gate-msg {
+    font-size: .8rem; letter-spacing: .12em; line-height: 1.8;
+    color: #bba88a; max-width: 420px;
+  }
+  #tokenGate .gate-msg a {
+    color: var(--gold-lt); text-decoration: underline;
+  }
+  #tokenGate .gate-spinner {
+    display: flex; gap: 6px; align-items: center;
+    font-size: .7rem; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--gold); opacity: .8;
+  }
+  #tokenGate .gate-spinner .dots span {
+    display: inline-block;
+    animation: pulse 1.4s ease-in-out infinite;
+    font-size: 1.1rem;
+  }
+  #tokenGate .gate-spinner .dots span:nth-child(2) { animation-delay: .2s; }
+  #tokenGate .gate-spinner .dots span:nth-child(3) { animation-delay: .4s; }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="title-deco"><span></span><span style="font-size:1.1rem;opacity:.7">✦</span><span></span></div>
+    <h1>Oráculo de Tiradas</h1>
+    <p class="subtitle">Cruz · Línea · Herradura · Estrella · Árbol · Etteilla · disposición orgánica</p>
+  </header>
+
+  <!-- Datos del consultante -->
+  <div class="question-section">
+    <div class="question-label">Tus datos</div>
+    <div class="datos-row">
+      <div class="dato-campo">
+        <label class="dato-label">Nombre</label>
+        <input type="text" class="question-input dato-input" id="userName" placeholder="Tu nombre…" />
+      </div>
+      <div class="dato-campo">
+        <label class="dato-label">Fecha de nacimiento</label>
+        <input type="date" class="question-input dato-input" id="userDOB" />
+      </div>
+      <div class="dato-campo">
+        <label class="dato-label">País</label>
+        <input type="text" class="question-input dato-input" id="userCountry" placeholder="Tu país…" />
+      </div>
+    </div>
+    <div class="question-label" style="margin-top:8px">Tu consulta</div>
+    <textarea
+      class="question-input"
+      id="userQuestion"
+      placeholder="Escribí tu pregunta o lo que necesitás iluminar en este momento…"
+      rows="3"
+    ></textarea>
+  </div>
+
+  <div class="spread-selector" id="spreadSelector">
+    <button data-spread="cross" class="spread-btn">✦ Cruz Francesa (6)</button>
+    <button data-spread="line3" class="spread-btn">─ Línea de 3</button>
+    <button data-spread="horseshoe" class="spread-btn">⤝ Herradura (7)</button>
+    <button data-spread="star5" class="spread-btn">★ Estrella 5 puntas</button>
+    <button data-spread="tree" class="spread-btn">🌿 Árbol de la Vida (10)</button>
+    <button data-spread="etteilla12" class="spread-btn">📜 Gran Etteilla (12)</button>
+  </div>
+  <div id="spreadPrompt" style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:#5a5248;text-align:center;">
+    ↑ Elegí una tirada para comenzar
+  </div>
+
+  <!-- Descripción de la tirada seleccionada -->
+  <div class="spread-desc-box" id="spreadDescBox">
+    <div class="spread-desc-name" id="spreadDescName"></div>
+    <div class="spread-desc-text" id="spreadDescText"></div>
+    <div class="spread-desc-positions" id="spreadDescPositions"></div>
+  </div>
+  <div id="deckStatusBanner" style="
+    width:100%; border:1px solid rgba(201,168,76,.25); border-radius:4px;
+    padding:18px 24px; display:flex; flex-direction:column; align-items:center;
+    gap:6px; background:rgba(255,255,255,.02); text-align:center;">
+    <div style="font-size:1.5rem;opacity:.5">🃏</div>
+    <div id="deckStatusText" style="font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)">
+      Cargando mazo…
+    </div>
+    <div id="deckStatusSub" style="font-size:.7rem;color:#5a5248;letter-spacing:.1em"></div>
+  </div>
+
+  <div class="spread-info" id="spreadDescription"></div>
+
+  <div class="thumbs-container">
+    <div class="thumbs" id="thumbs"></div>
+  </div>
+
+  <div id="status">Selecciona al menos 3 imágenes para comenzar</div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" id="btnGenerate" disabled>Nueva aleatoriedad (invertidas)</button>
+    <button class="btn" id="btnShuffle"  disabled>Mezclar mazo ↺</button>
+    <button class="btn" id="btnDownload" disabled>Descargar PNG</button>
+  </div>
+
+  <div class="preview-wrap">
+    <canvas id="previewCanvas"></canvas>
+  </div>
+
+  <div id="card-names-section">
+    <div class="card-names-title">Cartas de la tirada</div>
+    <div class="card-names-grid" id="cardNamesGrid"></div>
+  </div>
+
+  <!-- Panel de interpretación IA -->
+  <div class="interpretation-section" id="interpretationSection">
+    <button class="btn-interpret" id="btnInterpret">✦ Consultar al Oráculo ✦</button>
+    <div class="interpretation-output" id="interpretationOutput">
+      <div class="interpretation-loading" id="interpretationLoading" style="display:none">
+        <div class="loading-dots">
+          <span>✦</span><span>✦</span><span>✦</span>
+        </div>
+        <span>El oráculo contempla las cartas…</span>
+      </div>
+      <div class="interpretation-error" id="interpretationError"></div>
+      <div class="interpretation-title" id="interpretationTitle" style="display:none">Lectura</div>
+      <div class="interpretation-text" id="interpretationText"></div>
+      <!-- Mini panel de cartas debajo de la lectura -->
+      <div class="cards-after-reading" id="cardsAfterReading">
+        <div class="cards-after-title">Las cartas de tu tirada</div>
+        <div class="cards-after-grid" id="cardsAfterGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Gate de acceso por token ── -->
+  <div id="tokenGate">
+    <div class="gate-icon">✦</div>
+    <div class="gate-title">Oráculo de Tiradas</div>
+    <div class="gate-spinner" id="gateSpinner">
+      <div class="dots"><span>✦</span><span>✦</span><span>✦</span></div>
+      <span>Verificando acceso…</span>
+    </div>
+    <div class="gate-msg" id="gateMsg" style="display:none"></div>
+  </div>
+
+</div>
+
+<script>
+  // ══════════════════════════════════════════
+  //  ★ SISTEMA DE ACCESO POR TOKEN ★
+  //  Valida el token de la URL contra el backend
+  //  en Google Sheets + Apps Script.
+  //  Si válido → quema el token y muestra la app.
+  //  Si inválido o ausente → muestra mensaje de acceso.
+  // ══════════════════════════════════════════
+  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbwp5WDrPB3x5d57lx6P1-asCFSjcbbN6fYsOzlvPM4KWxVm0qVy7LRiyAhQ7JtA1Pp8Pw/exec';
+
+  function getTokenFromURL() {
+    return new URLSearchParams(window.location.search).get('token');
+  }
+
+  function showGateMessage(html) {
+    document.getElementById('gateSpinner').style.display = 'none';
+    const msg = document.getElementById('gateMsg');
+    msg.innerHTML = html;
+    msg.style.display = 'block';
+  }
+
+  function unlockApp() {
+    document.getElementById('tokenGate').style.display = 'none';
+  }
+
+  async function validateAndBurnToken(token) {
+    let valid = false;
+    try {
+      const res = await fetch(`${BACKEND_URL}?action=validate&token=${encodeURIComponent(token)}`);
+      const data = await res.json();
+      valid = data.valid === true;
+    } catch(e) {
+      showGateMessage('Hubo un problema al verificar tu acceso. Revisá tu conexión e intentá recargar la página.');
+      return;
+    }
+
+    if (!valid) {
+      showGateMessage(
+        'Este link no es válido o ya fue usado.<br><br>' +
+        'Volvé a hacer una donación para obtener otra lectura.'
+      );
+      return;
+    }
+
+    // Quemar el token (fire-and-forget)
+    fetch(BACKEND_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'burn', token })
+    }).catch(() => {});
+
+    unlockApp();
+  }
+
+  (async function initGate() {
+    const token = getTokenFromURL();
+    if (!token) {
+      showGateMessage(
+        'No tenés un link de acceso válido.<br><br>' +
+        'Para acceder al oráculo necesitás hacer una donación y recibir tu link personal.'
+      );
+      return;
+    }
+    await validateAndBurnToken(token);
+  })();
+</script>
+
+<script>
+(function(){
+  // ══════════════════════════════════════════
+  //  ★ CONFIGURACIÓN DE HOSTING ★
+  //  1. Subí tus 78 cartas al servidor nombradas:
+  //     carta_001.jpg, carta_002.jpg … carta_078.jpg
+  //  2. Cambiá CARD_BASE_URL a la carpeta donde están
+  //  3. Cambiá IMG_EXT si usás png o webp
+  //  IMPORTANTE: el servidor debe permitir CORS
+  //  (Access-Control-Allow-Origin: *) para que
+  //  el canvas pueda dibujar las imágenes.
+  // ══════════════════════════════════════════
+  const CARD_BASE_URL = 'https://marsellestarot.github.io/Cartas/cartas/';
+  const IMG_EXT       = 'jpg';
+
+  // ══════════════════════════════════════════
+  //  ★ CONFIGURACIÓN DE GROQ AI ★
+  //  Key almacenada en fragmentos codificados.
+  //  Para actualizarla: reemplazá los valores
+  //  de _a, _b, _c con los nuevos fragmentos
+  //  en Base64 (ver README del proyecto).
+  // ══════════════════════════════════════════
+  function getGroqKey() {
+    const _a = 'Z3NrX0wxbFdLVE90cmxYckNoUGU=';
+    const _b = 'bktjMldHZHliM0ZZY254M0tOOFM=';
+    const _c = 'Z0Mzc2pXSnEyNFZmTFE5ag==';
+    return atob(_a) + atob(_b) + atob(_c);
+  }
+
+  // Elementos
+  const btnGenerate = document.getElementById('btnGenerate');
+  const btnShuffle  = document.getElementById('btnShuffle');
+  const btnDownload = document.getElementById('btnDownload');
+  const canvas      = document.getElementById('previewCanvas');
+  const ctx         = canvas.getContext('2d');
+  const statusEl    = document.getElementById('status');
+  const thumbsDiv   = document.getElementById('thumbs');
+  const spreadDesc  = document.getElementById('spreadDescription');
+
+  let allCards = [];
+  let loadedImages = [];
+  let reversals = [];
+  let currentSpread = null;
+  let currentNumCards = 6;
+  let pickedCards = [];
+
+  // ── Diccionario de cartas del Tarot de Marsella ──
+  const CARD_NAMES = {
+    'carta_001': { fr: 'As de Deniers',      es: 'As de Oros' },
+    'carta_002': { fr: 'Deux de Deniers',    es: 'Dos de Oros' },
+    'carta_003': { fr: 'Trois de Deniers',   es: 'Tres de Oros' },
+    'carta_004': { fr: 'Quatre de Deniers',  es: 'Cuatro de Oros' },
+    'carta_005': { fr: 'Cinq de Deniers',    es: 'Cinco de Oros' },
+    'carta_006': { fr: 'Six de Deniers',     es: 'Seis de Oros' },
+    'carta_007': { fr: 'Sept de Deniers',    es: 'Siete de Oros' },
+    'carta_008': { fr: 'Huit de Deniers',    es: 'Ocho de Oros' },
+    'carta_009': { fr: 'Neuf de Deniers',    es: 'Nueve de Oros' },
+    'carta_010': { fr: 'Dix de Deniers',     es: 'Diez de Oros' },
+    'carta_011': { fr: 'Valet de Deniers',   es: 'Sota de Oros' },
+    'carta_012': { fr: 'Cavalier de Deniers',es: 'Caballo de Oros' },
+    'carta_013': { fr: 'Dame de Deniers',    es: 'Reina de Oros' },
+    'carta_014': { fr: 'Roy de Deniers',     es: 'Rey de Oros' },
+    'carta_015': { fr: 'As de Coupes',       es: 'As de Copas' },
+    'carta_016': { fr: 'Deux de Coupes',     es: 'Dos de Copas' },
+    'carta_017': { fr: 'Trois de Coupes',    es: 'Tres de Copas' },
+    'carta_018': { fr: 'Quatre de Coupes',   es: 'Cuatro de Copas' },
+    'carta_019': { fr: 'Cinq de Coupes',     es: 'Cinco de Copas' },
+    'carta_020': { fr: 'Six de Coupes',      es: 'Seis de Copas' },
+    'carta_021': { fr: 'Sept de Coupes',     es: 'Siete de Copas' },
+    'carta_022': { fr: 'Huit de Coupes',     es: 'Ocho de Copas' },
+    'carta_023': { fr: 'Neuf de Coupes',     es: 'Nueve de Copas' },
+    'carta_024': { fr: 'Dix de Coupes',      es: 'Diez de Copas' },
+    'carta_025': { fr: 'Valet de Coupes',    es: 'Sota de Copas' },
+    'carta_026': { fr: 'Cavalier de Coupes', es: 'Caballo de Copas' },
+    'carta_027': { fr: 'Dame de Coupes',     es: 'Reina de Copas' },
+    'carta_028': { fr: 'Roy de Coupes',      es: 'Rey de Copas' },
+    'carta_029': { fr: "As d'Épées",         es: 'As de Espadas' },
+    'carta_030': { fr: "Deux d'Épées",       es: 'Dos de Espadas' },
+    'carta_031': { fr: "Trois d'Épées",      es: 'Tres de Espadas' },
+    'carta_032': { fr: "Quatre d'Épées",     es: 'Cuatro de Espadas' },
+    'carta_033': { fr: "Cinq d'Épées",       es: 'Cinco de Espadas' },
+    'carta_034': { fr: "Six d'Épées",        es: 'Seis de Espadas' },
+    'carta_035': { fr: "Sept d'Épées",       es: 'Siete de Espadas' },
+    'carta_036': { fr: "Huit d'Épées",       es: 'Ocho de Espadas' },
+    'carta_037': { fr: "Neuf d'Épées",       es: 'Nueve de Espadas' },
+    'carta_038': { fr: "Dix d'Épées",        es: 'Diez de Espadas' },
+    'carta_039': { fr: "Valet d'Épées",      es: 'Sota de Espadas' },
+    'carta_040': { fr: "Cavalier d'Épées",   es: 'Caballo de Espadas' },
+    'carta_041': { fr: "Dame d'Épées",       es: 'Reina de Espadas' },
+    'carta_042': { fr: "Roy d'Épées",        es: 'Rey de Espadas' },
+    'carta_043': { fr: 'As de Batons',       es: 'As de Bastos' },
+    'carta_044': { fr: 'Deux de Batons',     es: 'Dos de Bastos' },
+    'carta_045': { fr: 'Trois de Batons',    es: 'Tres de Bastos' },
+    'carta_046': { fr: 'Quatre de Batons',   es: 'Cuatro de Bastos' },
+    'carta_047': { fr: 'Cinq de Batons',     es: 'Cinco de Bastos' },
+    'carta_048': { fr: 'Six de Batons',      es: 'Seis de Bastos' },
+    'carta_049': { fr: 'Sept de Batons',     es: 'Siete de Bastos' },
+    'carta_050': { fr: 'Huit de Batons',     es: 'Ocho de Bastos' },
+    'carta_051': { fr: 'Neuf de Batons',     es: 'Nueve de Bastos' },
+    'carta_052': { fr: 'Dix de Batons',      es: 'Diez de Bastos' },
+    'carta_053': { fr: 'Valet de Batons',    es: 'Sota de Bastos' },
+    'carta_054': { fr: 'Cavalier de Batons', es: 'Caballo de Bastos' },
+    'carta_055': { fr: 'Dame de Batons',     es: 'Reina de Bastos' },
+    'carta_056': { fr: 'Roy de Batons',      es: 'Rey de Bastos' },
+    'carta_057': { fr: 'I · Le Bateleur',    es: 'El Mago' },
+    'carta_058': { fr: 'II · La Papesse',    es: 'La Papisa' },
+    'carta_059': { fr: "III · L'Impératrice",es: 'La Emperatriz' },
+    'carta_060': { fr: "IV · L'Empereur",    es: 'El Emperador' },
+    'carta_061': { fr: 'V · Le Pape',        es: 'El Hierofante' },
+    'carta_062': { fr: "VI · L'Amoureux",    es: 'Los Enamorados' },
+    'carta_063': { fr: 'VII · Le Chariot',   es: 'El Carro' },
+    'carta_064': { fr: 'VIII · La Justice',  es: 'La Justicia' },
+    'carta_065': { fr: "IX · L'Hermite",     es: 'El Ermitaño' },
+    'carta_066': { fr: 'X · La Roue de Fortune', es: 'La Rueda de la Fortuna' },
+    'carta_067': { fr: 'XI · La Force',      es: 'La Fuerza' },
+    'carta_068': { fr: 'XII · Le Pendu',     es: 'El Colgado' },
+    'carta_069': { fr: 'XIII · (La Mort)',   es: 'La Muerte' },
+    'carta_070': { fr: 'XIV · La Tempérance',es: 'La Templanza' },
+    'carta_071': { fr: 'XV · Le Diable',     es: 'El Diablo' },
+    'carta_072': { fr: 'XVI · La Maison Dieu',es: 'La Torre' },
+    'carta_073': { fr: "XVII · L'Étoile",    es: 'La Estrella' },
+    'carta_074': { fr: 'XVIII · La Lune',    es: 'La Luna' },
+    'carta_075': { fr: 'XIX · Le Soleil',    es: 'El Sol' },
+    'carta_076': { fr: 'XX · Le Jugement',   es: 'El Juicio' },
+    'carta_077': { fr: 'XXI · Le Monde',     es: 'El Mundo' },
+    'carta_078': { fr: '0 · Le Mat',         es: 'El Loco' },
+  };
+
+  // --- Desviaciones orgánicas (inclinación y desplazamiento) ---
+  let cardOffsets = [];
+
+  function generateOrganicOffsets(count) {
+    const offsets = [];
+    for (let i = 0; i < count; i++) {
+      const rotDeg = (Math.random() - 0.5) * 9;      // -4.5° a +4.5°
+      const dx = (Math.random() - 0.5) * 18;         // -9px a +9px
+      const dy = (Math.random() - 0.5) * 12;         // -6px a +6px
+      offsets.push({ rotDeg, dx, dy });
+    }
+    return offsets;
+  }
+
+  // Configuración de tiradas (layouts originales)
+  const spreadsConfig = {
+    cross: {
+      name: "Cruz Francesa",
+      numCards: 6,
+      desc: "I·Situación (centro) | II·Pasado | III·Futuro | IV·Corona | V·Fundamento | VI·Resultado",
+      layout: (cw, ch, gx, gy) => [
+        { imgIdx: 0, xRel: 0, yRel: 0 },
+        { imgIdx: 1, xRel: -(cw + gx), yRel: 0 },
+        { imgIdx: 2, xRel:  (cw + gx), yRel: 0 },
+        { imgIdx: 3, xRel: 0, yRel: -(ch + gy) },
+        { imgIdx: 4, xRel: 0, yRel:  (ch + gy) },
+        { imgIdx: 5, xRel: (cw + gx)*2 + 70, yRel: 0 }
+      ]
+    },
+    line3: {
+      name: "Línea de 3 cartas",
+      numCards: 3,
+      desc: "Pasado · Presente · Futuro",
+      layout: (cw, ch, gx, gy) => [
+        { imgIdx: 0, xRel: -(cw + gx), yRel: 0 },
+        { imgIdx: 1, xRel: 0, yRel: 0 },
+        { imgIdx: 2, xRel:  (cw + gx), yRel: 0 }
+      ]
+    },
+    horseshoe: {
+      name: "Herradura",
+      numCards: 7,
+      desc: "1·Pasado · 2·Presente · 3·Futuro · 4·Ayuda · 5·Obstáculo · 6·Consejo · 7·Resultado",
+      layout: (cw, ch, gx, gy) => {
+        const radius = cw * 1.8;
+        const start = -75 * Math.PI/180;
+        const end = 75 * Math.PI/180;
+        const step = (end - start) / 6;
+        let pos = [];
+        for (let i = 0; i < 7; i++) {
+          const angle = start + i * step;
+          const x = Math.sin(angle) * radius;
+          const y = -Math.cos(angle) * radius + 20;
+          pos.push({ imgIdx: i, xRel: x, yRel: y });
+        }
+        return pos;
+      }
+    },
+    star5: {
+      name: "Estrella 5 puntas",
+      numCards: 5,
+      desc: "Tierra · Agua · Aire · Fuego · Espíritu",
+      layout: (cw, ch, gx, gy) => {
+        const radius = cw * 1.4;
+        const angles = [-Math.PI/2, -Math.PI/2 + 2*Math.PI/5, -Math.PI/2 + 4*Math.PI/5, -Math.PI/2 + 6*Math.PI/5, -Math.PI/2 + 8*Math.PI/5];
+        const order = [0,2,4,1,3];
+        let pos = [];
+        for (let i = 0; i < 5; i++) {
+          const angle = angles[order[i]];
+          const x = Math.cos(angle) * radius;
+          const y = Math.sin(angle) * radius - (ch*0.2);
+          pos.push({ imgIdx: i, xRel: x, yRel: y });
+        }
+        return pos;
+      }
+    },
+    tree: {
+      name: "Árbol de la Vida",
+      numCards: 10,
+      desc: "Kether · Chokmah · Binah · Chesed · Geburah · Tiphareth · Netzach · Hod · Yesod · Malkuth",
+      layout: (cw, ch, gx, gy) => {
+        const stepX = cw * 0.9;
+        const stepY = ch * 0.9;
+        return [
+          { imgIdx: 0, xRel: 0, yRel: -stepY*1.7 },
+          { imgIdx: 1, xRel:  stepX*1.2, yRel: -stepY*1.0 },
+          { imgIdx: 2, xRel: -stepX*1.2, yRel: -stepY*1.0 },
+          { imgIdx: 3, xRel:  stepX*1.7, yRel: -stepY*0.2 },
+          { imgIdx: 4, xRel: -stepX*1.7, yRel: -stepY*0.2 },
+          { imgIdx: 5, xRel: 0, yRel: 0 },
+          { imgIdx: 6, xRel:  stepX*1.4, yRel:  stepY*0.8 },
+          { imgIdx: 7, xRel: -stepX*1.4, yRel:  stepY*0.8 },
+          { imgIdx: 8, xRel: 0, yRel:  stepY*1.4 },
+          { imgIdx: 9, xRel: 0, yRel:  stepY*2.4 }
+        ];
+      }
+    },
+    etteilla12: {
+      name: "Gran Tirada Etteilla",
+      numCards: 12,
+      desc: "Cuadrícula 3×4 (pasado, presente, futuro / situación, obstáculos, consejo, resultado)",
+      layout: (cw, ch, gx, gy) => {
+        const cols = 4, rows = 3;
+        const startX = -( (cols-1) * (cw + gx) ) / 2;
+        const startY = -( (rows-1) * (ch + gy) ) / 2;
+        let pos = [];
+        for (let row = 0; row < rows; row++) {
+          for (let col = 0; col < cols; col++) {
+            pos.push({ imgIdx: row*cols + col, xRel: startX + col * (cw + gx), yRel: startY + row * (ch + gy) });
+          }
+        }
+        return pos;
+      }
+    }
+  };
+
+  async function renderCurrentSpread() {
+    if (!loadedImages.length || loadedImages.some(img => !img)) return;
+    const conf = spreadsConfig[currentSpread];
+    if (!conf) return;
+    const CARD_W = 260;
+    const naturalW = loadedImages[0].naturalWidth;
+    const naturalH = loadedImages[0].naturalHeight;
+    // Si la imagen aún no tiene dimensiones reales, usar proporción estándar tarot (2:3)
+    const aspect = (naturalW > 0 && naturalH > 0) ? naturalH / naturalW : 1.5;
+    const CARD_H = Math.round(CARD_W * aspect);
+    const GAP_X = 32, GAP_Y = 28;
+
+    let positionsRel = conf.layout(CARD_W, CARD_H, GAP_X, GAP_Y);
+    let xs = [], ys = [];
+    for (let i = 0; i < positionsRel.length; i++) {
+      const pos = positionsRel[i];
+      const off = cardOffsets[pos.imgIdx] || { rotDeg: 0, dx: 0, dy: 0 };
+      const rotRad = off.rotDeg * Math.PI/180;
+      const diag = Math.sqrt(CARD_W*CARD_W + CARD_H*CARD_H)/2;
+      const extraX = Math.abs(Math.sin(rotRad) * diag);
+      const extraY = Math.abs(Math.sin(rotRad) * diag);
+      xs.push(pos.xRel + off.dx - CARD_W/2 - extraX, pos.xRel + off.dx + CARD_W/2 + extraX);
+      ys.push(pos.yRel + off.dy - CARD_H/2 - extraY, pos.yRel + off.dy + CARD_H/2 + extraY);
+    }
+    const PAD = 160;
+    let minX = Math.min(...xs) - PAD;
+    let minY = Math.min(...ys) - PAD;
+    canvas.width  = Math.max(...xs) + PAD - minX;
+    canvas.height = Math.max(...ys) + PAD - minY;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // ── Sombras proyectadas (pase previo) ──
+    for (let i = 0; i < positionsRel.length; i++) {
+      const pos = positionsRel[i];
+      const off = cardOffsets[pos.imgIdx] || { rotDeg: 0, dx: 0, dy: 0 };
+      ctx.save();
+      ctx.translate(pos.xRel + off.dx - minX, pos.yRel + off.dy - minY);
+      ctx.rotate(off.rotDeg * Math.PI/180);
+      if (reversals[pos.imgIdx]) ctx.rotate(Math.PI);
+      ctx.shadowColor   = 'rgba(0,0,0,0.50)';
+      ctx.shadowBlur    = 32;
+      ctx.shadowOffsetX = 5;
+      ctx.shadowOffsetY = 10;
+      ctx.fillStyle = 'rgba(0,0,0,0.01)';
+      ctx.fillRect(-CARD_W/2, -CARD_H/2, CARD_W, CARD_H);
+      ctx.restore();
+    }
+
+    // ── Cartas + efectos fotográficos por carta ──
+    for (let i = 0; i < positionsRel.length; i++) {
+      const pos = positionsRel[i];
+      const off = cardOffsets[pos.imgIdx] || { rotDeg: 0, dx: 0, dy: 0 };
+      const cx = pos.xRel + off.dx - minX;
+      const cy = pos.yRel + off.dy - minY;
+      const rotRad = off.rotDeg * Math.PI/180;
+      const rev = reversals[pos.imgIdx];
+
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(rotRad);
+      if (rev) ctx.rotate(Math.PI);
+
+      // Carta base
+      ctx.drawImage(loadedImages[pos.imgIdx], -CARD_W/2, -CARD_H/2, CARD_W, CARD_H);
+
+      // 1. Gradiente de profundidad (oscurece borde inferior-derecho levemente)
+      const depth = ctx.createLinearGradient(-CARD_W/2, -CARD_H/2, CARD_W/2, CARD_H/2);
+      depth.addColorStop(0,   'rgba(255,255,255,0.05)');
+      depth.addColorStop(0.5, 'rgba(0,0,0,0)');
+      depth.addColorStop(1,   'rgba(0,0,0,0.09)');
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = depth;
+      ctx.fillRect(-CARD_W/2, -CARD_H/2, CARD_W, CARD_H);
+
+      // 2. Glare principal: reflejo circular en esquina superior-izquierda
+      const gx = -CARD_W * 0.15 + (Math.random()-0.5)*10;
+      const gy = -CARD_H * 0.25 + (Math.random()-0.5)*8;
+      const glare = ctx.createRadialGradient(gx, gy, 0, gx, gy, CARD_W * 0.52);
+      glare.addColorStop(0,    'rgba(255,255,255,0.20)');
+      glare.addColorStop(0.18, 'rgba(255,255,255,0.10)');
+      glare.addColorStop(0.45, 'rgba(255,255,255,0.03)');
+      glare.addColorStop(1,    'rgba(255,255,255,0)');
+      ctx.globalCompositeOperation = 'screen';
+      ctx.fillStyle = glare;
+      ctx.fillRect(-CARD_W/2, -CARD_H/2, CARD_W, CARD_H);
+
+      // 3. Sheen diagonal: simula laminado/barniz de la carta
+      const sheen = ctx.createLinearGradient(-CARD_W/2, -CARD_H/2, CARD_W*0.08, CARD_H*0.12);
+      sheen.addColorStop(0,   'rgba(255,255,255,0.12)');
+      sheen.addColorStop(0.4, 'rgba(255,255,255,0.04)');
+      sheen.addColorStop(1,   'rgba(255,255,255,0)');
+      ctx.fillStyle = sheen;
+      ctx.fillRect(-CARD_W/2, -CARD_H/2, CARD_W, CARD_H);
+
+      // 4. Borde interior sutil (simula grosor del papel)
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+      ctx.lineWidth = 1.2;
+      ctx.strokeRect(-CARD_W/2 + 1, -CARD_H/2 + 1, CARD_W - 2, CARD_H - 2);
+
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.restore();
+    }
+
+    // ── Post-procesado global (viñeta + grano fotográfico) ──
+    const cw = canvas.width, ch = canvas.height;
+    const vig = ctx.createRadialGradient(cw/2, ch/2, Math.min(cw,ch)*0.32, cw/2, ch/2, Math.max(cw,ch)*0.80);
+    vig.addColorStop(0, 'rgba(0,0,0,0)');
+    vig.addColorStop(1, 'rgba(0,0,0,0.35)');
+    ctx.globalCompositeOperation = 'multiply';
+    ctx.fillStyle = vig;
+    ctx.fillRect(0, 0, cw, ch);
+
+    // Grano fotográfico fino
+    const gc = document.createElement('canvas');
+    gc.width = cw; gc.height = ch;
+    const gx2 = gc.getContext('2d');
+    const id = gx2.createImageData(cw, ch);
+    for (let i = 0; i < id.data.length; i += 4) {
+      const v = Math.random() * 22;
+      id.data[i] = id.data[i+1] = id.data[i+2] = v;
+      id.data[i+3] = 15;
+    }
+    gx2.putImageData(id, 0, 0);
+    ctx.globalCompositeOperation = 'screen';
+    ctx.drawImage(gc, 0, 0);
+    ctx.globalCompositeOperation = 'source-over';
+
+    canvas.style.display = 'block';
+    btnDownload.disabled = false;
+  }
+
+  // --- Carga de imágenes desde URLs de hosting ---
+  async function loadImagesFromUrls(cards) {
+    const promises = cards.map((card, idx) => new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        loadedImages[idx] = img;
+        const slot = document.getElementById(`slot-${idx}`);
+        if (slot) {
+          const oldSpan = slot.querySelector('.slot-n');
+          slot.innerHTML = '';
+          if (oldSpan) slot.appendChild(oldSpan);
+          const thumbImg = document.createElement('img');
+          thumbImg.src = card.url;
+          thumbImg.crossOrigin = 'anonymous';
+          thumbImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85';
+          slot.appendChild(thumbImg);
+        }
+        resolve();
+      };
+      img.onerror = () => reject(new Error(`Error al cargar ${card.originalName}`));
+      img.src = card.url;
+    }));
+    await Promise.all(promises);
+  }
+
+  function pickRandomCards(n) {
+    if (!allCards.length) return [];
+
+    const shuffled = [...allCards];
+
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    return shuffled.slice(0, n);
+  }
+
+  async function pickAndLoadForCurrentSpread() {
+    if (!allCards.length) {
+      setStatus("El mazo no está cargado. Verificá la URL del hosting.", 'err');
+      return;
+    }
+    if (allCards.length < currentNumCards) {
+      setStatus(`❌ Necesitas al menos ${currentNumCards} cartas. Actualmente hay ${allCards.length}.`, 'err');
+      disableButtons(true);
+      return;
+    }
+    setStatus(`🃏 Seleccionando ${currentNumCards} cartas al azar...`, '');
+    pickedCards = pickRandomCards(currentNumCards);
+    loadedImages = new Array(currentNumCards);
+    try {
+      await loadImagesFromUrls(pickedCards);
+      reversals = Array.from({length: currentNumCards}, () => Math.random() < 0.45);
+      cardOffsets = generateOrganicOffsets(currentNumCards);
+      await renderCurrentSpread();
+      disableButtons(false);
+      setStatus(`✅ ${spreadsConfig[currentSpread].name} lista. Invertidas: ${reversals.filter(r=>r).length}. Disposición orgánica.`, 'ok');
+      showInterpretSection();
+    } catch(e) {
+      console.error(e);
+      setStatus("Error cargando imágenes: " + e.message + " — Verificá que el hosting esté activo y tenga CORS habilitado.", 'err');
+      disableButtons(true);
+    }
+  }
+
+  function randomizeReversals() {
+    if (!loadedImages.length) return;
+    reversals = Array.from({length: currentNumCards}, () => Math.random() < 0.45);
+    cardOffsets = generateOrganicOffsets(currentNumCards);
+    renderCurrentSpread();
+    setStatus(`♻️ Nuevas invertidas y disposición renovada.`, 'ok');
+  }
+  
+  async function reshuffleDeck() {
+    if (!allCards.length) return;
+    if (allCards.length < currentNumCards) {
+      setStatus(`No hay suficientes cartas (${allCards.length}/${currentNumCards})`, 'err');
+      return;
+    }
+    setStatus('♠️ Mezclando mazo y recolocando cartas...', '');
+    pickedCards = pickRandomCards(currentNumCards);
+    loadedImages = new Array(currentNumCards);
+    try {
+      await loadImagesFromUrls(pickedCards);
+      reversals = Array.from({length: currentNumCards}, () => Math.random() < 0.45);
+      cardOffsets = generateOrganicOffsets(currentNumCards);
+      renderCurrentSpread();
+      setStatus(`🃏 Nuevas cartas extraídas, disposición orgánica.`, 'ok');
+      showInterpretSection();
+    } catch(e) {
+      setStatus('Error al mezclar. Verificá la conexión al hosting.', 'err');
+    }
+  }
+  
+  function downloadPNG() {
+    if (!canvas || canvas.width === 0 || canvas.height === 0) {
+      setStatus('No hay tirada para descargar.', 'err');
+      return;
+    }
+    canvas.toBlob(blob => {
+      if (!blob) {
+        setStatus('No se pudo generar la imagen. Verificá que las cartas estén cargadas.', 'err');
+        return;
+      }
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `tirada_${currentSpread}_${Date.now()}.png`;
+      a.click();
+      // Liberar memoria del object URL después del click
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+    }, 'image/png');
+  }
+
+  function updateSpreadUI() {
+    if (!currentSpread) return;
+    const conf = spreadsConfig[currentSpread];
+    currentNumCards = conf.numCards;
+    spreadDesc.innerText = conf.desc;
+
+    thumbsDiv.innerHTML = '';
+    const labels = currentSpread === 'cross' ? ['I','II','III','IV','V','VI'] :
+                   currentSpread === 'line3' ? ['Pasado','Presente','Futuro'] :
+                   currentSpread === 'horseshoe' ? ['1','2','3','4','5','6','7'] :
+                   currentSpread === 'star5' ? ['🌍','💧','🌬️','🔥','✨'] :
+                   currentSpread === 'tree' ? ['K','Ch','B','Chs','Gb','T','N','H','Y','M'] :
+                   Array.from({length: currentNumCards}, (_,i)=>`${i+1}`);
+
+    for (let i = 0; i < currentNumCards; i++) {
+      const slot = document.createElement('div');
+      slot.className = 'thumb-slot';
+      slot.id = `slot-${i}`;
+      const span = document.createElement('span');
+      span.className = 'slot-n';
+      span.innerText = labels[i] || `${i+1}`;
+      slot.appendChild(span);
+      thumbsDiv.appendChild(slot);
+    }
+
+    if (allCards.length >= currentNumCards) {
+      pickAndLoadForCurrentSpread();
+    } else if (allCards.length > 0) {
+      setStatus(`⚠️ Se necesitan ${currentNumCards} cartas. Hay ${allCards.length}. Verificá el hosting.`, 'err');
+      disableButtons(true);
+    } else {
+      disableButtons(true);
+    }
+  }
+
+  function disableButtons(disabled) {
+    btnGenerate.disabled = disabled;
+    btnShuffle.disabled = disabled;
+    if (disabled) btnDownload.disabled = true;
+  }
+
+  function setStatus(msg, type='') {
+    statusEl.textContent = msg;
+    statusEl.className = type;
+  }
+
+  // ══════════════════════════════════════════
+  //  INICIALIZACIÓN AUTOMÁTICA DESDE HOSTING
+  //  Construye el mazo a partir del diccionario
+  //  CARD_NAMES y las URLs del servidor.
+  // ══════════════════════════════════════════
+  function initFromHosting() {
+    const statusBannerText = document.getElementById('deckStatusText');
+    const statusBannerSub  = document.getElementById('deckStatusSub');
+
+    if (statusBannerText) statusBannerText.textContent = 'Conectando con el mazo…';
+
+    allCards = Object.keys(CARD_NAMES).map(id => ({
+      url: CARD_BASE_URL + id + '.' + IMG_EXT,
+      tarotId: id,
+      originalName: id + '.' + IMG_EXT
+    }));
+
+    if (statusBannerText) statusBannerText.textContent = `${allCards.length} cartas en el mazo`;
+    if (statusBannerSub)  statusBannerSub.textContent  = CARD_BASE_URL;
+
+    setStatus(`📁 ${allCards.length} cartas disponibles desde el hosting.`, 'ok');
+    // No auto-carga: el usuario debe elegir tirada primero
+  }
+
+  btnGenerate.addEventListener('click', randomizeReversals);
+  btnShuffle.addEventListener('click', reshuffleDeck);
+  btnDownload.addEventListener('click', downloadPNG);
+
+  // ══════════════════════════════════════════
+  //  ★ INTEGRACIÓN CON CLAUDE AI ★
+  // ══════════════════════════════════════════
+
+  const btnInterpret        = document.getElementById('btnInterpret');
+  const interpretationSection = document.getElementById('interpretationSection');
+  const interpretationOutput  = document.getElementById('interpretationOutput');
+  const interpretationLoading = document.getElementById('interpretationLoading');
+  const interpretationError   = document.getElementById('interpretationError');
+  const interpretationTitle   = document.getElementById('interpretationTitle');
+  const interpretationText    = document.getElementById('interpretationText');
+
+  // ── safeText: setter explícito para evitar XSS por refactors futuros ──
+  // Siempre usar esta función (o .textContent directo) para insertar
+  // mensajes de error. NUNCA usar .innerHTML con contenido externo.
+  function safeText(el, msg) {
+    el.textContent = msg;
+  }
+
+  function getZodiac(dateStr) {
+    if (!dateStr) return null;
+    const d = new Date(dateStr + 'T12:00:00');
+    const m = d.getMonth() + 1, day = d.getDate();
+    if ((m===1&&day>=20)||(m===2&&day<=18)) return 'Acuario';
+    if ((m===2&&day>=19)||(m===3&&day<=20)) return 'Piscis';
+    if ((m===3&&day>=21)||(m===4&&day<=19)) return 'Aries';
+    if ((m===4&&day>=20)||(m===5&&day<=20)) return 'Tauro';
+    if ((m===5&&day>=21)||(m===6&&day<=20)) return 'Géminis';
+    if ((m===6&&day>=21)||(m===7&&day<=22)) return 'Cáncer';
+    if ((m===7&&day>=23)||(m===8&&day<=22)) return 'Leo';
+    if ((m===8&&day>=23)||(m===9&&day<=22)) return 'Virgo';
+    if ((m===9&&day>=23)||(m===10&&day<=22)) return 'Libra';
+    if ((m===10&&day>=23)||(m===11&&day<=21)) return 'Escorpio';
+    if ((m===11&&day>=22)||(m===12&&day<=21)) return 'Sagitario';
+    return 'Capricornio';
+  }
+
+  function buildTarotPrompt() {
+    const question = document.getElementById('userQuestion').value.trim();
+    const name     = document.getElementById('userName').value.trim();
+    const dob      = document.getElementById('userDOB').value;
+    const country  = document.getElementById('userCountry').value.trim();
+    const zodiac   = getZodiac(dob);
+    const conf     = spreadsConfig[currentSpread];
+
+    const posLabels = currentSpread === 'cross'
+      ? ['I · Situación (centro)', 'II · Pasado', 'III · Futuro', 'IV · Corona', 'V · Fundamento', 'VI · Resultado']
+      : currentSpread === 'line3'
+      ? ['Pasado', 'Presente', 'Futuro']
+      : currentSpread === 'horseshoe'
+      ? ['1 · Pasado', '2 · Presente', '3 · Futuro', '4 · Ayuda', '5 · Obstáculo', '6 · Consejo', '7 · Resultado']
+      : currentSpread === 'star5'
+      ? ['Tierra', 'Agua', 'Aire', 'Fuego', 'Espíritu']
+      : currentSpread === 'tree'
+      ? ['Kether', 'Chokmah', 'Binah', 'Chesed', 'Geburah', 'Tiphareth', 'Netzach', 'Hod', 'Yesod', 'Malkuth']
+      : pickedCards.map((_, i) => `Carta ${i + 1}`);
+
+    const cardsDesc = pickedCards.map((card, i) => {
+      const info = CARD_NAMES[card.tarotId];
+      const nombre = info ? `${info.es} (${info.fr})` : card.originalName;
+      const estado = reversals[i] ? 'INVERTIDA' : 'al derecho';
+      return `  - Posición ${posLabels[i]}: ${nombre} — ${estado}`;
+    }).join('\n');
+
+    const questionLine = question
+      ? `Consulta: "${question}"`
+      : 'No hay pregunta explícita. Hacé una lectura general del momento presente.';
+
+    const nombreLinea  = name    ? `Nombre: ${name}` : '';
+    const zodiacoLinea = zodiac  ? `Signo zodiacal: ${zodiac}` : '';
+    const paisLinea    = country ? `País: ${country}` : '';
+    const contexto     = [nombreLinea, zodiacoLinea, paisLinea].filter(Boolean).join(' · ');
+
+    return `Sos una lectora de tarot de Marsella. Hablás directo y sin adornos. Usás el nombre de la persona cuando es natural, sin exceso.
+
+${contexto ? `Consultante: ${contexto}` : ''}
+${questionLine}
+
+Tirada: ${conf.name}
+${conf.desc}
+
+Cartas:
+${cardsDesc}
+
+Escribí la lectura en español rioplatense. Máximo 4 párrafos, concisos y con peso. Reglas estrictas de tono:
+— No uses frases como "te miro", "te escucho", "te acompaño", "estoy aquí", "confío en vos" ni ninguna expresión que simule presencia física o emocional exagerada.
+— No seas excesivamente optimista. Si las cartas muestran tensión, dificultad o estancamiento, decilo con claridad.
+— Equilibrá lo que está complicado con lo que hay de salida, pero sin forzar el lado positivo.
+— Hablá de lo que las cartas realmente dicen, no de lo que la persona quiere escuchar.
+— Sin frases motivacionales vacías ni cierres del tipo "el universo te acompaña".
+— En lugar de "en resumen" usá variantes como: "en definitiva", "lo que se ve claro acá", "mirando el conjunto", "la tirada apunta a", "para terminar", "a grandes rasgos", "lo que emerge de todo esto". Nunca uses la expresión "en resumen".
+— Escribí como una persona con años de experiencia leyendo cartas, no como un sistema automatizado. Usá frases naturales, con alguna pausa, alguna duda expresada, como si estuvieras pensando en voz alta sobre lo que ves en la mesa.`;
+  }
+
+  function renderCardsAfterReading() {
+    const grid = document.getElementById('cardsAfterGrid');
+    const panel = document.getElementById('cardsAfterReading');
+    if (!grid || !panel || !pickedCards.length) return;
+
+    const conf = spreadsConfig[currentSpread];
+    const labels = currentSpread === 'cross'
+      ? ['I · Situación','II · Pasado','III · Futuro','IV · Corona','V · Fundamento','VI · Resultado']
+      : currentSpread === 'line3'
+      ? ['Pasado','Presente','Futuro']
+      : currentSpread === 'horseshoe'
+      ? ['Pasado','Presente','Futuro','Ayuda','Obstáculo','Consejo','Resultado']
+      : currentSpread === 'star5'
+      ? ['Tierra','Agua','Aire','Fuego','Espíritu']
+      : currentSpread === 'tree'
+      ? ['Kether','Chokmah','Binah','Chesed','Geburah','Tiphareth','Netzach','Hod','Yesod','Malkuth']
+      : Array.from({length: pickedCards.length}, (_, i) => `Carta ${i+1}`);
+
+    grid.innerHTML = '';
+    pickedCards.forEach((card, i) => {
+      const info = CARD_NAMES[card.tarotId];
+      const isRev = reversals[i];
+      const label = labels[i] || `Carta ${i+1}`;
+
+      const item = document.createElement('div');
+      item.className = 'car-item';
+
+      const wrap = document.createElement('div');
+      wrap.className = 'car-img-wrap' + (isRev ? ' reversed' : '');
+
+      const img = document.createElement('img');
+      img.src = card.url;
+      img.alt = info ? info.es : label;
+      img.loading = 'lazy';
+      wrap.appendChild(img);
+
+      const pos = document.createElement('div');
+      pos.className = 'car-pos';
+      pos.textContent = label;
+
+      const name = document.createElement('div');
+      name.className = 'car-name';
+      name.textContent = info ? info.es : (card.originalName || '');
+
+      item.appendChild(wrap);
+      item.appendChild(pos);
+      item.appendChild(name);
+
+      if (isRev) {
+        const rev = document.createElement('div');
+        rev.className = 'car-rev';
+        rev.textContent = '▼ inv.';
+        item.appendChild(rev);
+      }
+
+      grid.appendChild(item);
+    });
+
+    panel.style.display = 'flex';
+  }
+
+  async function interpretWithClaude() {
+    if (!pickedCards.length) return;
+
+    // Mostrar panel y estado de carga
+    interpretationOutput.style.display    = 'block';
+    interpretationLoading.style.display   = 'flex';
+    interpretationError.style.display     = 'none';
+    interpretationTitle.style.display     = 'none';
+    interpretationText.textContent        = '';
+    btnInterpret.disabled                 = true;
+
+    const prompt = buildTarotPrompt();
+
+    try {
+      const GROQ_API_KEY = getGroqKey();
+      if (!GROQ_API_KEY) {
+        throw new Error('Ingresá tu clave de Groq en el panel de configuración para activar el oráculo.');
+      }
+
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${GROQ_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+          max_tokens: 700,
+          temperature: 0.85,
+          messages: [
+            {
+              role: 'system',
+              content: 'Sos una lectora de tarot de Marsella con años de experiencia. Leés con honestidad — ni cruel ni complaciente. No simulás presencia emocional con frases como "te miro" o "te escucho". No cerrás con optimismo forzado. Nunca usás la expresión "en resumen": la reemplazás por "en definitiva", "lo que se ve claro acá", "mirando el conjunto", "la tirada apunta a" u otras variantes naturales. Escribís como una persona que piensa en voz alta mientras observa las cartas sobre la mesa, con frases naturales que a veces dudan, que a veces retoman. Siempre en español rioplatense.'
+            },
+            {
+              role: 'user',
+              content: prompt
+            }
+          ]
+        })
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err?.error?.message || `Error HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+      const text = data.choices?.[0]?.message?.content || '';
+
+      if (!text) throw new Error('El oráculo no devolvió respuesta. Intentá de nuevo.');
+
+      interpretationLoading.style.display = 'none';
+      interpretationTitle.style.display   = 'flex';
+      interpretationText.textContent      = text;
+      btnInterpret.style.display          = 'none';
+      renderCardsAfterReading();
+
+    } catch (err) {
+      interpretationLoading.style.display = 'none';
+      interpretationError.style.display   = 'block';
+      safeText(interpretationError, '⚠ ' + err.message);
+    } finally {
+      btnInterpret.disabled = false;
+    }
+  }
+
+  btnInterpret.addEventListener('click', interpretWithClaude);
+
+  // Mostrar sección de interpretación cuando hay cartas cargadas
+  function showInterpretSection() {
+    interpretationSection.style.display = 'flex';
+  }
+
+  // ── Descripciones completas de las tiradas ──
+  const spreadDescriptions = {
+    cross: {
+      text: 'La Cruz Francesa es una de las tiradas más completas del tarot clásico. Seis cartas que forman una cruz: el centro muestra la situación actual, los brazos revelan pasado y futuro, la corona indica lo que actúa desde arriba (lo consciente o espiritual), el fundamento lo que sostiene desde abajo (lo oculto o inconsciente), y la carta final a la derecha da el resultado probable.',
+      positions: 'I · Situación · II · Pasado · III · Futuro · IV · Corona · V · Fundamento · VI · Resultado'
+    },
+    line3: {
+      text: 'Tirada simple y directa: tres cartas en línea que trazan el eje del tiempo. Ideal para consultas concretas o cuando se necesita claridad rápida sobre una situación en movimiento.',
+      positions: 'Pasado · Presente · Futuro'
+    },
+    horseshoe: {
+      text: 'Siete cartas dispuestas en arco, como una herradura. Recorre el tiempo, las fuerzas en juego y los posibles desenlaces. Incluye cartas de ayuda y obstáculo, lo que la hace útil para situaciones con varios factores en tensión.',
+      positions: '1 · Pasado · 2 · Presente · 3 · Futuro · 4 · Ayuda · 5 · Obstáculo · 6 · Consejo · 7 · Resultado'
+    },
+    star5: {
+      text: 'Cinco cartas en los vértices de una estrella de cinco puntas. Cada punto corresponde a un elemento: Tierra (lo material), Agua (lo emocional), Aire (lo mental), Fuego (la acción y la voluntad) y Espíritu (la dimensión más sutil o trascendente). Buena tirada para lecturas holísticas.',
+      positions: 'Tierra · Agua · Aire · Fuego · Espíritu'
+    },
+    tree: {
+      text: 'Diez cartas siguiendo la estructura del Árbol de la Vida de la Cábala. Cada carta ocupa una de las diez Sefirot, desde Kether (la corona, lo divino) hasta Malkuth (el reino, lo manifestado). Una de las tiradas más profundas y completas del tarot.',
+      positions: 'Kether · Chokmah · Binah · Chesed · Geburah · Tiphareth · Netzach · Hod · Yesod · Malkuth'
+    },
+    etteilla12: {
+      text: 'Doce cartas dispuestas en una cuadrícula de tres filas y cuatro columnas, según el método del cartomante francés Etteilla. Cubre pasado, presente y futuro en distintos planos: situación general, obstáculos, influencias externas y resultado. Una de las tiradas más abarcadoras del tarot tradicional.',
+      positions: 'Cuadrícula 3×4 · Pasado / Presente / Futuro · Situación · Obstáculos · Consejo · Resultado'
+    }
+  };
+
+  document.querySelectorAll('.spread-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const spread = btn.getAttribute('data-spread');
+      if (spread && spreadsConfig[spread]) {
+        currentSpread = spread;
+        document.querySelectorAll('.spread-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const prompt = document.getElementById('spreadPrompt');
+        if (prompt) prompt.style.display = 'none';
+
+        // Mostrar descripción de la tirada
+        const descBox = document.getElementById('spreadDescBox');
+        const descName = document.getElementById('spreadDescName');
+        const descText = document.getElementById('spreadDescText');
+        const descPos  = document.getElementById('spreadDescPositions');
+        if (descBox && spreadDescriptions[spread]) {
+          descName.textContent = spreadsConfig[spread].name;
+          descText.textContent = spreadDescriptions[spread].text;
+          descPos.textContent  = spreadDescriptions[spread].positions;
+          descBox.style.display = 'flex';
+        }
+
+        updateSpreadUI();
+      }
+    });
+  });
+
+  initFromHosting();
+})();
+</script>
+</body>
+</html>
