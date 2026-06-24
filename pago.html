@@ -304,9 +304,7 @@
       Tu colaboración hace posible este espacio.
     </p>
 
-    <div class="divider"><span></span><em>¿Desde dónde nos visitás?</em><span></span></div>
-
-    <div class="monto-row">
+    <div class="monto-row hidden" id="countryToggleRow">
       <button class="country-btn" id="btnUY" data-pais="UY">🇺🇾 Uruguay</button>
       <button class="country-btn" id="btnOtro" data-pais="OTRO">🌎 Otro país</button>
     </div>
@@ -376,12 +374,17 @@
     Si no tenés, podés pagar con tarjeta como invitado de forma segura.
   </p>
 
+  <p class="pie" id="cambiarPaisLink" style="cursor:pointer;text-decoration:underline;">
+    ¿No es tu país? Tocá para cambiar
+  </p>
+
 </div>
 
 <script>
   const BACKEND_URL = 'https://script.google.com/macros/s/AKfycby_MZdNhRzElKaOoF6A6-Pfo0BWDwBjGpLzfAwNM7JtTOeSq4V1q6yv-H3bMKQqWdb9gg/exec';
 
   let pais = 'UY';
+  let paisDetectado = 'ES'; // fallback si falla la detección
   let montoSeleccionado = null;
 
   const seccionUYU = document.getElementById('seccionUYU');
@@ -417,6 +420,10 @@
 
   document.getElementById('btnUY').addEventListener('click', () => setPais('UY'));
   document.getElementById('btnOtro').addEventListener('click', () => setPais('OTRO'));
+
+  document.getElementById('cambiarPaisLink').addEventListener('click', () => {
+    setPais(pais === 'UY' ? 'OTRO' : 'UY');
+  });
 
   // Botones de monto rápido — UYU
   document.querySelectorAll('[data-monto]').forEach(btn => {
@@ -469,7 +476,10 @@
 
     try {
       const action = pais === 'UY' ? 'create_preference' : 'create_order_paypal';
-      const res = await fetch(`${BACKEND_URL}?action=${action}&amount=${montoSeleccionado}`);
+      const params = pais === 'UY'
+        ? `action=${action}&amount=${montoSeleccionado}`
+        : `action=${action}&amount=${montoSeleccionado}&country=${paisDetectado}`;
+      const res = await fetch(`${BACKEND_URL}?${params}`);
       const data = await res.json();
 
       const redirectUrl = data.init_point || data.approve_url;
@@ -492,6 +502,7 @@
     try {
       const res = await fetch('https://get.geojs.io/v1/ip/country.json');
       const data = await res.json();
+      paisDetectado = data.country || 'ES';
       setPais(data.country === 'UY' ? 'UY' : 'OTRO');
     } catch (e) {
       setPais('UY');
