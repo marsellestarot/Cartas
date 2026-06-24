@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marselles · Tarot · Colaboración</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<script>
+  (function() {
+    const url = new URL(window.location.href);
+    const trackingParams = ['fbclid', 'gclid', 'utm_source', 'utm_medium', 'utm_campaign'];
+    let changed = false;
+    trackingParams.forEach(param => {
+      if (url.searchParams.has(param)) {
+        url.searchParams.delete(param);
+        changed = true;
+      }
+    });
+    if (changed) {
+      window.history.replaceState({}, document.title, url.toString());
+    }
+  })();
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold:    #c9a84c;
+    --gold-lt: #e8cc7a;
+    --ink:     #0a0812;
+  }
+
+  html, body {
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 50% 30%, #1b1035 0%, #0a0812 70%);
+    color: #e8dfc8;
+    font-family: 'Cinzel', serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.35;
+  }
+
+  .wrap {
+    position: relative; z-index: 1;
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+
+  header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .title-deco {
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    margin-bottom: 4px;
+  }
+  .title-deco span { display: block; width: 50px; height: 1px; background: var(--gold); opacity: .5; }
+
+  h1 {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: clamp(1.1rem, 4vw, 1.5rem);
+    letter-spacing: .12em;
+    background: linear-gradient(135deg, #b8924a, #e8cc7a, #c9a84c);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: .7rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: #7a6e5e;
+  }
+
+  .card {
+    width: 100%;
+    background: rgba(10,8,18,0.7);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 8px;
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.05) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .texto-intro {
+    font-size: .82rem;
+    line-height: 1.9;
+    color: #bba88a;
+    letter-spacing: .04em;
+    text-align: center;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .divider span {
+    flex: 1;
+    height: 1px;
+    background: rgba(201,168,76,0.15);
+  }
+  .divider em {
+    font-style: normal;
+    font-size: .6rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: #5a5248;
+  }
+
+  .monto-label {
+    font-size: .65rem;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: .7;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .monto-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .monto-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .monto-btn, .country-btn {
+    flex: 1 1 70px;
+    font-family: 'Cinzel', serif;
+    font-size: .75rem;
+    letter-spacing: .1em;
+    padding: 10px 8px;
+    border: 1px solid rgba(201,168,76,0.3);
+    background: transparent;
+    color: #bba88a;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all .2s;
+    text-align: center;
+  }
+  .monto-btn:hover, .monto-btn.active,
+  .country-btn:hover, .country-btn.active {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.1);
+    color: var(--gold-lt);
+  }
+  .monto-btn.active, .country-btn.active {
+    box-shadow: 0 0 8px rgba(201,168,76,0.2);
+  }
+
+  .monto-custom-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.02);
+    transition: border-color .2s;
+  }
+  .monto-custom-wrap:focus-within {
+    border-color: rgba(201,168,76,0.5);
+  }
+  .monto-currency {
+    font-size: .8rem;
+    color: #5a5248;
+    letter-spacing: .1em;
+  }
+  .monto-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'Cinzel', serif;
+    font-size: .9rem;
+    color: #e8dfc8;
+    letter-spacing: .05em;
+  }
+  .monto-input::placeholder {
+    color: #3a3228;
+  }
+
+  .monto-min {
+    font-size: .62rem;
+    color: #5a5248;
+    letter-spacing: .12em;
+    text-align: right;
+  }
+
+  #errorMsg {
+    font-size: .7rem;
+    color: #b87a7a;
+    letter-spacing: .1em;
+    text-align: center;
+    display: none;
+    min-height: 18px;
+  }
+
+  .btn-pagar {
+    font-family: 'Cinzel', serif;
+    font-size: .75rem;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    border: 1px solid var(--gold);
+    background: linear-gradient(135deg, rgba(122,90,30,0.5), rgba(201,168,76,0.25));
+    color: var(--gold-lt);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .25s;
+    box-shadow: 0 0 12px rgba(201,168,76,0.08);
+    width: 100%;
+  }
+  .btn-pagar:hover:not(:disabled) {
+    background: linear-gradient(135deg, #7a5a1e, #c9a84c);
+    color: var(--ink);
+    box-shadow: 0 0 20px rgba(201,168,76,0.3);
+  }
+  .btn-pagar:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+  }
+
+  .loading {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: var(--gold);
+    font-size: .7rem;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+  }
+  .loading-dots span {
+    display: inline-block;
+    animation: pulse 1.4s ease-in-out infinite;
+    font-size: 1.1rem;
+    opacity: .5;
+  }
+  .loading-dots span:nth-child(2) { animation-delay: .2s; }
+  .loading-dots span:nth-child(3) { animation-delay: .4s; }
+  @keyframes pulse {
+    0%, 100% { opacity: .2; transform: translateY(0); }
+    50% { opacity: .8; transform: translateY(-4px); }
+  }
+
+  .pie {
+    font-size: .62rem;
+    color: #3a3228;
+    letter-spacing: .12em;
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="title-deco"><span></span><span style="font-size:1rem;opacity:.6">✦</span><span></span></div>
+    <h1>Oráculo de Tiradas</h1>
+    <p class="subtitle">Tarot de Marsella</p>
+  </header>
+
+  <div class="card">
+
+    <p class="texto-intro">
+      Cada lectura es una conversación entre vos y las cartas.<br>
+      Tu colaboración hace posible este espacio.
+    </p>
+
+    <div class="divider"><span></span><em>¿Desde dónde nos visitás?</em><span></span></div>
+
+    <div class="monto-row">
+      <button class="country-btn" id="btnUY" data-pais="UY">🇺🇾 Uruguay</button>
+      <button class="country-btn" id="btnOtro" data-pais="OTRO">🌎 Otro país</button>
+    </div>
+
+    <div class="divider"><span></span><em>Elegí tu colaboración</em><span></span></div>
+
+    <!-- Sección Uruguay / MercadoPago -->
+    <div class="monto-wrap" id="seccionUYU">
+      <span class="monto-label">Monto en pesos uruguayos</span>
+      <div class="monto-row">
+        <button class="monto-btn" data-monto="200">$200</button>
+        <button class="monto-btn" data-monto="350">$350</button>
+        <button class="monto-btn" data-monto="500">$500</button>
+      </div>
+      <div class="monto-custom-wrap">
+        <span class="monto-currency">$</span>
+        <input
+          class="monto-input"
+          id="montoInputUYU"
+          type="number"
+          min="200"
+          placeholder="Otro monto…"
+        />
+      </div>
+      <div class="monto-min">Mínimo $200 UYU</div>
+    </div>
+
+    <!-- Sección Otro país / PayPal -->
+    <div class="monto-wrap hidden" id="seccionUSD">
+      <span class="monto-label">Monto en dólares (USD)</span>
+      <div class="monto-row">
+        <button class="monto-btn" data-monto-usd="50">$50</button>
+        <button class="monto-btn" data-monto-usd="75">$75</button>
+        <button class="monto-btn" data-monto-usd="100">$100</button>
+      </div>
+      <div class="monto-custom-wrap">
+        <span class="monto-currency">$</span>
+        <input
+          class="monto-input"
+          id="montoInputUSD"
+          type="number"
+          min="50"
+          placeholder="Otro monto…"
+        />
+      </div>
+      <div class="monto-min">Mínimo $50 USD</div>
+    </div>
+
+    <div id="errorMsg"></div>
+
+    <div class="loading" id="loading">
+      <div class="loading-dots"><span>✦</span><span>✦</span><span>✦</span></div>
+      <span>Preparando el acceso…</span>
+    </div>
+
+    <button class="btn-pagar" id="btnPagar">✦ Colaborar y acceder ✦</button>
+
+  </div>
+
+  <p class="pie" id="pieMetodo">
+    El pago se procesa de forma segura a través de MercadoPago.<br>
+    Al completarlo accedés directamente a tu lectura.
+  </p>
+
+  <p class="pie" id="avisoPaypal" style="display:none;">
+    Si tenés cuenta de PayPal, solo necesitás tu email y contraseña.<br>
+    Si no tenés, podés pagar con tarjeta como invitado de forma segura.
+  </p>
+
+</div>
+
+<script>
+  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycby_MZdNhRzElKaOoF6A6-Pfo0BWDwBjGpLzfAwNM7JtTOeSq4V1q6yv-H3bMKQqWdb9gg/exec';
+
+  let pais = 'UY';
+  let montoSeleccionado = null;
+
+  const seccionUYU = document.getElementById('seccionUYU');
+  const seccionUSD = document.getElementById('seccionUSD');
+  const pieMetodo  = document.getElementById('pieMetodo');
+  const montoInputUYU = document.getElementById('montoInputUYU');
+  const montoInputUSD = document.getElementById('montoInputUSD');
+
+  function setPais(p) {
+    pais = p;
+    montoSeleccionado = null;
+    document.getElementById('errorMsg').style.display = 'none';
+
+    document.querySelectorAll('.monto-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
+    montoInputUYU.value = '';
+    montoInputUSD.value = '';
+
+    if (p === 'UY') {
+      document.getElementById('btnUY').classList.add('active');
+      seccionUYU.classList.remove('hidden');
+      seccionUSD.classList.add('hidden');
+      pieMetodo.innerHTML = 'El pago se procesa de forma segura a través de MercadoPago.<br>Al completarlo accedés directamente a tu lectura.';
+      document.getElementById('avisoPaypal').style.display = 'none';
+    } else {
+      document.getElementById('btnOtro').classList.add('active');
+      seccionUYU.classList.add('hidden');
+      seccionUSD.classList.remove('hidden');
+      pieMetodo.innerHTML = 'El pago se procesa de forma segura a través de PayPal.<br>Al completarlo accedés directamente a tu lectura.';
+      document.getElementById('avisoPaypal').style.display = 'block';
+    }
+  }
+
+  document.getElementById('btnUY').addEventListener('click', () => setPais('UY'));
+  document.getElementById('btnOtro').addEventListener('click', () => setPais('OTRO'));
+
+  // Botones de monto rápido — UYU
+  document.querySelectorAll('[data-monto]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-monto]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      montoSeleccionado = parseInt(btn.getAttribute('data-monto'));
+      montoInputUYU.value = '';
+    });
+  });
+
+  // Botones de monto rápido — USD
+  document.querySelectorAll('[data-monto-usd]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-monto-usd]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      montoSeleccionado = parseInt(btn.getAttribute('data-monto-usd'));
+      montoInputUSD.value = '';
+    });
+  });
+
+  // Inputs personalizados
+  montoInputUYU.addEventListener('input', (e) => {
+    document.querySelectorAll('[data-monto]').forEach(b => b.classList.remove('active'));
+    montoSeleccionado = parseInt(e.target.value) || null;
+  });
+  montoInputUSD.addEventListener('input', (e) => {
+    document.querySelectorAll('[data-monto-usd]').forEach(b => b.classList.remove('active'));
+    montoSeleccionado = parseInt(e.target.value) || null;
+  });
+
+  // Botón pagar
+  document.getElementById('btnPagar').addEventListener('click', async () => {
+    const errorMsg = document.getElementById('errorMsg');
+    errorMsg.style.display = 'none';
+
+    const minimo = pais === 'UY' ? 200 : 50;
+    const etiquetaMoneda = pais === 'UY' ? 'UYU' : 'USD';
+
+    if (!montoSeleccionado || montoSeleccionado < minimo) {
+      errorMsg.textContent = `El monto mínimo es $${minimo} ${etiquetaMoneda}.`;
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    const btn = document.getElementById('btnPagar');
+    const loading = document.getElementById('loading');
+    btn.style.display = 'none';
+    loading.style.display = 'flex';
+
+    try {
+      const action = pais === 'UY' ? 'create_preference' : 'create_order_paypal';
+      const res = await fetch(`${BACKEND_URL}?action=${action}&amount=${montoSeleccionado}`);
+      const data = await res.json();
+
+      const redirectUrl = data.init_point || data.approve_url;
+
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+      } else {
+        throw new Error('No se pudo crear el acceso.');
+      }
+    } catch (e) {
+      loading.style.display = 'none';
+      btn.style.display = 'block';
+      errorMsg.textContent = 'Hubo un problema al conectar con el servidor. Intentá de nuevo.';
+      errorMsg.style.display = 'block';
+    }
+  });
+
+  // Detección automática de país por IP, con fallback a Uruguay.
+  (async function detectarPais() {
+    try {
+      const res = await fetch('https://get.geojs.io/v1/ip/country.json');
+      const data = await res.json();
+      setPais(data.country === 'UY' ? 'UY' : 'OTRO');
+    } catch (e) {
+      setPais('UY');
+    }
+  })();
+</script>
+</body>
+</html>
