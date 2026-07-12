@@ -308,8 +308,8 @@
   <div class="card">
 
     <p class="texto-intro">
-      Cada lectura es una conversación entre vos y las cartas.<br>
-      Tu colaboración hace posible este espacio.
+      Llegaste hasta acá porque algo te dijo que era momento de mirar de cerca.<br>
+      Elegí tu colaboración y accedé a tu lectura conmigo.
     </p>
 
     <div class="monto-row hidden" id="countryToggleRow">
@@ -368,13 +368,13 @@
       <span>Preparando el acceso…</span>
     </div>
 
-    <button class="btn-pagar" id="btnPagar">✦ Colaborar y acceder ✦</button>
+    <button class="btn-pagar" id="btnPagar">✦ Sí, quiero mi lectura conmigo ✦</button>
 
   </div>
 
   <p class="pie" id="pieMetodo">
-    El pago se procesa de forma segura a través de MercadoPago.<br>
-    Al completarlo accedés directamente a tu lectura.
+    Tu pago se procesa de forma segura a través de MercadoPago.<br>
+    En cuanto se confirme, arrancamos.
   </p>
 
   <p class="pie" id="avisoPaypal" style="display:none;">
@@ -415,13 +415,13 @@
       document.getElementById('btnUY').classList.add('active');
       seccionUYU.classList.remove('hidden');
       seccionUSD.classList.add('hidden');
-      pieMetodo.innerHTML = 'El pago se procesa de forma segura a través de MercadoPago.<br>Al completarlo accedés directamente a tu lectura.';
+      pieMetodo.innerHTML = 'Tu pago se procesa de forma segura a través de MercadoPago.<br>En cuanto se confirme, arrancamos.';
       document.getElementById('avisoPaypal').style.display = 'none';
     } else {
       document.getElementById('btnOtro').classList.add('active');
       seccionUYU.classList.add('hidden');
       seccionUSD.classList.remove('hidden');
-      pieMetodo.innerHTML = 'El pago se procesa de forma segura a través de PayPal.<br>Al completarlo accedés directamente a tu lectura.';
+      pieMetodo.innerHTML = 'Tu pago se procesa de forma segura a través de PayPal.<br>En cuanto se confirme, arrancamos.';
       document.getElementById('avisoPaypal').style.display = 'block';
     }
   }
