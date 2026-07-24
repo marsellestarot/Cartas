@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Marselles · Elige tu Tirada</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <script>
+    (function() {
+      const url = new URL(window.location.href);
+      const trackingParams = ['fbclid', 'gclid', 'utm_source', 'utm_medium', 'utm_campaign'];
+      let changed = false;
+      trackingParams.forEach(param => {
+        if (url.searchParams.has(param)) {
+          url.searchParams.delete(param);
+          changed = true;
+        }
+      });
+      if (changed) {
+        window.history.replaceState({}, document.title, url.toString());
+      }
+    })();
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0HR3CJ0R1S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0HR3CJ0R1S');
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #D4AF37;
+      --gold-soft: #E8C9A0;
+      --purple-glow: #A855F7;
+      --bg-deep: #0B0815;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --border-glass: rgba(212, 175, 55, 0.15);
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 12px;
+      background: radial-gradient(ellipse at 20% 20%, #1E1040 0%, #0A0F24 40%, #0B0815 80%);
+      font-family: 'Inter', sans-serif;
+      color: #F0EBE3;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .brand-icon {
+      font-size: 1.2rem;
+      letter-spacing: 0.3em;
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 300;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #FDFBF7 0%, var(--gold-soft) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+
+    .subhead {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: #9A8CB0;
+      margin-top: 0;
+    }
+
+    .card {
+      width: 100%;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .selection-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #AFA0C2;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 6px;
+    }
+
+    .selection-label span:last-child {
+      color: var(--purple-glow);
+      font-weight: 600;
+    }
+
+    .tiradas-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .tirada-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .tirada-card:hover {
+      background: rgba(168, 85, 247, 0.05);
+      border-color: rgba(168, 85, 247, 0.2);
+      transform: translateX(3px);
+    }
+
+    .tirada-card.active {
+      background: rgba(212, 175, 55, 0.08);
+      border-color: var(--gold);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.06), inset 0 0 15px rgba(212, 175, 55, 0.02);
+    }
+
+    .tirada-card.active::before {
+      content: '✦';
+      position: absolute;
+      right: 10px;
+      color: var(--gold);
+      font-size: 0.7rem;
+    }
+
+    .tirada-icon {
+      font-size: 1.1rem;
+      width: 30px;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    .tirada-info {
+      flex: 1;
+    }
+
+    .tirada-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #F0EBE3;
+      line-height: 1.2;
+    }
+
+    .tirada-desc {
+      font-size: 0.68rem;
+      color: #B0A2C4;
+      margin-top: 1px;
+    }
+
+    .tirada-precio {
+      font-weight: 700;
+      font-size: 0.7rem;
+      color: var(--gold-soft);
+      background: rgba(212, 175, 55, 0.1);
+      padding: 2px 8px;
+      border-radius: 40px;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      white-space: nowrap;
+    }
+
+    .tirada-card.active .tirada-precio {
+      background: rgba(212, 175, 55, 0.2);
+      border-color: var(--gold);
+    }
+
+    /* === CARRUSEL DE TESTIMONIOS === */
+    .testimonios-section {
+      margin: 0;
+    }
+
+    .testimonios-slider {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 0;
+    }
+
+    .testimonios-track {
+      display: flex;
+      transition: transform 0.5s ease;
+      will-change: transform;
+      width: 100%;
+    }
+
+    .testimonio-item {
+      flex: 0 0 100%;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer; /* Indica que es clickeable */
+      transition: background 0.2s;
+      border-radius: 8px;
+    }
+
+    .testimonio-item:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .testimonio-item:active {
+      transform: scale(0.99);
+    }
+
+    .testimonio-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .testimonio-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(212,175,55,0.15);
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    .testimonio-info-nombre {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+      flex: 1;
+    }
+
+    .testimonio-nombre {
+      font-weight: 600;
+      font-size: 0.7rem;
+      color: #F0EBE3;
+    }
+
+    .testimonio-fecha {
+      font-size: 0.6rem;
+      color: #8378A0;
+      letter-spacing: 0.05em;
+    }
+
+    .testimonio-estrellas {
+      color: var(--gold);
+      font-size: 0.5rem;
+      letter-spacing: 2px;
+      margin-left: auto;
+      align-self: center;
+    }
+
+    .testimonio-texto {
+      font-size: 0.7rem;
+      line-height: 1.4;
+      color: #C4B5D4;
+      font-style: italic;
+      margin: 2px 0 0 0;
+      padding-left: 2px;
+      word-wrap: break-word;
+      display: -webkit-box;
+      -webkit-line-clamp: 2; /* Muestra solo 2 líneas en el carrusel */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .testimonio-texto::before {
+      content: '"';
+      color: var(--gold);
+      opacity: 0.5;
+      font-size: 0.9rem;
+      margin-right: 3px;
+    }
+    .testimonio-texto::after {
+      content: '"';
+      color: var(--gold);
+      opacity: 0.5;
+      font-size: 0.9rem;
+      margin-left: 3px;
+    }
+
+    .testimonio-leer-mas {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.58rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold-soft);
+      margin-top: 4px;
+      padding-left: 2px;
+      opacity: 0.85;
+    }
+
+    .testimonios-dots {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      padding: 4px 0 6px 0;
+    }
+
+    .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      padding: 0;
+    }
+
+    .dot.active {
+      background: var(--gold);
+      width: 16px;
+      border-radius: 3px;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+
+    .dot:hover {
+      background: rgba(212, 175, 55, 0.5);
+    }
+
+    /* === MODAL (VENTANA EMERGENTE) === */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+      animation: fadeInOverlay 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    @keyframes fadeInOverlay {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-container {
+      max-width: 420px;
+      width: 100%;
+      background: radial-gradient(ellipse at 50% 0%, #1E1040, #0A0F24);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 24px;
+      padding: 28px 24px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(212, 175, 55, 0.05);
+      animation: modalSlideIn 0.35s cubic-bezier(0.21, 1.02, 0.73, 1);
+      position: relative;
+    }
+
+    @keyframes modalSlideIn {
+      from { opacity: 0; transform: scale(0.9) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .modal-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid rgba(212, 175, 55, 0.3);
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    .modal-user-info {
+      flex: 1;
+    }
+
+    .modal-nombre {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #F0EBE3;
+    }
+
+    .modal-fecha {
+      font-size: 0.6rem;
+      color: #5A4E6C;
+      letter-spacing: 0.05em;
+    }
+
+    .modal-estrellas {
+      color: var(--gold);
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      align-self: center;
+    }
+
+    .modal-texto {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: #E4DCC8;
+      font-style: italic;
+      margin: 12px 0 16px 0;
+      padding: 0 4px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .modal-texto::before {
+      content: '"';
+      color: var(--gold);
+      opacity: 0.6;
+      font-size: 1.4rem;
+      margin-right: 6px;
+    }
+    .modal-texto::after {
+      content: '"';
+      color: var(--gold);
+      opacity: 0.6;
+      font-size: 1.4rem;
+      margin-left: 6px;
+    }
+
+    .modal-timer {
+      text-align: center;
+      font-size: 0.6rem;
+      color: #5A4E6C;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      padding-top: 12px;
+      margin-top: 4px;
+    }
+
+    .modal-timer span {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    /* Scrollbar personalizada para el modal */
+    .modal-texto::-webkit-scrollbar {
+      width: 3px;
+    }
+    .modal-texto::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .modal-texto::-webkit-scrollbar-thumb {
+      background: rgba(212, 175, 55, 0.3);
+      border-radius: 10px;
+    }
+
+    /* ---- PAÍS/MONEDA ---- */
+    .country-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.65rem;
+      color: #9A8CB0;
+      letter-spacing: 0.05em;
+      padding-top: 2px;
+    }
+
+    .country-badge {
+      display: flex;
+      gap: 3px;
+      background: rgba(255,255,255,0.03);
+      padding: 2px 8px 2px 5px;
+      border-radius: 40px;
+      border: 1px solid rgba(255,255,255,0.06);
+      cursor: pointer;
+      transition: 0.2s;
+      font-weight: 500;
+      font-size: 0.65rem;
+    }
+
+    .country-badge:hover {
+      border-color: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .country-badge .flag {
+      font-size: 0.7rem;
+      line-height: 1;
+    }
+
+    .country-badge .moneda {
+      color: #C4B5D4;
+      font-weight: 600;
+    }
+
+    .country-badge.active {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.08);
+    }
+
+    /* ---- BOTÓN DE PAGO ---- */
+    .btn-pagar {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 60px;
+      background: linear-gradient(135deg, #D4AF37, #B8922A);
+      color: #0B0815;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.15);
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .btn-pagar:hover:not(:disabled) {
+      transform: scale(1.02);
+      box-shadow: 0 8px 22px rgba(212, 175, 55, 0.3);
+      background: linear-gradient(135deg, #E8C84A, #C9A84C);
+    }
+
+    .btn-pagar:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .loading {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 0;
+    }
+
+    .loading-dots {
+      display: flex;
+      gap: 8px;
+      font-size: 1.2rem;
+      color: var(--gold);
+    }
+
+    .loading-dots span {
+      animation: pulse 1.4s ease-in-out infinite;
+      opacity: 0.3;
+    }
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.2; transform: translateY(0); }
+      50% { opacity: 0.9; transform: translateY(-4px); }
+    }
+
+    .loading-text {
+      font-size: 0.55rem;
+      color: #7A6E8C;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .footer-pie {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-top: 0;
+    }
+
+    .metodo-pago {
+      font-size: 0.6rem;
+      color: #8378A0;
+      letter-spacing: 0.06em;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .metodo-pago strong {
+      color: #C4B5D4;
+      font-weight: 600;
+    }
+
+    .badges {
+      display: flex;
+      gap: 10px;
+      font-size: 0.55rem;
+      color: #7A6E8C;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding-top: 8px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .badges span {
+      background: rgba(255,255,255,0.03);
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    #cambiarPaisLink {
+      cursor: pointer;
+      color: #9A8CB0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-size: 0.6rem;
+      transition: 0.2s;
+    }
+    #cambiarPaisLink:hover {
+      color: var(--gold-soft);
+    }
+
+    #errorMsg {
+      font-size: 0.6rem;
+      color: #F87171;
+      text-align: center;
+      display: none;
+      background: rgba(248, 113, 113, 0.08);
+      padding: 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(248, 113, 113, 0.1);
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand-icon">✦ ✦ ✦</div>
+    <h1>Oráculo de Marselles</h1>
+    <p class="subhead">Tarot · Conciencia · Transformación</p>
+  </header>
+
+  <div class="card">
+
+    <div class="selection-label">
+      <span>Elegí tu experiencia</span>
+      <span>✦ Tirada personalizada</span>
+    </div>
+
+    <div class="tiradas-grid" id="tiradasGrid">
+      <div class="tirada-card" data-monto-usd="50" data-monto-uyu="200" data-nombre="Express">
+        <div class="tirada-icon">⚡</div>
+        <div class="tirada-info">
+          <div class="tirada-nombre">Lectura Express</div>
+          <div class="tirada-desc">3 cartas · Respuesta directa</div>
+        </div>
+        <div class="tirada-precio" id="precioExpress">$50 USD</div>
+      </div>
+
+      <div class="tirada-card" data-monto-usd="75" data-monto-uyu="350" data-nombre="Profunda">
+        <div class="tirada-icon">🔮</div>
+        <div class="tirada-info">
+          <div class="tirada-nombre">Cruz Celta</div>
+          <div class="tirada-desc">10 cartas · Mapa completo</div>
+        </div>
+        <div class="tirada-precio" id="precioProfunda">$75 USD</div>
+      </div>
+
+      <div class="tirada-card" data-monto-usd="100" data-monto-uyu="500" data-nombre="Anual">
+        <div class="tirada-icon">🌙</div>
+        <div class="tirada-info">
+          <div class="tirada-nombre">Rueda del Año</div>
+          <div class="tirada-desc">12 meses · Visión anual</div>
+        </div>
+        <div class="tirada-precio" id="precioAnual">$100 USD</div>
+      </div>
+    </div>
+
+    <!-- TESTIMONIOS CARRUSEL -->
+    <div class="testimonios-section">
+      <div class="testimonios-slider" id="testimoniosSlider">
+        <div class="testimonios-track" id="testimoniosTrack">
+          <!-- Inyectado por JS -->
+        </div>
+        <div class="testimonios-dots" id="testimoniosDots"></div>
+      </div>
+    </div>
+
+    <div class="country-toggle">
+      <span>Tu moneda:</span>
+      <span class="country-badge active" id="btnUY" data-pais="UY">
+        <span class="flag">🇺🇾</span> UYU <span class="moneda">(MP)</span>
+      </span>
+      <span class="country-badge" id="btnOtro" data-pais="OTRO">
+        <span class="flag">🌎</span> USD <span class="moneda">(PayPal)</span>
+      </span>
+    </div>
+
+    <div id="errorMsg"></div>
+
+    <button class="btn-pagar" id="btnPagar">✦ Elegir esta tirada · Pagar ahora ✦</button>
+
+    <div class="loading" id="loading">
+      <div class="loading-dots"><span>✦</span><span>✦</span><span>✦</span></div>
+      <div class="loading-text">Preparando tu acceso seguro...</div>
+    </div>
+
+    <div class="footer-pie">
+      <div class="metodo-pago" id="pieMetodo">
+        Tu pago se procesa de forma segura a través de <strong>MercadoPago</strong>.<br>
+        En cuanto se confirme, recibirás tu tirada.
+      </div>
+      <div class="badges">
+        <span>🔒 Pago Seguro</span>
+        <span>⚡ Envío inmediato</span>
+      </div>
+      <span id="cambiarPaisLink">¿No es tu país? Cambiar moneda</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- === MODAL (VENTANA EMERGENTE) === -->
+<div class="modal-overlay" id="testimonioModal">
+  <div class="modal-container">
+    <div class="modal-header">
+      <img class="modal-avatar" id="modalAvatar" src="" alt="Avatar">
+      <div class="modal-user-info">
+        <div class="modal-nombre" id="modalNombre">Nombre</div>
+        <div class="modal-fecha" id="modalFecha">Fecha</div>
+      </div>
+      <div class="modal-estrellas" id="modalEstrellas">★★★★★</div>
+    </div>
+    <div class="modal-texto" id="modalTexto">Texto completo del testimonio...</div>
+    <div class="modal-timer">⏳ Cerrando en <span id="modalTimerContador">3</span>s</div>
+  </div>
+</div>
+
+<script>
+  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycby_MZdNhRzElKaOoF6A6-Pfo0BWDwBjGpLzfAwNM7JtTOeSq4V1q6yv-H3bMKQqWdb9gg/exec';
+
+  // ============================================================
+  // ========== 12 TESTIMONIOS HUMANIZADOS ==========
+  // ============================================================
+  const testimonios = [
+    {
+      nombre: 'Facundo G.',
+      fecha: '15 ene 2026',
+      avatarColor: '#1E3A8A',
+      texto: 'Me re sirvió la tirada express, estaba con una desición importante y las cartas me dieron la claridad que precisaba. Gracias bo!'
+    },
+    {
+      nombre: 'Valentina R.',
+      fecha: '22 feb 2026',
+      avatarColor: '#B91C1C',
+      texto: 'No sabía si confiar pero la verdad que fue increíble. Viste que uno a veces duda, pero la lectura de la Cruz Celta me mostró cosas que ni yo misma veia. Super recomendable!'
+    },
+    {
+      nombre: 'Rodrigo P.',
+      fecha: '10 mar 2026',
+      avatarColor: '#065F46',
+      texto: 'La verdad es que no soy muy creyente, pero mi polola me insistió y le hice caso. Quede loco con la precisión. El tarotista a de tener un don especial. Saludos desde Chile po.'
+    },
+    {
+      nombre: 'Agustina M.',
+      fecha: '5 abr 2026',
+      avatarColor: '#6D28D9',
+      texto: 'Ta divino el servicio. Aver si hago la anual el mes que viene porque esta fue muy corta pero certera. Me encantó la energía. Recomiendo 100%'
+    },
+    {
+      nombre: 'Matías L.',
+      fecha: '18 may 2026',
+      avatarColor: '#BE123C',
+      texto: 'Posta que estaba en una encrucijada con el laburo. La tirada me echo luz sobre lo que realmente queria. No es magia, es guía, y me ayudó un montón.'
+    },
+    {
+      nombre: 'Camila S.',
+      fecha: '1 jun 2026',
+      avatarColor: '#0E7490',
+      texto: 'Soy de Santiago y encontré esta página de casualidad. La tirada fue muy bakan, super certera con lo que estoy viviendo en el amor. La recomiendo a todas mis amigas.'
+    },
+    {
+      nombre: 'Sofía T.',
+      fecha: '20 jun 2026',
+      avatarColor: '#854D0E',
+      texto: 'Si, tal cual como dice ahi. Me sentí escuchada y las cartas no me mintieron. Me dio paz interior y eso no tiene precio. Muchas gracias!'
+    },
+    {
+      nombre: 'Tomás V.',
+      fecha: '12 jul 2026',
+      avatarColor: '#1D4ED8',
+      texto: 'Espectacular la verdad. No sabia adonde ir con mi vida amorosa y la tirada me marco el camino. Fue como tener una sesión de terapia pero con cartas. Increible.'
+    },
+    {
+      nombre: 'Ignacio A.',
+      fecha: '19 jul 2026',
+      avatarColor: '#831843',
+      texto: 'Valla que me sorprendió. Le pedí que me hable de mi situación familiar y clavó todas las cartas. Ojo, no es para débiles de corazón porque te dice la verdad. Muy bueno.'
+    },
+    {
+      nombre: 'Julieta Z.',
+      fecha: '28 abr 2026',
+      avatarColor: '#0369A1',
+      texto: 'Hice la tirada anual y fue un montón de información pero re valiosa. Ya pasaron 3 meses y las predicciones se estan cumpliendo. Una locura. Gracias totales.'
+    },
+    {
+      nombre: 'Martín F.',
+      fecha: '30 may 2026',
+      avatarColor: '#7E22CE',
+      texto: 'Yo estaba re perdido con mi emprendimiento. La tirada me dijo que le de para adelante sin miedo y hay vamos, paso a paso. La verdad que me dio el empujón que necesitaba.'
+    },
+    {
+      nombre: 'Francisca P.',
+      fecha: '15 jun 2026',
+      avatarColor: '#0F766E',
+      texto: 'Súper recomendable. La atención es excelente y la lectura fue súper clara. Me ayudó a entender mi relación de pareja desde otra perspectiva. Volvere seguro.'
+    }
+  ];
+
+  // --- ESTADO ---
+  let pais = 'UY';
+  let paisDetectado = 'ES';
+  let tiradaSeleccionada = null;
+
+  // --- DOM REFS ---
+  const tiradas = document.querySelectorAll('.tirada-card');
+  const btnPagar = document.getElementById('btnPagar');
+  const loading = document.getElementById('loading');
+  const errorMsg = document.getElementById('errorMsg');
+  const pieMetodo = document.getElementById('pieMetodo');
+  const btnUY = document.getElementById('btnUY');
+  const btnOtro = document.getElementById('btnOtro');
+  const cambiarPaisLink = document.getElementById('cambiarPaisLink');
+
+  const precioExpress = document.getElementById('precioExpress');
+  const precioProfunda = document.getElementById('precioProfunda');
+  const precioAnual = document.getElementById('precioAnual');
+  const preciosMap = {
+    'Express': precioExpress,
+    'Profunda': precioProfunda,
+    'Anual': precioAnual,
+  };
+
+  // --- MODAL ---
+  const modalOverlay = document.getElementById('testimonioModal');
+  const modalAvatar = document.getElementById('modalAvatar');
+  const modalNombre = document.getElementById('modalNombre');
+  const modalFecha = document.getElementById('modalFecha');
+  const modalEstrellas = document.getElementById('modalEstrellas');
+  const modalTexto = document.getElementById('modalTexto');
+  const modalTimerContador = document.getElementById('modalTimerContador');
+  let modalTimeout = null;
+  let countdownInterval = null;
+
+  function abrirModal(index) {
+    const t = testimonios[index];
+    if (!t) return;
+
+    // Limpiar timeouts anteriores
+    if (modalTimeout) clearTimeout(modalTimeout);
+    if (countdownInterval) clearInterval(countdownInterval);
+
+    // Generar avatar
+    const initials = t.nombre.split(' ').map(n => n[0]).join('').toUpperCase();
+    const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${t.avatarColor.replace('#', '')}&color=fff&size=48&font-size=0.5`;
+
+    // Rellenar datos
+    modalAvatar.src = avatarUrl;
+    modalAvatar.alt = t.nombre;
+    modalNombre.textContent = t.nombre;
+    modalFecha.textContent = t.fecha;
+    modalEstrellas.textContent = '★★★★★';
+    modalTexto.textContent = t.texto;
+
+    // Mostrar modal
+    modalOverlay.classList.add('active');
+
+    // Contador regresivo
+    let segundos = 3;
+    modalTimerContador.textContent = segundos;
+    countdownInterval = setInterval(() => {
+      segundos -= 1;
+      modalTimerContador.textContent = segundos;
+      if (segundos <= 0) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+    }, 1000);
+
+    // Cerrar después de 3 segundos
+    modalTimeout = setTimeout(() => {
+      cerrarModal();
+    }, 3000);
+  }
+
+  function cerrarModal() {
+    modalOverlay.classList.remove('active');
+    if (modalTimeout) {
+      clearTimeout(modalTimeout);
+      modalTimeout = null;
+    }
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+    }
+    modalTimerContador.textContent = '3';
+  }
+
+  // Cerrar modal al tocar el fondo (overlay)
+  modalOverlay.addEventListener('click', function(e) {
+    if (e.target === modalOverlay) {
+      cerrarModal();
+    }
+  });
+
+  // --- CARRUSEL ---
+  let currentSlide = 0;
+  let slideInterval = null;
+  const track = document.getElementById('testimoniosTrack');
+  const dotsContainer = document.getElementById('testimoniosDots');
+
+  function renderTestimonios() {
+    track.innerHTML = '';
+    dotsContainer.innerHTML = '';
+
+    testimonios.forEach((t, index) => {
+      const initials = t.nombre.split(' ').map(n => n[0]).join('').toUpperCase();
+      const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${t.avatarColor.replace('#', '')}&color=fff&size=32&font-size=0.5`;
+
+      const item = document.createElement('div');
+      item.className = 'testimonio-item';
+      // Asignar índice para saber cuál abrir al hacer clic
+      item.dataset.index = index;
+      item.innerHTML = `
+        <div class="testimonio-header">
+          <img class="testimonio-avatar" src="${avatarUrl}" alt="${t.nombre}">
+          <div class="testimonio-info-nombre">
+            <div class="testimonio-nombre">${t.nombre}</div>
+            <div class="testimonio-fecha">${t.fecha}</div>
+          </div>
+          <div class="testimonio-estrellas">★★★★★</div>
+        </div>
+        <div class="testimonio-texto">${t.texto}</div>
+        <div class="testimonio-leer-mas">✦ Toca para leer completo</div>
+      `;
+
+      // EVENTO CLICK PARA ABRIR MODAL
+      item.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const idx = parseInt(this.dataset.index);
+        abrirModal(idx);
+      });
+
+      track.appendChild(item);
+
+      const dot = document.createElement('button');
+      dot.className = 'dot' + (index === 0 ? ' active' : '');
+      dot.dataset.index = index;
+      dot.addEventListener('click', () => goToSlide(index));
+      dotsContainer.appendChild(dot);
+    });
+
+    track.style.width = `${testimonios.length * 100}%`;
+    goToSlide(0, false);
+  }
+
+  function goToSlide(index, auto = true) {
+    if (index < 0) index = testimonios.length - 1;
+    if (index >= testimonios.length) index = 0;
+    currentSlide = index;
+
+    track.style.transform = `translateX(-${index * 100}%)`;
+
+    document.querySelectorAll('.dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+
+    if (auto) resetInterval();
+  }
+
+  function nextSlide() {
+    goToSlide(currentSlide + 1);
+  }
+
+  function resetInterval() {
+    if (slideInterval) clearInterval(slideInterval);
+    slideInterval = setInterval(nextSlide, 4500);
+  }
+
+  const sliderContainer = document.getElementById('testimoniosSlider');
+  sliderContainer.addEventListener('mouseenter', () => {
+    if (slideInterval) clearInterval(slideInterval);
+  });
+  sliderContainer.addEventListener('mouseleave', resetInterval);
+
+  // --- ACTUALIZAR PRECIOS ---
+  function actualizarPrecios() {
+    tiradas.forEach(card => {
+      const nombre = card.dataset.nombre;
+      const span = preciosMap[nombre];
+      if (!span) return;
+      const montoUYU = parseInt(card.dataset.montoUyu);
+      const montoUSD = parseInt(card.dataset.montoUsd);
+      if (pais === 'UY') {
+        span.textContent = `$ ${montoUYU} UYU`;
+      } else {
+        span.textContent = `$ ${montoUSD} USD`;
+      }
+    });
+
+    btnUY.classList.toggle('active', pais === 'UY');
+    btnOtro.classList.toggle('active', pais === 'OTRO');
+
+    if (pais === 'UY') {
+      pieMetodo.innerHTML = `Tu pago se procesa de forma segura a través de <strong>MercadoPago</strong>.<br>En cuanto se confirme, recibirás tu tirada.`;
+    } else {
+      pieMetodo.innerHTML = `Tu pago se procesa de forma segura a través de <strong>PayPal</strong>.<br>En cuanto se confirme, recibirás tu tirada.`;
+    }
+
+    tiradas.forEach(c => c.classList.remove('active'));
+    tiradaSeleccionada = null;
+    btnPagar.disabled = false;
+    btnPagar.innerHTML = '✦ Elegir esta tirada · Pagar ahora ✦';
+  }
+
+  function setPais(p) {
+    pais = p;
+    actualizarPrecios();
+    errorMsg.style.display = 'none';
+  }
+
+  btnUY.addEventListener('click', () => setPais('UY'));
+  btnOtro.addEventListener('click', () => setPais('OTRO'));
+  cambiarPaisLink.addEventListener('click', () => {
+    setPais(pais === 'UY' ? 'OTRO' : 'UY');
+  });
+
+  tiradas.forEach(card => {
+    card.addEventListener('click', () => {
+      tiradas.forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+
+      const montoUYU = parseInt(card.dataset.montoUyu);
+      const montoUSD = parseInt(card.dataset.montoUsd);
+      const nombre = card.dataset.nombre;
+
+      const amount = pais === 'UY' ? montoUYU : montoUSD;
+      tiradaSeleccionada = { amount, nombre };
+
+      errorMsg.style.display = 'none';
+      btnPagar.disabled = false;
+
+      const moneda = pais === 'UY' ? 'UYU' : 'USD';
+      btnPagar.innerHTML = `✦ Pagar ${nombre} · $${amount} ${moneda} ✦`;
+    });
+  });
+
+  btnPagar.addEventListener('click', async () => {
+    errorMsg.style.display = 'none';
+
+    if (!tiradaSeleccionada) {
+      errorMsg.textContent = '✦ Por favor, elegí primero tu tirada ✦';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    const minimo = pais === 'UY' ? 200 : 50;
+    const moneda = pais === 'UY' ? 'UYU' : 'USD';
+
+    if (tiradaSeleccionada.amount < minimo) {
+      errorMsg.textContent = `El monto mínimo para ${moneda} es $${minimo}. Elegí otra tirada.`;
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    btnPagar.style.display = 'none';
+    loading.style.display = 'flex';
+
+    try {
+      const action = pais === 'UY' ? 'create_preference' : 'create_order_paypal';
+      let params = `action=${action}&amount=${tiradaSeleccionada.amount}`;
+      params += `&reading_type=${encodeURIComponent(tiradaSeleccionada.nombre)}`;
+
+      if (pais !== 'UY') {
+        params += `&country=${paisDetectado}`;
+      }
+
+      const res = await fetch(`${BACKEND_URL}?${params}`);
+      const data = await res.json();
+
+      const redirectUrl = data.init_point || data.approve_url;
+
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+      } else {
+        throw new Error('No se pudo generar el acceso.');
+      }
+    } catch (e) {
+      loading.style.display = 'none';
+      btnPagar.style.display = 'flex';
+      btnPagar.innerHTML = '✦ Reintentar pago ✦';
+      errorMsg.textContent = 'Hubo un problema con el servidor. Intentá de nuevo.';
+      errorMsg.style.display = 'block';
+    }
+  });
+
+  (async function detectarPais() {
+    try {
+      const res = await fetch('https://get.geojs.io/v1/ip/country.json');
+      const data = await res.json();
+      paisDetectado = data.country || 'ES';
+      setPais(data.country === 'UY' ? 'UY' : 'OTRO');
+    } catch (e) {
+      setPais('UY');
+    }
+  })();
+
+  renderTestimonios();
+  setTimeout(resetInterval, 2000);
+  actualizarPrecios();
+</script>
+</body>
+</html>
