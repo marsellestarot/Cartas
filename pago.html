@@ -1,492 +1,635 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marselles · Tarot · Colaboración</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
-<script>
-  (function() {
-    const url = new URL(window.location.href);
-    const trackingParams = ['fbclid', 'gclid', 'utm_source', 'utm_medium', 'utm_campaign'];
-    let changed = false;
-    trackingParams.forEach(param => {
-      if (url.searchParams.has(param)) {
-        url.searchParams.delete(param);
-        changed = true;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marselles · Elige tu Tirada</title>
+  <!-- Fuentes modernas -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <script>
+    // Limpieza de parámetros de tracking
+    (function() {
+      const url = new URL(window.location.href);
+      const trackingParams = ['fbclid', 'gclid', 'utm_source', 'utm_medium', 'utm_campaign'];
+      let changed = false;
+      trackingParams.forEach(param => {
+        if (url.searchParams.has(param)) {
+          url.searchParams.delete(param);
+          changed = true;
+        }
+      });
+      if (changed) {
+        window.history.replaceState({}, document.title, url.toString());
       }
-    });
-    if (changed) {
-      window.history.replaceState({}, document.title, url.toString());
+    })();
+  </script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0HR3CJ0R1S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0HR3CJ0R1S');
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #D4AF37;
+      --gold-soft: #E8C9A0;
+      --purple-glow: #A855F7;
+      --bg-deep: #0B0815;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --border-glass: rgba(212, 175, 55, 0.15);
     }
-  })();
-</script>
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --gold:    #c9a84c;
-    --gold-lt: #e8cc7a;
-    --ink:     #0a0812;
-  }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      background: radial-gradient(ellipse at 20% 20%, #1E1040 0%, #0A0F24 40%, #0B0815 80%);
+      font-family: 'Inter', sans-serif;
+      color: #F0EBE3;
+      position: relative;
+    }
 
-  html, body {
-    min-height: 100vh;
-    background: radial-gradient(ellipse at 50% 30%, #1b1035 0%, #0a0812 70%);
-    color: #e8dfc8;
-    font-family: 'Cinzel', serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 32px 20px;
-  }
+    /* Textura de fondo sutil */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
 
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 0; opacity: 0.35;
-  }
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 580px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
 
-  .wrap {
-    position: relative; z-index: 1;
-    width: 100%;
-    max-width: 480px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 32px;
-  }
+    /* ---- HEADER ---- */
+    header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
 
-  header {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
+    .brand-icon {
+      font-size: 1.8rem;
+      letter-spacing: 0.3em;
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 300;
+    }
 
-  .title-deco {
-    display: flex; align-items: center; justify-content: center; gap: 16px;
-    margin-bottom: 4px;
-  }
-  .title-deco span { display: block; width: 50px; height: 1px; background: var(--gold); opacity: .5; }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #FDFBF7 0%, var(--gold-soft) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-  h1 {
-    font-family: 'Cinzel Decorative', cursive;
-    font-size: clamp(1.1rem, 4vw, 1.5rem);
-    letter-spacing: .12em;
-    background: linear-gradient(135deg, #b8924a, #e8cc7a, #c9a84c);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+    .subhead {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.35em;
+      color: #7A6E8C;
+      margin-top: 4px;
+    }
 
-  .subtitle {
-    font-size: .7rem;
-    letter-spacing: .3em;
-    text-transform: uppercase;
-    color: #7a6e5e;
-  }
+    /* ---- TARJETA PRINCIPAL (Glassmorphism) ---- */
+    .card {
+      width: 100%;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      transition: border-color 0.3s;
+    }
 
-  .card {
-    width: 100%;
-    background: rgba(10,8,18,0.7);
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 8px;
-    padding: 32px 28px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    position: relative;
-    overflow: hidden;
-  }
+    .card:hover {
+      border-color: rgba(212, 175, 55, 0.25);
+    }
 
-  .card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.05) 0%, transparent 65%);
-    pointer-events: none;
-  }
+    /* ---- SELECCIÓN DE TIRADAS ---- */
+    .selection-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #9A8AA8;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 12px;
+    }
 
-  .texto-intro {
-    font-size: .82rem;
-    line-height: 1.9;
-    color: #bba88a;
-    letter-spacing: .04em;
-    text-align: center;
-  }
+    .selection-label span:last-child {
+      color: var(--purple-glow);
+      font-weight: 600;
+    }
 
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .divider span {
-    flex: 1;
-    height: 1px;
-    background: rgba(201,168,76,0.15);
-  }
-  .divider em {
-    font-style: normal;
-    font-size: .6rem;
-    letter-spacing: .3em;
-    text-transform: uppercase;
-    color: #5a5248;
-  }
+    .tiradas-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-  .monto-label {
-    font-size: .65rem;
-    letter-spacing: .25em;
-    text-transform: uppercase;
-    color: var(--gold);
-    opacity: .7;
-    margin-bottom: 8px;
-    display: block;
-  }
+    .tirada-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+    }
 
-  .monto-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+    .tirada-card:hover {
+      background: rgba(168, 85, 247, 0.05);
+      border-color: rgba(168, 85, 247, 0.2);
+      transform: translateX(4px);
+    }
 
-  .monto-row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
+    .tirada-card.active {
+      background: rgba(212, 175, 55, 0.08);
+      border-color: var(--gold);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.08), inset 0 0 20px rgba(212, 175, 55, 0.02);
+    }
 
-  .monto-btn, .country-btn {
-    flex: 1 1 70px;
-    font-family: 'Cinzel', serif;
-    font-size: .75rem;
-    letter-spacing: .1em;
-    padding: 10px 8px;
-    border: 1px solid rgba(201,168,76,0.3);
-    background: transparent;
-    color: #bba88a;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all .2s;
-    text-align: center;
-  }
-  .monto-btn:hover, .monto-btn.active,
-  .country-btn:hover, .country-btn.active {
-    border-color: var(--gold);
-    background: rgba(201,168,76,0.1);
-    color: var(--gold-lt);
-  }
-  .monto-btn.active, .country-btn.active {
-    box-shadow: 0 0 8px rgba(201,168,76,0.2);
-  }
+    .tirada-card.active::before {
+      content: '✦';
+      position: absolute;
+      right: 16px;
+      color: var(--gold);
+      font-size: 0.9rem;
+    }
 
-  .monto-custom-wrap {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 4px;
-    padding: 10px 14px;
-    background: rgba(255,255,255,0.02);
-    transition: border-color .2s;
-  }
-  .monto-custom-wrap:focus-within {
-    border-color: rgba(201,168,76,0.5);
-  }
-  .monto-currency {
-    font-size: .8rem;
-    color: #5a5248;
-    letter-spacing: .1em;
-  }
-  .monto-input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-family: 'Cinzel', serif;
-    font-size: .9rem;
-    color: #e8dfc8;
-    letter-spacing: .05em;
-  }
-  .monto-input::placeholder {
-    color: #3a3228;
-  }
+    .tirada-icon {
+      font-size: 1.6rem;
+      width: 44px;
+      text-align: center;
+      opacity: 0.8;
+    }
 
-  .monto-min {
-    font-size: .62rem;
-    color: #5a5248;
-    letter-spacing: .12em;
-    text-align: right;
-  }
+    .tirada-info {
+      flex: 1;
+    }
 
-  #errorMsg {
-    font-size: .7rem;
-    color: #b87a7a;
-    letter-spacing: .1em;
-    text-align: center;
-    display: none;
-    min-height: 18px;
-  }
+    .tirada-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #F0EBE3;
+      line-height: 1.2;
+    }
 
-  .btn-pagar {
-    font-family: 'Cinzel', serif;
-    font-size: .75rem;
-    letter-spacing: .28em;
-    text-transform: uppercase;
-    padding: 14px 32px;
-    border: 1px solid var(--gold);
-    background: linear-gradient(135deg, rgba(122,90,30,0.5), rgba(201,168,76,0.25));
-    color: var(--gold-lt);
-    border-radius: 2px;
-    cursor: pointer;
-    transition: all .25s;
-    box-shadow: 0 0 12px rgba(201,168,76,0.08);
-    width: 100%;
-  }
-  .btn-pagar:hover:not(:disabled) {
-    background: linear-gradient(135deg, #7a5a1e, #c9a84c);
-    color: var(--ink);
-    box-shadow: 0 0 20px rgba(201,168,76,0.3);
-  }
-  .btn-pagar:disabled {
-    opacity: .4;
-    cursor: not-allowed;
-  }
+    .tirada-desc {
+      font-size: 0.78rem;
+      color: #9A8AA8;
+      margin-top: 2px;
+    }
 
-  .loading {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    color: var(--gold);
-    font-size: .7rem;
-    letter-spacing: .25em;
-    text-transform: uppercase;
-  }
-  .loading-dots span {
-    display: inline-block;
-    animation: pulse 1.4s ease-in-out infinite;
-    font-size: 1.1rem;
-    opacity: .5;
-  }
-  .loading-dots span:nth-child(2) { animation-delay: .2s; }
-  .loading-dots span:nth-child(3) { animation-delay: .4s; }
-  @keyframes pulse {
-    0%, 100% { opacity: .2; transform: translateY(0); }
-    50% { opacity: .8; transform: translateY(-4px); }
-  }
+    .tirada-precio {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--gold-soft);
+      background: rgba(212, 175, 55, 0.1);
+      padding: 4px 12px;
+      border-radius: 40px;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      white-space: nowrap;
+    }
 
-  .pie {
-    font-size: .62rem;
-    color: #3a3228;
-    letter-spacing: .12em;
-    text-align: center;
-    line-height: 1.8;
-  }
+    .tirada-card.active .tirada-precio {
+      background: rgba(212, 175, 55, 0.2);
+      border-color: var(--gold);
+    }
 
-  .hidden { display: none !important; }
-</style>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0HR3CJ0R1S"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    /* ---- CAMBIO DE PAÍS / MONEDA ---- */
+    .country-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 0.7rem;
+      color: #7A6E8C;
+      letter-spacing: 0.05em;
+      padding-top: 4px;
+    }
 
-  gtag('config', 'G-0HR3CJ0R1S');
-</script> </head>
+    .country-badge {
+      display: flex;
+      gap: 6px;
+      background: rgba(255,255,255,0.03);
+      padding: 4px 12px 4px 8px;
+      border-radius: 40px;
+      border: 1px solid rgba(255,255,255,0.06);
+      cursor: pointer;
+      transition: 0.2s;
+      font-weight: 500;
+    }
+
+    .country-badge:hover {
+      border-color: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .country-badge .flag {
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .country-badge .moneda {
+      color: #C4B5D4;
+      font-weight: 600;
+    }
+
+    .country-badge.active {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.08);
+    }
+
+    /* ---- BOTÓN PRINCIPAL ---- */
+    .btn-pagar {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 18px 32px;
+      border: none;
+      border-radius: 60px;
+      background: linear-gradient(135deg, #D4AF37, #B8922A);
+      color: #0B0815;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(212, 175, 55, 0.15);
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .btn-pagar:hover:not(:disabled) {
+      transform: scale(1.02);
+      box-shadow: 0 12px 32px rgba(212, 175, 55, 0.3);
+      background: linear-gradient(135deg, #E8C84A, #C9A84C);
+    }
+
+    .btn-pagar:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ---- LOADING ---- */
+    .loading {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+    }
+
+    .loading-dots {
+      display: flex;
+      gap: 12px;
+      font-size: 1.6rem;
+      color: var(--gold);
+    }
+
+    .loading-dots span {
+      animation: pulse 1.4s ease-in-out infinite;
+      opacity: 0.3;
+    }
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.2; transform: translateY(0); }
+      50% { opacity: 0.9; transform: translateY(-6px); }
+    }
+
+    .loading-text {
+      font-size: 0.7rem;
+      color: #7A6E8C;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* ---- FOOTER / BADGES ---- */
+    .footer-pie {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .metodo-pago {
+      font-size: 0.65rem;
+      color: #5A4E6C;
+      letter-spacing: 0.1em;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .metodo-pago strong {
+      color: #9A8AA8;
+      font-weight: 600;
+    }
+
+    .badges {
+      display: flex;
+      gap: 16px;
+      font-size: 0.6rem;
+      color: #4A3E5C;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding-top: 16px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .badges span {
+      background: rgba(255,255,255,0.03);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    #cambiarPaisLink {
+      cursor: pointer;
+      color: #7A6E8C;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      font-size: 0.65rem;
+      transition: 0.2s;
+    }
+    #cambiarPaisLink:hover {
+      color: var(--gold-soft);
+    }
+
+    #errorMsg {
+      font-size: 0.75rem;
+      color: #F87171;
+      text-align: center;
+      display: none;
+      background: rgba(248, 113, 113, 0.08);
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(248, 113, 113, 0.1);
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
 <body>
 <div class="wrap">
 
   <header>
-    <div class="title-deco"><span></span><span style="font-size:1rem;opacity:.6">✦</span><span></span></div>
-    <h1>Oráculo de Tiradas</h1>
-    <p class="subtitle">Tarot de Marsella</p>
+    <div class="brand-icon">✦ ✦ ✦</div>
+    <h1>Oráculo de Marselles</h1>
+    <p class="subhead">Tarot · Conciencia · Transformación</p>
   </header>
 
   <div class="card">
 
-    <p class="texto-intro">
-      Llegaste hasta acá porque algo te dijo que era momento de mirar de cerca.<br>
-      Elegí tu colaboración y accedé a tu lectura conmigo.
-    </p>
-
-    <div class="monto-row hidden" id="countryToggleRow">
-      <button class="country-btn" id="btnUY" data-pais="UY">🇺🇾 Uruguay</button>
-      <button class="country-btn" id="btnOtro" data-pais="OTRO">🌎 Otro país</button>
+    <!-- Label de selección -->
+    <div class="selection-label">
+      <span>Elegí tu experiencia</span>
+      <span>✦ Tirada personalizada</span>
     </div>
 
-    <div class="divider"><span></span><em>Elegí tu colaboración</em><span></span></div>
+    <!-- Tiradas -->
+    <div class="tiradas-grid" id="tiradasGrid">
+      <!-- Express -->
+      <div class="tirada-card" data-monto-usd="50" data-monto-uyu="200" data-nombre="Express">
+        <div class="tirada-icon">⚡</div>
+        <div class="tirada-info">
+          <div class="tirada-nombre">Lectura Express</div>
+          <div class="tirada-desc">3 cartas · Respuesta directa a tu pregunta</div>
+        </div>
+        <div class="tirada-precio" id="precioExpress">$50 USD</div>
+      </div>
 
-    <!-- Sección Uruguay / MercadoPago -->
-    <div class="monto-wrap" id="seccionUYU">
-      <span class="monto-label">Monto en pesos uruguayos</span>
-      <div class="monto-row">
-        <button class="monto-btn" data-monto="200">$200</button>
-        <button class="monto-btn" data-monto="350">$350</button>
-        <button class="monto-btn" data-monto="500">$500</button>
+      <!-- Profunda -->
+      <div class="tirada-card" data-monto-usd="75" data-monto-uyu="350" data-nombre="Profunda">
+        <div class="tirada-icon">🔮</div>
+        <div class="tirada-info">
+          <div class="tirada-nombre">Cruz Celta</div>
+          <div class="tirada-desc">10 cartas · Mapa completo de tu situación</div>
+        </div>
+        <div class="tirada-precio" id="precioProfunda">$75 USD</div>
       </div>
-      <div class="monto-custom-wrap">
-        <span class="monto-currency">$</span>
-        <input
-          class="monto-input"
-          id="montoInputUYU"
-          type="number"
-          min="200"
-          placeholder="Otro monto…"
-        />
+
+      <!-- Anual -->
+      <div class="tirada-card" data-monto-usd="100" data-monto-uyu="500" data-nombre="Anual">
+        <div class="tirada-icon">🌙</div>
+        <div class="tirada-info">
+          <div class="tirada-nombre">Rueda del Año</div>
+          <div class="tirada-desc">12 meses · Visión completa de tu año</div>
+        </div>
+        <div class="tirada-precio" id="precioAnual">$100 USD</div>
       </div>
-      <div class="monto-min">Mínimo $200 UYU</div>
     </div>
 
-    <!-- Sección Otro país / PayPal -->
-    <div class="monto-wrap hidden" id="seccionUSD">
-      <span class="monto-label">Monto en dólares (USD)</span>
-      <div class="monto-row">
-        <button class="monto-btn" data-monto-usd="50">$50</button>
-        <button class="monto-btn" data-monto-usd="75">$75</button>
-        <button class="monto-btn" data-monto-usd="100">$100</button>
-      </div>
-      <div class="monto-custom-wrap">
-        <span class="monto-currency">$</span>
-        <input
-          class="monto-input"
-          id="montoInputUSD"
-          type="number"
-          min="50"
-          placeholder="Otro monto…"
-        />
-      </div>
-      <div class="monto-min">Mínimo $50 USD</div>
+    <!-- Toggle País / Moneda -->
+    <div class="country-toggle">
+      <span>Tu moneda:</span>
+      <span class="country-badge active" id="btnUY" data-pais="UY">
+        <span class="flag">🇺🇾</span> UYU <span class="moneda">(MercadoPago)</span>
+      </span>
+      <span class="country-badge" id="btnOtro" data-pais="OTRO">
+        <span class="flag">🌎</span> USD <span class="moneda">(PayPal)</span>
+      </span>
     </div>
 
+    <!-- Mensaje de error -->
     <div id="errorMsg"></div>
 
+    <!-- Botón de pago -->
+    <button class="btn-pagar" id="btnPagar">✦ Elegir esta tirada · Pagar ahora ✦</button>
+
+    <!-- Loading -->
     <div class="loading" id="loading">
       <div class="loading-dots"><span>✦</span><span>✦</span><span>✦</span></div>
-      <span>Preparando el acceso…</span>
+      <div class="loading-text">Preparando tu acceso seguro...</div>
     </div>
 
-    <button class="btn-pagar" id="btnPagar">✦ Sí, quiero mi lectura conmigo ✦</button>
+    <!-- Footer -->
+    <div class="footer-pie">
+      <div class="metodo-pago" id="pieMetodo">
+        Tu pago se procesa de forma segura a través de <strong>MercadoPago</strong>.<br>
+        En cuanto se confirme, recibirás tu tirada.
+      </div>
+      <div class="badges">
+        <span>🔒 Pago Seguro</span>
+        <span>⚡ Envío inmediato</span>
+      </div>
+      <span id="cambiarPaisLink">¿No es tu país? Cambiar moneda</span>
+    </div>
 
   </div>
-
-  <p class="pie" id="pieMetodo">
-    Tu pago se procesa de forma segura a través de MercadoPago.<br>
-    En cuanto se confirme, arrancamos.
-  </p>
-
-  <p class="pie" id="avisoPaypal" style="display:none;">
-    Si tenés cuenta de PayPal, solo necesitás tu email y contraseña.<br>
-    Si no tenés, podés pagar con tarjeta como invitado de forma segura.
-  </p>
-
-  <p class="pie" id="cambiarPaisLink" style="cursor:pointer;text-decoration:underline;">
-    ¿No es tu país? Tocá para cambiar
-  </p>
-
 </div>
 
 <script>
+  // ---- CONFIGURACIÓN ----
   const BACKEND_URL = 'https://script.google.com/macros/s/AKfycby_MZdNhRzElKaOoF6A6-Pfo0BWDwBjGpLzfAwNM7JtTOeSq4V1q6yv-H3bMKQqWdb9gg/exec';
 
-  let pais = 'UY';
-  let paisDetectado = 'ES'; // fallback si falla la detección
-  let montoSeleccionado = null;
+  // ---- ESTADO ----
+  let pais = 'UY';               // 'UY' o 'OTRO'
+  let paisDetectado = 'ES';      // código ISO real (fallback)
+  let tiradaSeleccionada = null; // { amount: number, nombre: string }
 
-  const seccionUYU = document.getElementById('seccionUYU');
-  const seccionUSD = document.getElementById('seccionUSD');
-  const pieMetodo  = document.getElementById('pieMetodo');
-  const montoInputUYU = document.getElementById('montoInputUYU');
-  const montoInputUSD = document.getElementById('montoInputUSD');
+  // ---- DOM REFS ----
+  const tiradas = document.querySelectorAll('.tirada-card');
+  const btnPagar = document.getElementById('btnPagar');
+  const loading = document.getElementById('loading');
+  const errorMsg = document.getElementById('errorMsg');
+  const pieMetodo = document.getElementById('pieMetodo');
+  const btnUY = document.getElementById('btnUY');
+  const btnOtro = document.getElementById('btnOtro');
+  const cambiarPaisLink = document.getElementById('cambiarPaisLink');
 
-  function setPais(p) {
-    pais = p;
-    montoSeleccionado = null;
-    document.getElementById('errorMsg').style.display = 'none';
+  const precioExpress = document.getElementById('precioExpress');
+  const precioProfunda = document.getElementById('precioProfunda');
+  const precioAnual = document.getElementById('precioAnual');
+  const preciosMap = {
+    'Express': precioExpress,
+    'Profunda': precioProfunda,
+    'Anual': precioAnual,
+  };
 
-    document.querySelectorAll('.monto-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
-    montoInputUYU.value = '';
-    montoInputUSD.value = '';
+  // ---- FUNCIÓN PARA ACTUALIZAR PRECIOS VISIBLES ----
+  function actualizarPrecios() {
+    tiradas.forEach(card => {
+      const nombre = card.dataset.nombre;
+      const span = preciosMap[nombre];
+      if (!span) return;
+      const montoUYU = parseInt(card.dataset.montoUyu);
+      const montoUSD = parseInt(card.dataset.montoUsd);
+      if (pais === 'UY') {
+        span.textContent = `$ ${montoUYU} UYU`;
+      } else {
+        span.textContent = `$ ${montoUSD} USD`;
+      }
+    });
 
-    if (p === 'UY') {
-      document.getElementById('btnUY').classList.add('active');
-      seccionUYU.classList.remove('hidden');
-      seccionUSD.classList.add('hidden');
-      pieMetodo.innerHTML = 'Tu pago se procesa de forma segura a través de MercadoPago.<br>En cuanto se confirme, arrancamos.';
-      document.getElementById('avisoPaypal').style.display = 'none';
+    // Actualizar badges de país
+    btnUY.classList.toggle('active', pais === 'UY');
+    btnOtro.classList.toggle('active', pais === 'OTRO');
+
+    // Actualizar método de pago en footer
+    if (pais === 'UY') {
+      pieMetodo.innerHTML = `Tu pago se procesa de forma segura a través de <strong>MercadoPago</strong>.<br>En cuanto se confirme, recibirás tu tirada.`;
     } else {
-      document.getElementById('btnOtro').classList.add('active');
-      seccionUYU.classList.add('hidden');
-      seccionUSD.classList.remove('hidden');
-      pieMetodo.innerHTML = 'Tu pago se procesa de forma segura a través de PayPal.<br>En cuanto se confirme, arrancamos.';
-      document.getElementById('avisoPaypal').style.display = 'block';
+      pieMetodo.innerHTML = `Tu pago se procesa de forma segura a través de <strong>PayPal</strong>.<br>En cuanto se confirme, recibirás tu tirada.`;
     }
+
+    // Resetear selección visual para evitar confusiones
+    tiradas.forEach(c => c.classList.remove('active'));
+    tiradaSeleccionada = null;
+    btnPagar.disabled = false;
   }
 
-  document.getElementById('btnUY').addEventListener('click', () => setPais('UY'));
-  document.getElementById('btnOtro').addEventListener('click', () => setPais('OTRO'));
+  // ---- CAMBIAR PAÍS ----
+  function setPais(p) {
+    pais = p;
+    actualizarPrecios();
+    errorMsg.style.display = 'none';
+  }
 
-  document.getElementById('cambiarPaisLink').addEventListener('click', () => {
+  btnUY.addEventListener('click', () => setPais('UY'));
+  btnOtro.addEventListener('click', () => setPais('OTRO'));
+  cambiarPaisLink.addEventListener('click', () => {
     setPais(pais === 'UY' ? 'OTRO' : 'UY');
   });
 
-  // Botones de monto rápido — UYU
-  document.querySelectorAll('[data-monto]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('[data-monto]').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      montoSeleccionado = parseInt(btn.getAttribute('data-monto'));
-      montoInputUYU.value = '';
+  // ---- SELECCIÓN DE TIRADA ----
+  tiradas.forEach(card => {
+    card.addEventListener('click', () => {
+      // Remover active de todas
+      tiradas.forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+
+      const montoUYU = parseInt(card.dataset.montoUyu);
+      const montoUSD = parseInt(card.dataset.montoUsd);
+      const nombre = card.dataset.nombre;
+
+      const amount = pais === 'UY' ? montoUYU : montoUSD;
+      tiradaSeleccionada = { amount, nombre };
+
+      errorMsg.style.display = 'none';
+      btnPagar.disabled = false;
+
+      // Cambiar texto del botón para reflejar la elección
+      const moneda = pais === 'UY' ? 'UYU' : 'USD';
+      btnPagar.innerHTML = `✦ Pagar ${nombre} · $${amount} ${moneda} ✦`;
     });
   });
 
-  // Botones de monto rápido — USD
-  document.querySelectorAll('[data-monto-usd]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('[data-monto-usd]').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      montoSeleccionado = parseInt(btn.getAttribute('data-monto-usd'));
-      montoInputUSD.value = '';
-    });
-  });
-
-  // Inputs personalizados
-  montoInputUYU.addEventListener('input', (e) => {
-    document.querySelectorAll('[data-monto]').forEach(b => b.classList.remove('active'));
-    montoSeleccionado = parseInt(e.target.value) || null;
-  });
-  montoInputUSD.addEventListener('input', (e) => {
-    document.querySelectorAll('[data-monto-usd]').forEach(b => b.classList.remove('active'));
-    montoSeleccionado = parseInt(e.target.value) || null;
-  });
-
-  // Botón pagar
-  document.getElementById('btnPagar').addEventListener('click', async () => {
-    const errorMsg = document.getElementById('errorMsg');
+  // ---- BOTÓN PAGAR ----
+  btnPagar.addEventListener('click', async () => {
     errorMsg.style.display = 'none';
 
-    const minimo = pais === 'UY' ? 200 : 50;
-    const etiquetaMoneda = pais === 'UY' ? 'UYU' : 'USD';
-
-    if (!montoSeleccionado || montoSeleccionado < minimo) {
-      errorMsg.textContent = `El monto mínimo es $${minimo} ${etiquetaMoneda}.`;
+    if (!tiradaSeleccionada) {
+      errorMsg.textContent = '✦ Por favor, elegí primero tu tirada ✦';
       errorMsg.style.display = 'block';
       return;
     }
 
-    const btn = document.getElementById('btnPagar');
-    const loading = document.getElementById('loading');
-    btn.style.display = 'none';
+    const minimo = pais === 'UY' ? 200 : 50;
+    const moneda = pais === 'UY' ? 'UYU' : 'USD';
+
+    if (tiradaSeleccionada.amount < minimo) {
+      errorMsg.textContent = `El monto mínimo para ${moneda} es $${minimo}. Elegí otra tirada.`;
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    // Deshabilitar UI
+    btnPagar.style.display = 'none';
     loading.style.display = 'flex';
 
     try {
       const action = pais === 'UY' ? 'create_preference' : 'create_order_paypal';
-      const params = pais === 'UY'
-        ? `action=${action}&amount=${montoSeleccionado}`
-        : `action=${action}&amount=${montoSeleccionado}&country=${paisDetectado}`;
+      let params = `action=${action}&amount=${tiradaSeleccionada.amount}`;
+      
+      // Enviamos el nombre de la tirada (para que el backend pueda registrarlo si quieres)
+      params += `&reading_type=${encodeURIComponent(tiradaSeleccionada.nombre)}`;
+
+      if (pais !== 'UY') {
+        params += `&country=${paisDetectado}`;
+      }
+
       const res = await fetch(`${BACKEND_URL}?${params}`);
       const data = await res.json();
 
@@ -495,27 +638,33 @@
       if (redirectUrl) {
         window.location.href = redirectUrl;
       } else {
-        throw new Error('No se pudo crear el acceso.');
+        throw new Error('No se pudo generar el acceso.');
       }
     } catch (e) {
       loading.style.display = 'none';
-      btn.style.display = 'block';
-      errorMsg.textContent = 'Hubo un problema al conectar con el servidor. Intentá de nuevo.';
+      btnPagar.style.display = 'flex';
+      btnPagar.innerHTML = '✦ Reintentar pago ✦';
+      errorMsg.textContent = 'Hubo un problema con el servidor. Intentá de nuevo.';
       errorMsg.style.display = 'block';
     }
   });
 
-  // Detección automática de país por IP, con fallback a Uruguay.
+  // ---- DETECCIÓN AUTOMÁTICA DE PAÍS ----
   (async function detectarPais() {
     try {
       const res = await fetch('https://get.geojs.io/v1/ip/country.json');
       const data = await res.json();
       paisDetectado = data.country || 'ES';
+      // Si es Uruguay, usamos UYU, sino USD
       setPais(data.country === 'UY' ? 'UY' : 'OTRO');
     } catch (e) {
+      // Fallback a Uruguay (para pruebas)
       setPais('UY');
     }
   })();
+
+  // Inicializar precios por si la detección falla
+  actualizarPrecios();
 </script>
 </body>
 </html>
