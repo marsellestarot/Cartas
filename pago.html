@@ -930,7 +930,7 @@
 </div>
 
 <script>
-const BACKEND_URL = 'https://script.google.com/macros/s/AKfycby_MZdNhRzElKaOoF6A6-Pfo0BWDwBjGpLzfAwNM7JtTOeSq4V1q6yv-H3bMKQqWdb9gg/exec';
+const BACKEND_URL = 'https://script.google.com/macros/s/TU_ID/exec'; // <-- CAMBIAR POR TU URL
 
 // ============================================================
 // TESTIMONIOS
@@ -999,22 +999,17 @@ let countdownInterval = null;
 function abrirModal(index) {
   const t = testimonios[index];
   if (!t) return;
-
   if (modalTimeout) clearTimeout(modalTimeout);
   if (countdownInterval) clearInterval(countdownInterval);
-
   const initials = t.nombre.split(' ').map(n => n[0]).join('').toUpperCase();
   const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${t.avatarColor.replace('#', '')}&color=fff&size=48&font-size=0.5`;
-
   modalAvatar.src = avatarUrl;
   modalAvatar.alt = t.nombre;
   modalNombre.textContent = t.nombre;
   modalFecha.textContent = t.fecha;
   modalEstrellas.textContent = '★★★★★';
   modalTexto.textContent = t.texto;
-
   modalOverlay.classList.add('active');
-
   let segundos = 3;
   modalTimerContador.textContent = segundos;
   countdownInterval = setInterval(() => {
@@ -1025,10 +1020,7 @@ function abrirModal(index) {
       countdownInterval = null;
     }
   }, 1000);
-
-  modalTimeout = setTimeout(() => {
-    cerrarModal();
-  }, 3000);
+  modalTimeout = setTimeout(() => cerrarModal(), 3000);
 }
 
 function cerrarModal() {
@@ -1053,11 +1045,9 @@ const dotsContainer = document.getElementById('testimoniosDots');
 function renderTestimonios() {
   track.innerHTML = '';
   dotsContainer.innerHTML = '';
-
   testimonios.forEach((t, index) => {
     const initials = t.nombre.split(' ').map(n => n[0]).join('').toUpperCase();
     const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${t.avatarColor.replace('#', '')}&color=fff&size=32&font-size=0.5`;
-
     const item = document.createElement('div');
     item.className = 'testimonio-item';
     item.dataset.index = index;
@@ -1073,22 +1063,18 @@ function renderTestimonios() {
       <div class="testimonio-texto">${t.texto}</div>
       <div class="testimonio-leer-mas">✦ Toca para leer completo</div>
     `;
-
     item.addEventListener('click', function(e) {
       e.stopPropagation();
       const idx = parseInt(this.dataset.index);
       abrirModal(idx);
     });
-
     track.appendChild(item);
-
     const dot = document.createElement('button');
     dot.className = 'dot' + (index === 0 ? ' active' : '');
     dot.dataset.index = index;
     dot.addEventListener('click', () => goToSlide(index));
     dotsContainer.appendChild(dot);
   });
-
   track.style.width = `${testimonios.length * 100}%`;
   goToSlide(0, false);
 }
@@ -1097,19 +1083,14 @@ function goToSlide(index, auto = true) {
   if (index < 0) index = testimonios.length - 1;
   if (index >= testimonios.length) index = 0;
   currentSlide = index;
-
   track.style.transform = `translateX(-${index * 100}%)`;
-
   document.querySelectorAll('.dot').forEach((dot, i) => {
     dot.classList.toggle('active', i === index);
   });
-
   if (auto) resetInterval();
 }
 
-function nextSlide() {
-  goToSlide(currentSlide + 1);
-}
+function nextSlide() { goToSlide(currentSlide + 1); }
 
 function resetInterval() {
   if (slideInterval) clearInterval(slideInterval);
@@ -1144,11 +1125,9 @@ function actualizarPrecios() {
       span.innerHTML = `<span class="precio-tachado">$${montoUSD}</span><span class="precio-final">$${montoConDescuento} USD</span>`;
     }
   });
-
   btnUY.classList.toggle('active', pais === 'UY');
   btnOtro.classList.toggle('active', pais === 'OTRO');
   promoBanner.classList.toggle('visible', pais !== 'UY');
-
   if (pais === 'UY') {
     pieMetodo.innerHTML = `Tu pago se procesa de forma segura a través de <strong>MercadoPago</strong>.<br>En cuanto se confirme, recibirás tu tirada.`;
   } else {
@@ -1173,53 +1152,39 @@ cambiarPaisLink.addEventListener('click', () => {
 // ============================================================
 async function iniciarPago(card) {
   if (procesando) return;
-
   const montoUYU = parseInt(card.dataset.montoUyu);
   const montoUSD = parseInt(card.dataset.montoUsd);
   const nombre = card.dataset.nombre;
-
   const amount = pais === 'UY' ? montoUYU : parseFloat(calcularMontoConDescuento(montoUSD));
   const minimo = pais === 'UY' ? 200 : 25;
   const moneda = pais === 'UY' ? 'UYU' : 'USD';
-
   if (amount < minimo) {
     errorMsg.textContent = `El monto mínimo para ${moneda} es $${minimo}.`;
     errorMsg.style.display = 'block';
     return;
   }
-
   procesando = true;
   errorMsg.style.display = 'none';
-
   tiradas.forEach(c => c.classList.remove('sugerida'));
   card.classList.add('active');
   tiradasGrid.classList.add('processing');
-
   const precioEl = preciosMap[nombre];
   const precioOriginal = precioEl ? precioEl.innerHTML : '';
   if (precioEl) {
     precioEl.innerHTML = `<span class="dots-loading"><span>✦</span><span>✦</span><span>✦</span></span>`;
   }
-
   loadingText.textContent = `Preparando tu acceso a ${nombre === 'Profunda' ? 'la Cruz Celta' : nombre === 'Anual' ? 'la Rueda del Año' : 'la Lectura Express'}...`;
   loading.style.display = 'flex';
-
   try {
     const action = pais === 'UY' ? 'create_preference' : 'create_order_paypal';
     let params = `action=${action}&amount=${amount}`;
     params += `&reading_type=${encodeURIComponent(nombre)}`;
-
     if (pais !== 'UY') {
       params += `&country=${paisDetectado}&lang=${idiomaDetectado}`;
     }
-
-    console.log('📤 Enviando petición a:', `${BACKEND_URL}?${params}`);
-
     const res = await fetch(`${BACKEND_URL}?${params}`);
     const data = await res.json();
-
     const redirectUrl = data.init_point || data.approve_url;
-
     if (redirectUrl) {
       window.location.href = redirectUrl;
     } else {
@@ -1253,14 +1218,11 @@ tiradas.forEach(card => {
 function preseleccionarDesdeEnlace() {
   const params = new URLSearchParams(window.location.search);
   const slug = (params.get('tirada') || '').toLowerCase().trim();
-
   const slugMap = { 'express': 'Express', 'cruzceltic': 'Profunda', 'profunda': 'Profunda', 'cruz': 'Profunda', 'anual': 'Anual' };
   const nombreObjetivo = slugMap[slug];
   if (!nombreObjetivo) return;
-
   const cardObjetivo = Array.from(tiradas).find(c => c.dataset.nombre === nombreObjetivo);
   if (!cardObjetivo) return;
-
   cardObjetivo.classList.add('sugerida');
   setTimeout(() => {
     cardObjetivo.scrollIntoView({ behavior: 'smooth', block: 'center' });
