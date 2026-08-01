@@ -1297,7 +1297,7 @@
     const res = await fetch(`${BACKEND_URL}?action=burn&token=${encodeURIComponent(token)}`);
     if (!res.ok) throw new Error('No se pudo procesar el acceso');
     const data = await res.json();
-    if (!data.success) throw new Error('El token no pudo ser usado');
+    if (!data.ok) throw new Error('El token no pudo ser usado'); // ★ el backend responde {ok:true}, no {success:true}
     return data;
   }
 
