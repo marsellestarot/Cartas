@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <title>Marselles · Elige tu lectura</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+  <script>
+    (function() {
+      const url = new URL(window.location.href);
+      const trackingParams = ['fbclid', 'gclid', 'utm_source', 'utm_medium', 'utm_campaign'];
+      let changed = false;
+      trackingParams.forEach(param => {
+        if (url.searchParams.has(param)) {
+          url.searchParams.delete(param);
+          changed = true;
+        }
+      });
+      if (changed) {
+        window.history.replaceState({}, document.title, url.toString());
+      }
+    })();
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0HR3CJ0R1S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0HR3CJ0R1S');
+  </script>
+  <style>
+    /* ===== RESET Y VARIABLES ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #D4AF37;
+      --gold-soft: #E8C9A0;
+      --purple-glow: #A855F7;
+      --bg-deep: #0B0815;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --border-glass: rgba(212, 175, 55, 0.15);
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 10px;
+      background: radial-gradient(ellipse at 20% 20%, #1E1040 0%, #0A0F24 40%, #0B0815 80%);
+      font-family: 'Inter', sans-serif;
+      color: #F0EBE3;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 540px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      margin-bottom: 0;
+    }
+
+    .brand-icon {
+      font-size: 1.4rem;
+      letter-spacing: 0.4em;
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 300;
+      opacity: 0.9;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #FDFBF7 0%, var(--gold-soft) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+      margin-top: 2px;
+    }
+
+    .subhead {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.35em;
+      color: #9A8CB0;
+      margin-top: -2px;
+      font-weight: 300;
+    }
+
+    .subhead-escape {
+      font-size: 0.65rem;
+      font-style: italic;
+      opacity: 0.7;
+      color: #C4B5D4;
+      margin-top: 0px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ===== TARJETA PRINCIPAL ===== */
+    .card {
+      width: 100%;
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-glass);
+      border-radius: 28px;
+      padding: 18px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    /* ===== ETIQUETA DE SELECCIÓN ===== */
+    .selection-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #AFA0C2;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding-bottom: 6px;
+      font-weight: 400;
+    }
+
+    .selection-label span:last-child {
+      color: var(--purple-glow);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
+
+    /* ===== CANJE DE CÓDIGO ===== */
+    .promo-redeem {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+    }
+    .promo-redeem-label {
+      font-size: 0.6rem;
+      color: #9A8CB0;
+      letter-spacing: 0.04em;
+      text-align: center;
+    }
+    .promo-redeem-row {
+      display: flex;
+      gap: 6px;
+    }
+    .promo-redeem-row input {
+      flex: 1;
+      min-width: 0;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      color: #F0EBE3;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      padding: 8px 10px;
+      outline: none;
+      text-transform: uppercase;
+    }
+    .promo-redeem-row input:focus { border-color: var(--gold); }
+    .promo-redeem-row button {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0 14px;
+      border-radius: 10px;
+      border: 1px solid var(--gold);
+      background: transparent;
+      color: var(--gold-soft);
+      cursor: pointer;
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+    .promo-redeem-row button:hover { background: var(--gold); color: #0B0815; }
+    .promo-redeem-row button:disabled { opacity: 0.5; cursor: default; }
+    .promo-redeem-msg {
+      font-size: 0.62rem;
+      text-align: center;
+      min-height: 1.2em;
+    }
+    .promo-redeem-msg.ok { color: #4ADE80; }
+    .promo-redeem-msg.err { color: #F87171; }
+
+    /* ===== RULETA SORPRESA ===== */
+    #ruletaOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(4,2,10,0.86);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    #ruletaOverlay.show { display: flex; }
+    #ruletaOverlay .ruleta-card {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      background: radial-gradient(ellipse at 50% 0%, #241640, #0A0F24 70%);
+      border: 1px solid rgba(212,175,55,0.35);
+      border-radius: 28px;
+      padding: 22px 18px 20px;
+      text-align: center;
+      box-shadow: 0 0 60px rgba(168,85,247,0.25), 0 30px 80px rgba(0,0,0,0.9);
+      animation: ruletaPopIn 0.55s cubic-bezier(0.21,1.15,0.55,1);
+    }
+    @keyframes ruletaPopIn {
+      0% { opacity: 0; transform: scale(0.7) translateY(30px); }
+      60% { opacity: 1; }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    #ruletaOverlay .ruleta-close {
+      position: absolute;
+      top: 10px; right: 14px;
+      font-size: 1.1rem;
+      color: #6A5E7C;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+    }
+    #ruletaOverlay .ruleta-close:hover { color: var(--gold-soft); }
+    #ruletaOverlay h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      margin-bottom: 4px;
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    #ruletaOverlay .ruleta-sub {
+      font-size: 0.68rem;
+      color: #C4B5D4;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .ruleta-wheel-wrapper {
+      position: relative;
+      width: 78%;
+      max-width: 250px;
+      margin: 0 auto;
+      aspect-ratio: 1/1;
+      filter: drop-shadow(0 0 30px rgba(168,85,247,0.35));
+    }
+    .ruleta-wheel-wrapper canvas { width: 100%; height: 100%; display: block; }
+    .ruleta-pointer {
+      position: absolute; top: -6%; left: 50%; transform: translateX(-50%);
+      z-index: 5; display: flex; flex-direction: column; align-items: center;
+      pointer-events: none;
+    }
+    .ruleta-pointer .star-badge {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 28%, #fff8e2, #eccb6f 45%, #93711f 100%);
+      border: 1.5px solid #6b5220;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem; color: #6b4a10;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.55);
+      margin-bottom: -7px; z-index: 2;
+    }
+    .ruleta-pointer .arrow-shape {
+      width: 26px; height: 24px;
+      background: linear-gradient(160deg,#f8e6ae 0%, #d4af37 45%, #7f6120 100%);
+      clip-path: polygon(50% 100%, 4% 32%, 22% 0%, 78% 0%, 96% 32%);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.55);
+      border: 1px solid #6b5220;
+    }
+    .ruleta-hub {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 34%; aspect-ratio: 1/1; border-radius: 50%;
+      background: radial-gradient(circle at 32% 26%, #f4dfa4 0%, #c9a24b 30%, #8a6a22 62%, #4a3413 100%);
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.55), inset 0 -6px 10px rgba(0,0,0,0.55), 0 4px 14px rgba(0,0,0,0.6);
+      display: flex; align-items: center; justify-content: center;
+      border: none; cursor: pointer; z-index: 4;
+    }
+    .ruleta-hub span {
+      font-family: 'Playfair Display', serif; font-weight: 700;
+      font-size: 0.85rem; letter-spacing: 0.03em; color: #3a2708;
+      text-shadow: 0 1px 0 rgba(255,224,160,0.55);
+    }
+    .ruleta-hub:disabled { cursor: default; }
+    .ruleta-hub.pulse { animation: hubPulse 1.4s ease-in-out infinite; }
+    @keyframes hubPulse {
+      0%,100% { box-shadow: inset 0 2px 4px rgba(255,255,255,0.55), inset 0 -6px 10px rgba(0,0,0,0.55), 0 0 0 0 rgba(212,175,55,0.5); }
+      50% { box-shadow: inset 0 2px 4px rgba(255,255,255,0.55), inset 0 -6px 10px rgba(0,0,0,0.55), 0 0 0 10px rgba(212,175,55,0); }
+    }
+    .ruleta-resultado {
+      margin-top: 16px;
+      min-height: 2.4em;
+    }
+    .ruleta-resultado .titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: #f0d9a0;
+    }
+    .ruleta-resultado .detalle {
+      font-size: 0.68rem;
+      color: #C4B5D4;
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+    .ruleta-codigo-box {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: rgba(212,175,55,0.08);
+      border: 1px dashed rgba(212,175,55,0.4);
+      border-radius: 12px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .ruleta-codigo-box.visible { display: flex; }
+    .ruleta-codigo-box code {
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      color: var(--gold-soft);
+      font-weight: 700;
+    }
+    .ruleta-codigo-box button {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--gold);
+      background: transparent;
+      color: var(--gold-soft);
+      cursor: pointer;
+    }
+    .ruleta-codigo-box button:hover { background: var(--gold); color: #0B0815; }
+    .ruleta-warning {
+      font-size: 0.58rem;
+      color: #8378A0;
+      font-style: italic;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* ===== PROMO BANNER ===== */
+    .promo-banner {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      text-align: center;
+      padding: 10px 14px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(212, 175, 55, 0.15));
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      box-shadow: 0 0 24px rgba(168, 85, 247, 0.15), inset 0 1px 0 rgba(255,255,255,0.06);
+      animation: pulseGoldRing 2.6s ease-in-out infinite;
+    }
+
+    .promo-banner.visible { display: flex; }
+
+    .promo-banner-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .promo-banner-sub {
+      font-size: 0.7rem;
+      color: #E8DFF5;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .promo-banner-note {
+      font-size: 0.6rem;
+      color: #B0A2C4;
+      font-style: italic;
+      margin-top: 2px;
+    }
+
+    /* ===== GRID DE LECTURAS ===== */
+    .tiradas-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 0;
+    }
+
+    .tirada-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .tirada-card:hover {
+      background: rgba(168, 85, 247, 0.06);
+      border-color: rgba(168, 85, 247, 0.25);
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.04);
+    }
+
+    .tirada-card:active {
+      transform: scale(0.98);
+    }
+
+    .tirada-card.active {
+      background: rgba(212, 175, 55, 0.08);
+      border-color: var(--gold);
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.08), inset 0 0 20px rgba(212, 175, 55, 0.03);
+      transform: scale(1.01);
+    }
+
+    /* Etiqueta "Más popular" fija en la Cruz Celta */
+    .tirada-card.sugerida {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.06);
+      animation: pulseGoldRing 2.2s ease-in-out infinite;
+    }
+
+    .tirada-card.sugerida::after {
+      content: '★ Más popular';
+      position: absolute;
+      top: -10px;
+      left: 16px;
+      background: var(--gold);
+      color: #0B0815;
+      font-size: 0.5rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 10px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+    }
+
+    .tirada-icon {
+      font-size: 1.3rem;
+      width: 34px;
+      text-align: center;
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+
+    .tirada-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .tirada-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #F0EBE3;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .tirada-desc {
+      font-size: 0.7rem;
+      color: #B0A2C4;
+      margin-top: 0;
+      font-weight: 300;
+    }
+
+    .tirada-popularidad {
+      font-size: 0.5rem;
+      color: #C4B5D4;
+      margin: 2px 0;
+      font-weight: 400;
+    }
+
+    .tirada-cta {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--purple-glow);
+      margin-top: 3px;
+      opacity: 0.8;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tirada-card:hover .tirada-cta {
+      color: var(--gold);
+      opacity: 1;
+    }
+
+    .tirada-arrow {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.15);
+      flex-shrink: 0;
+      transition: all 0.25s;
+      margin-left: 2px;
+    }
+
+    .tirada-card:hover .tirada-arrow {
+      color: var(--gold);
+      transform: translateX(4px);
+    }
+
+    .tirada-precio {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--gold-soft);
+      background: rgba(212, 175, 55, 0.08);
+      padding: 4px 12px;
+      border-radius: 40px;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      white-space: nowrap;
+      transition: all 0.2s;
+      letter-spacing: 0.02em;
+    }
+
+    .tirada-card.active .tirada-precio {
+      background: rgba(212, 175, 55, 0.18);
+      border-color: var(--gold);
+      box-shadow: 0 0 16px rgba(212, 175, 55, 0.1);
+    }
+
+    .tirada-precio .precio-tachado {
+      color: #8378A0;
+      text-decoration: line-through;
+      font-weight: 500;
+      opacity: 0.7;
+      margin-right: 6px;
+      font-size: 0.7rem;
+    }
+
+    .tirada-precio .precio-final {
+      color: #4ADE80;
+      font-weight: 800;
+    }
+
+    .tirada-card .tirada-precio .dots-loading {
+      display: inline-flex;
+      gap: 3px;
+    }
+    .tirada-card .tirada-precio .dots-loading span {
+      animation: pulse 1.4s ease-in-out infinite;
+      opacity: 0.3;
+    }
+    .tirada-card .tirada-precio .dots-loading span:nth-child(2) { animation-delay: 0.2s; }
+    .tirada-card .tirada-precio .dots-loading span:nth-child(3) { animation-delay: 0.4s; }
+
+    .tiradas-grid.processing .tirada-card:not(.active) {
+      opacity: 0.3;
+      pointer-events: none;
+      filter: blur(0.8px);
+    }
+
+    /* ===== RESULTADO RECIENTE (falacia del jugador) ===== */
+    .recent-result {
+      font-size: 0.55rem;
+      color: #8378A0;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding-top: 8px;
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    /* ===== CONFIRMACIÓN ===== */
+    .confirmacion-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.7rem;
+      line-height: 1.5;
+      color: #C4B5D4;
+      background: rgba(168, 85, 247, 0.05);
+      border: 1px solid rgba(168, 85, 247, 0.12);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-top: 0;
+    }
+
+    .confirmacion-note .icono {
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .confirmacion-note strong {
+      color: #E8C9A0;
+      font-weight: 600;
+    }
+
+    /* ===== TESTIMONIOS ===== */
+    .testimonios-section {
+      margin: 0;
+    }
+
+    .testimonios-slider {
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 0;
+    }
+
+    .testimonios-track {
+      display: flex;
+      transition: transform 0.5s ease;
+      will-change: transform;
+      width: 100%;
+    }
+
+    .testimonio-item {
+      flex: 0 0 100%;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border-radius: 8px;
+    }
+
+    .testimonio-item:hover { background: rgba(255, 255, 255, 0.03); }
+    .testimonio-item:active { transform: scale(0.99); }
+
+    .testimonio-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .testimonio-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(212,175,55,0.15);
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    .testimonio-info-nombre {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+      flex: 1;
+    }
+
+    .testimonio-nombre {
+      font-weight: 600;
+      font-size: 0.65rem;
+      color: #F0EBE3;
+    }
+
+    .testimonio-fecha {
+      font-size: 0.55rem;
+      color: #8378A0;
+      letter-spacing: 0.05em;
+    }
+
+    .testimonio-estrellas {
+      color: var(--gold);
+      font-size: 0.5rem;
+      letter-spacing: 2px;
+      margin-left: auto;
+      align-self: center;
+    }
+
+    .testimonio-texto {
+      font-size: 0.65rem;
+      line-height: 1.4;
+      color: #C4B5D4;
+      font-style: italic;
+      margin: 0;
+      padding-left: 2px;
+      word-wrap: break-word;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .testimonio-texto::before {
+      content: '"';
+      color: var(--gold);
+      opacity: 0.4;
+      font-size: 0.8rem;
+      margin-right: 2px;
+    }
+    .testimonio-texto::after {
+      content: '"';
+      color: var(--gold);
+      opacity: 0.4;
+      font-size: 0.8rem;
+      margin-left: 2px;
+    }
+
+    .testimonio-leer-mas {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.5rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold-soft);
+      margin-top: 2px;
+      padding-left: 2px;
+      opacity: 0.7;
+    }
+
+    .testimonios-dots {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      padding: 3px 0 5px 0;
+    }
+
+    .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      padding: 0;
+    }
+
+    .dot.active {
+      background: var(--gold);
+      width: 16px;
+      border-radius: 3px;
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+    }
+
+    .dot:hover { background: rgba(212, 175, 55, 0.5); }
+
+    /* ===== SELECTOR DE MONEDA ===== */
+    .country-toggle-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 0;
+    }
+
+    .country-toggle-hint {
+      font-size: 0.55rem;
+      color: #6A5E7C;
+      line-height: 1.5;
+      text-align: center;
+      letter-spacing: 0.02em;
+      padding: 0 4px;
+    }
+
+    .country-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.6rem;
+      color: #9A8CB0;
+      letter-spacing: 0.04em;
+      padding-top: 0;
+      flex-wrap: wrap;
+    }
+
+    .country-badge {
+      display: flex;
+      gap: 3px;
+      background: rgba(255,255,255,0.03);
+      padding: 3px 8px 3px 5px;
+      border-radius: 40px;
+      border: 1px solid rgba(255,255,255,0.06);
+      cursor: pointer;
+      transition: 0.2s;
+      font-weight: 500;
+      font-size: 0.6rem;
+    }
+
+    .country-badge:hover {
+      border-color: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .country-badge .flag { font-size: 0.65rem; line-height: 1; }
+    .country-badge .moneda { color: #C4B5D4; font-weight: 600; }
+    .country-badge.active {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.08);
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.05);
+    }
+
+    /* ===== BLOQUE DE CONFIANZA ===== */
+    .trust-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 14px;
+      margin-top: 0;
+    }
+
+    .trust-title {
+      font-size: 0.55rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #7A6E8C;
+      text-align: center;
+    }
+
+    .trust-items {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 0.55rem;
+      color: #8A7E9C;
+      line-height: 1.5;
+      padding-left: 4px;
+    }
+
+    .trust-items span { display: flex; align-items: center; gap: 5px; }
+    .trust-items span::before { content: '✓'; color: var(--gold-soft); font-weight: 700; }
+
+    /* ===== ERROR ===== */
+    #errorMsg {
+      font-size: 0.6rem;
+      color: #F87171;
+      text-align: center;
+      display: none;
+      background: rgba(248, 113, 113, 0.08);
+      padding: 6px;
+      border-radius: 10px;
+      border: 1px solid rgba(248, 113, 113, 0.1);
+    }
+
+    /* ===== LOADING ===== */
+    .loading {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 0;
+    }
+
+    .loading-dots {
+      display: flex;
+      gap: 6px;
+      font-size: 1.1rem;
+      color: var(--gold);
+    }
+    .loading-dots span {
+      animation: pulse 1.4s ease-in-out infinite;
+      opacity: 0.3;
+    }
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    .loading-text {
+      font-size: 0.55rem;
+      color: #9A8CB0;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 300;
+      transition: opacity 0.3s;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer-pie {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      margin-top: 0;
+    }
+
+    .metodo-pago {
+      font-size: 0.5rem;
+      color: #5A4E6C;
+      letter-spacing: 0.04em;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .metodo-pago strong { color: #8A7E9C; font-weight: 500; }
+
+    .badges {
+      display: flex;
+      gap: 10px;
+      font-size: 0.45rem;
+      color: #5A4E6C;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding-top: 6px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .badges span {
+      background: rgba(255,255,255,0.02);
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    #cambiarPaisLink {
+      cursor: pointer;
+      color: #5A4E6C;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-size: 0.5rem;
+      transition: 0.2s;
+    }
+    #cambiarPaisLink:hover { color: var(--gold-soft); }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+      animation: fadeInOverlay 0.3s ease;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    @keyframes fadeInOverlay {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-container {
+      max-width: 420px;
+      width: 100%;
+      background: radial-gradient(ellipse at 50% 0%, #1E1040, #0A0F24);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 28px;
+      padding: 24px 20px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(212, 175, 55, 0.05);
+      animation: modalSlideIn 0.35s cubic-bezier(0.21, 1.02, 0.73, 1);
+      position: relative;
+    }
+
+    @keyframes modalSlideIn {
+      from { opacity: 0; transform: scale(0.9) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .modal-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(212, 175, 55, 0.3);
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    .modal-user-info { flex: 1; }
+    .modal-nombre { font-weight: 700; font-size: 0.95rem; color: #F0EBE3; }
+    .modal-fecha { font-size: 0.55rem; color: #5A4E6C; letter-spacing: 0.05em; }
+    .modal-estrellas { color: var(--gold); font-size: 0.75rem; letter-spacing: 3px; align-self: center; }
+
+    .modal-texto {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: #E4DCC8;
+      font-style: italic;
+      margin: 10px 0 14px 0;
+      padding: 0 4px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .modal-texto::before { content: '"'; color: var(--gold); opacity: 0.5; font-size: 1.3rem; margin-right: 5px; }
+    .modal-texto::after { content: '"'; color: var(--gold); opacity: 0.5; font-size: 1.3rem; margin-left: 5px; }
+
+    .modal-timer {
+      text-align: center;
+      font-size: 0.55rem;
+      color: #5A4E6C;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      padding-top: 10px;
+      margin-top: 2px;
+    }
+
+    .modal-timer span { color: var(--gold); font-weight: 700; }
+
+    .modal-texto::-webkit-scrollbar { width: 3px; }
+    .modal-texto::-webkit-scrollbar-track { background: transparent; }
+    .modal-texto::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 10px; }
+
+    /* ===== ANIMACIONES ===== */
+    @keyframes pulseGoldRing {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.25), inset 0 0 15px rgba(212, 175, 55, 0.02); }
+      50% { box-shadow: 0 0 0 8px rgba(212, 175, 55, 0.06), inset 0 0 15px rgba(212, 175, 55, 0.04); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.2; transform: translateY(0); }
+      50% { opacity: 0.9; transform: translateY(-4px); }
+    }
+
+    /* ===== UTILITY ===== */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand-icon">✦ ✦ ✦</div>
+    <h1>Oráculo de Marselles</h1>
+    <p class="subhead">Tarot · Conciencia · Transformación</p>
+    <p class="subhead-escape">🌿 Un momento para ti, lejos del ruido</p>
+  </header>
+
+  <div class="card">
+
+    <div class="selection-label">
+      <span>Elegí tu lectura</span>
+      <span>✦ Comienza tu viaje</span>
+    </div>
+
+    <div class="promo-banner" id="promoBanner">
+      <div class="promo-banner-title">🌎 PROMOCIÓN INTERNACIONAL</div>
+      <div class="promo-banner-sub">50% OFF por tiempo limitado</div>
+      <div class="promo-banner-note">Descuento aplicado automáticamente al finalizar tu compra.</div>
+    </div>
+
+    <div class="tiradas-grid" id="tiradasGrid">
+      <!-- Express -->
+      <div class="tirada-card" data-monto-usd="50" data-monto-uyu="200" data-nombre="Express" role="button" tabindex="0" aria-label="Comenzar lectura Express">
+        <div class="tirada-icon">⚡</div>
+        <div class="tirada-info">
+          <div class="tirada-nombre">Lectura Express</div>
+          <div class="tirada-desc">3 cartas · Respuesta directa</div>
+          <div class="tirada-popularidad">🔥 <span class="pop-text">82% de usuarios la recomiendan</span></div>
+          <div class="tirada-cta">Comenzar esta lectura <span class="tirada-arrow">→</span></div>
+        </div>
+        <div class="tirada-precio" id="precioExpress">$50 USD</div>
+      </div>
+
+      <!-- Cruz Celta (sugerida) -->
+      <div class="tirada-card sugerida" data-monto-usd="75" data-monto-uyu="350" data-nombre="Profunda" role="button" tabindex="0" aria-label="Comenzar Cruz Celta">
+        <div class="tirada-icon">🔮</div>
+        <div class="tirada-info">
+          <div class="tirada-nombre">Cruz Celta</div>
+          <div class="tirada-desc">10 cartas · Mapa completo</div>
+          <div class="tirada-popularidad">🌟 <span class="pop-text">La más elegida hoy</span></div>
+          <div class="tirada-cta">Comenzar esta lectura <span class="tirada-arrow">→</span></div>
+        </div>
+        <div class="tirada-precio" id="precioProfunda">$75 USD</div>
+      </div>
+
+      <!-- Anual -->
+      <div class="tirada-card" data-monto-usd="100" data-monto-uyu="500" data-nombre="Anual" role="button" tabindex="0" aria-label="Comenzar Rueda del Año">
+        <div class="tirada-icon">🌙</div>
+        <div class="tirada-info">
+          <div class="tirada-nombre">Rueda del Año</div>
+          <div class="tirada-desc">12 meses · Visión anual</div>
+          <div class="tirada-popularidad">⏳ <span class="pop-text">Solo 3 disponibles hoy</span></div>
+          <div class="tirada-cta">Comenzar esta lectura <span class="tirada-arrow">→</span></div>
+        </div>
+        <div class="tirada-precio" id="precioAnual">$100 USD</div>
+      </div>
+    </div>
+
+    <!-- Testimonios -->
+    <div class="testimonios-section">
+      <div class="testimonios-slider" id="testimoniosSlider">
+        <div class="testimonios-track" id="testimoniosTrack"></div>
+        <div class="testimonios-dots" id="testimoniosDots"></div>
+      </div>
+    </div>
+
+    <!-- FALACIA DEL JUGADOR: resultado reciente -->
+    <div class="recent-result" id="recentResult">
+      🔮 La última persona que hizo la Cruz Celta encontró claridad en el amor
+    </div>
+
+    <div class="confirmacion-note">
+      <span class="icono">🔮</span>
+      <span><strong>¿Qué sucede después?</strong> Al confirmar tu pago, accederás directamente a tu consulta. Responde las preguntas que se te presenten y un tarotista te guiará en breve.</span>
+    </div>
+
+    <!-- Selector de moneda -->
+    <div class="country-toggle-wrapper">
+      <div class="country-toggle-hint">
+        Detectamos automáticamente la opción de pago correspondiente.<br />
+        Si la opción mostrada no es la correcta, puedes cambiarla manualmente antes de continuar.
+      </div>
+      <div class="country-toggle">
+        <span>Tu moneda:</span>
+        <span class="country-badge active" id="btnUY" data-pais="UY">
+          <span class="flag">🇺🇾</span> UYU <span class="moneda">(MP)</span>
+        </span>
+        <span class="country-badge" id="btnOtro" data-pais="OTRO">
+          <span class="flag">🌎</span> USD <span class="moneda">(PayPal)</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- CANJE DE CÓDIGO GANADO EN UNA TIRADA ANTERIOR -->
+    <div class="promo-redeem">
+      <div class="promo-redeem-label">¿Tenés un código de una tirada anterior?</div>
+      <div class="promo-redeem-row">
+        <input type="text" id="promoInput" placeholder="Ingresá tu código" maxlength="24" />
+        <button type="button" id="promoBtn">Aplicar</button>
+      </div>
+      <div class="promo-redeem-msg" id="promoMsg"></div>
+    </div>
+
+    <div id="errorMsg"></div>
+
+    <div class="loading" id="loading">
+      <div class="loading-dots"><span>✦</span><span>✦</span><span>✦</span></div>
+      <div class="loading-text" id="loadingText">Preparando tu acceso...</div>
+    </div>
+
+    <!-- Bloque de confianza con garantía y plazas (persecución de pérdidas) -->
+    <div class="trust-block">
+      <div class="trust-title">🔒 Compra con confianza</div>
+      <div class="trust-items">
+        <span>⏳ Solo <strong id="plazasRestantes">8</strong> consultas disponibles hoy</span>
+        <span>🔐 Pago seguro · Sin almacenamiento de datos</span>
+      </div>
+    </div>
+
+    <div class="footer-pie">
+      <div class="metodo-pago" id="pieMetodo">
+        Tu pago se procesa de forma segura a través de <strong>MercadoPago</strong>.<br />
+        En cuanto se confirme, recibirás tu tirada.
+      </div>
+      <div class="badges">
+        <span>🔒 Pago Seguro</span>
+        <span>⚡ Envío inmediato</span>
+      </div>
+      <span id="cambiarPaisLink">¿No es tu país? Cambiar moneda</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- RULETA SORPRESA -->
+<div id="ruletaOverlay">
+  <div class="ruleta-card">
+    <span class="ruleta-close" id="ruletaClose">✕</span>
+    <h3 id="ruletaTitulo">✨ Hay una sorpresa para ti ✨</h3>
+    <p class="ruleta-sub" id="ruletaSub">Antes de irte, aprovechá esta oportunidad. Tocá el centro para invocar el destino y descubrir tu regalo. No lo dejes pasar.</p>
+
+    <div class="ruleta-wheel-wrapper">
+      <div class="ruleta-pointer">
+        <div class="star-badge">★</div>
+        <div class="arrow-shape"></div>
+      </div>
+      <canvas id="ruletaCanvas" width="600" height="600"></canvas>
+      <button type="button" class="ruleta-hub pulse" id="ruletaHub"><span>GIRAR</span></button>
+    </div>
+
+    <div class="ruleta-resultado" id="ruletaResultado"></div>
+    <div class="ruleta-codigo-box" id="ruletaCodigoBox">
+      <code id="ruletaCodigoTexto"></code>
+      <button type="button" id="ruletaCopiarBtn">Copiar</button>
+    </div>
+    <div class="ruleta-warning">Este código es válido únicamente para tu <strong>próxima</strong> consulta, nunca para la de hoy. Guardalo, no se puede recuperar.</div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="testimonioModal">
+  <div class="modal-container">
+    <div class="modal-header">
+      <img class="modal-avatar" id="modalAvatar" src="" alt="Avatar" />
+      <div class="modal-user-info">
+        <div class="modal-nombre" id="modalNombre">Nombre</div>
+        <div class="modal-fecha" id="modalFecha">Fecha</div>
+      </div>
+      <div class="modal-estrellas" id="modalEstrellas">★★★★★</div>
+    </div>
+    <div class="modal-texto" id="modalTexto">Texto completo del testimonio...</div>
+    <div class="modal-timer">⏳ Cerrando en <span id="modalTimerContador">3</span>s</div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  ★ URL CORRECTA DEL BACKEND ★
+// ============================================================
+const BACKEND_URL = 'https://script.google.com/macros/s/AKfycby_MZdNhRzElKaOoF6A6-Pfo0BWDwBjGpLzfAwNM7JtTOeSq4V1q6yv-H3bMKQqWdb9gg/exec';
+
+// ============================================================
+// TESTIMONIOS
+// ============================================================
+const testimonios = [
+  { nombre: 'Facundo G.', fecha: '15 ene 2026', avatarColor: '#1E3A8A', texto: 'Me re sirvió la tirada express, estaba con una desición importante y las cartas me dieron la claridad que precisaba. Gracias bo!' },
+  { nombre: 'Valentina R.', fecha: '22 feb 2026', avatarColor: '#B91C1C', texto: 'No sabía si confiar pero la verdad que fue increíble. Viste que uno a veces duda, pero la lectura de la Cruz Celta me mostró cosas que ni yo misma veia. Super recomendable!' },
+  { nombre: 'Rodrigo P.', fecha: '10 mar 2026', avatarColor: '#065F46', texto: 'La verdad es que no soy muy creyente, pero mi polola me insistió y le hice caso. Quede loco con la precisión. El tarotista a de tener un don especial. Saludos desde Chile po.' },
+  { nombre: 'Agustina M.', fecha: '5 abr 2026', avatarColor: '#6D28D9', texto: 'Ta divino el servicio. Aver si hago la anual el mes que viene porque esta fue muy corta pero certera. Me encantó la energía. Recomiendo 100%' },
+  { nombre: 'Matías L.', fecha: '18 may 2026', avatarColor: '#BE123C', texto: 'Posta que estaba en una encrucijada con el laburo. La tirada me echo luz sobre lo que realmente queria. No es magia, es guía, y me ayudó un montón.' },
+  { nombre: 'Camila S.', fecha: '1 jun 2026', avatarColor: '#0E7490', texto: 'Soy de Santiago y encontré esta página de casualidad. La tirada fue muy bakan, super certera con lo que estoy viviendo en el amor. La recomiendo a todas mis amigas.' },
+  { nombre: 'Sofía T.', fecha: '20 jun 2026', avatarColor: '#854D0E', texto: 'Si, tal cual como dice ahi. Me sentí escuchada y las cartas no me mintieron. Me dio paz interior y eso no tiene precio. Muchas gracias!' },
+  { nombre: 'Tomás V.', fecha: '12 jul 2026', avatarColor: '#1D4ED8', texto: 'Espectacular la verdad. No sabia adonde ir con mi vida amorosa y la tirada me marco el camino. Fue como tener una sesión de terapia pero con cartas. Increible.' },
+  { nombre: 'Ignacio A.', fecha: '19 jul 2026', avatarColor: '#831843', texto: 'Valla que me sorprendió. Le pedí que me hable de mi situación familiar y clavó todas las cartas. Ojo, no es para débiles de corazón porque te dice la verdad. Muy bueno.' },
+  { nombre: 'Julieta Z.', fecha: '28 abr 2026', avatarColor: '#0369A1', texto: 'Hice la tirada anual y fue un montón de información pero re valiosa. Ya pasaron 3 meses y las predicciones se estan cumpliendo. Una locura. Gracias totales.' },
+  { nombre: 'Martín F.', fecha: '30 may 2026', avatarColor: '#7E22CE', texto: 'Yo estaba re perdido con mi emprendimiento. La tirada me dijo que le de para adelante sin miedo y hay vamos, paso a paso. La verdad que me dio el empujón que necesitaba.' },
+  { nombre: 'Francisca P.', fecha: '15 jun 2026', avatarColor: '#0F766E', texto: 'Súper recomendable. La atención es excelente y la lectura fue súper clara. Me ayudó a entender mi relación de pareja desde otra perspectiva. Volvere seguro.' }
+];
+
+// ============================================================
+// ESTADO
+// ============================================================
+let pais = 'UY';
+let paisDetectado = 'ES';
+const idiomaDetectado = ((navigator.language || navigator.userLanguage || 'es').split('-')[0]).toLowerCase();
+let procesando = false;
+
+// ============================================================
+// DOM REFS
+// ============================================================
+const tiradasGrid = document.getElementById('tiradasGrid');
+const tiradas = document.querySelectorAll('.tirada-card');
+const loading = document.getElementById('loading');
+const loadingText = document.getElementById('loadingText');
+const errorMsg = document.getElementById('errorMsg');
+const pieMetodo = document.getElementById('pieMetodo');
+const btnUY = document.getElementById('btnUY');
+const btnOtro = document.getElementById('btnOtro');
+const cambiarPaisLink = document.getElementById('cambiarPaisLink');
+const promoBanner = document.getElementById('promoBanner');
+
+const DESCUENTO_INTERNACIONAL = 0.5;
+
+const precioExpress = document.getElementById('precioExpress');
+const precioProfunda = document.getElementById('precioProfunda');
+const precioAnual = document.getElementById('precioAnual');
+const preciosMap = {
+  'Express': precioExpress,
+  'Profunda': precioProfunda,
+  'Anual': precioAnual,
+};
+
+// ============================================================
+// MODAL
+// ============================================================
+const modalOverlay = document.getElementById('testimonioModal');
+const modalAvatar = document.getElementById('modalAvatar');
+const modalNombre = document.getElementById('modalNombre');
+const modalFecha = document.getElementById('modalFecha');
+const modalEstrellas = document.getElementById('modalEstrellas');
+const modalTexto = document.getElementById('modalTexto');
+const modalTimerContador = document.getElementById('modalTimerContador');
+let modalTimeout = null;
+let countdownInterval = null;
+
+function abrirModal(index) {
+  const t = testimonios[index];
+  if (!t) return;
+  if (modalTimeout) clearTimeout(modalTimeout);
+  if (countdownInterval) clearInterval(countdownInterval);
+  const initials = t.nombre.split(' ').map(n => n[0]).join('').toUpperCase();
+  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${t.avatarColor.replace('#', '')}&color=fff&size=48&font-size=0.5`;
+  modalAvatar.src = avatarUrl;
+  modalAvatar.alt = t.nombre;
+  modalNombre.textContent = t.nombre;
+  modalFecha.textContent = t.fecha;
+  modalEstrellas.textContent = '★★★★★';
+  modalTexto.textContent = t.texto;
+  modalOverlay.classList.add('active');
+  let segundos = 3;
+  modalTimerContador.textContent = segundos;
+  countdownInterval = setInterval(() => {
+    segundos -= 1;
+    modalTimerContador.textContent = segundos;
+    if (segundos <= 0) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+    }
+  }, 1000);
+  modalTimeout = setTimeout(() => cerrarModal(), 3000);
+}
+
+function cerrarModal() {
+  modalOverlay.classList.remove('active');
+  if (modalTimeout) { clearTimeout(modalTimeout); modalTimeout = null; }
+  if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
+  modalTimerContador.textContent = '3';
+}
+
+modalOverlay.addEventListener('click', function(e) {
+  if (e.target === modalOverlay) cerrarModal();
+});
+
+// ============================================================
+// CARRUSEL
+// ============================================================
+let currentSlide = 0;
+let slideInterval = null;
+const track = document.getElementById('testimoniosTrack');
+const dotsContainer = document.getElementById('testimoniosDots');
+
+function renderTestimonios() {
+  track.innerHTML = '';
+  dotsContainer.innerHTML = '';
+  testimonios.forEach((t, index) => {
+    const initials = t.nombre.split(' ').map(n => n[0]).join('').toUpperCase();
+    const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${t.avatarColor.replace('#', '')}&color=fff&size=28&font-size=0.5`;
+    const item = document.createElement('div');
+    item.className = 'testimonio-item';
+    item.dataset.index = index;
+    item.innerHTML = `
+      <div class="testimonio-header">
+        <img class="testimonio-avatar" src="${avatarUrl}" alt="${t.nombre}">
+        <div class="testimonio-info-nombre">
+          <div class="testimonio-nombre">${t.nombre}</div>
+          <div class="testimonio-fecha">${t.fecha}</div>
+        </div>
+        <div class="testimonio-estrellas">★★★★★</div>
+      </div>
+      <div class="testimonio-texto">${t.texto}</div>
+      <div class="testimonio-leer-mas">✦ Toca para leer completo</div>
+    `;
+    item.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const idx = parseInt(this.dataset.index);
+      abrirModal(idx);
+    });
+    track.appendChild(item);
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (index === 0 ? ' active' : '');
+    dot.dataset.index = index;
+    dot.addEventListener('click', () => goToSlide(index));
+    dotsContainer.appendChild(dot);
+  });
+  track.style.width = `${testimonios.length * 100}%`;
+  goToSlide(0, false);
+}
+
+function goToSlide(index, auto = true) {
+  if (index < 0) index = testimonios.length - 1;
+  if (index >= testimonios.length) index = 0;
+  currentSlide = index;
+  track.style.transform = `translateX(-${index * 100}%)`;
+  document.querySelectorAll('.dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === index);
+  });
+  if (auto) resetInterval();
+}
+
+function nextSlide() { goToSlide(currentSlide + 1); }
+
+function resetInterval() {
+  if (slideInterval) clearInterval(slideInterval);
+  slideInterval = setInterval(nextSlide, 4500);
+}
+
+const sliderContainer = document.getElementById('testimoniosSlider');
+sliderContainer.addEventListener('mouseenter', () => {
+  if (slideInterval) clearInterval(slideInterval);
+});
+sliderContainer.addEventListener('mouseleave', resetInterval);
+
+// ============================================================
+// PRECIOS
+// ============================================================
+function calcularMontoConDescuento(montoUSD) {
+  const conDescuento = Math.round(montoUSD * DESCUENTO_INTERNACIONAL * 100) / 100;
+  return conDescuento % 1 === 0 ? conDescuento.toString() : conDescuento.toFixed(2);
+}
+
+function actualizarPrecios() {
+  tiradas.forEach(card => {
+    const nombre = card.dataset.nombre;
+    const span = preciosMap[nombre];
+    if (!span) return;
+    const montoUYU = parseInt(card.dataset.montoUyu);
+    const montoUSD = parseInt(card.dataset.montoUsd);
+    if (pais === 'UY') {
+      span.textContent = `$ ${montoUYU} UYU`;
+    } else {
+      const montoConDescuento = calcularMontoConDescuento(montoUSD);
+      span.innerHTML = `<span class="precio-tachado">$${montoUSD}</span><span class="precio-final">$${montoConDescuento} USD</span>`;
+    }
+  });
+  btnUY.classList.toggle('active', pais === 'UY');
+  btnOtro.classList.toggle('active', pais === 'OTRO');
+  promoBanner.classList.toggle('visible', pais !== 'UY');
+  if (pais === 'UY') {
+    pieMetodo.innerHTML = `Tu pago se procesa de forma segura a través de <strong>MercadoPago</strong>.<br>En cuanto se confirme, recibirás tu tirada.`;
+  } else {
+    pieMetodo.innerHTML = `Tu pago se procesa de forma segura a través de <strong>PayPal</strong>.<br>En cuanto se confirme, recibirás tu tirada.`;
+  }
+}
+
+function setPais(p) {
+  pais = p;
+  actualizarPrecios();
+  errorMsg.style.display = 'none';
+}
+
+btnUY.addEventListener('click', () => setPais('UY'));
+btnOtro.addEventListener('click', () => setPais('OTRO'));
+cambiarPaisLink.addEventListener('click', () => {
+  setPais(pais === 'UY' ? 'OTRO' : 'UY');
+});
+
+// ============================================================
+// PAGO (con refuerzo intermitente)
+// ============================================================
+const frasesEspera = [
+  "Las cartas se están alineando para ti...",
+  "El universo escucha tu pregunta...",
+  "Casi listo, la energía se concentra...",
+  "Tu destino se está escribiendo...",
+  "Un momento, el oráculo está respondiendo..."
+];
+
+async function iniciarPago(card) {
+  if (procesando) return;
+  const montoUYU = parseInt(card.dataset.montoUyu);
+  const montoUSD = parseInt(card.dataset.montoUsd);
+  const nombre = card.dataset.nombre;
+  let amount = pais === 'UY' ? montoUYU : parseFloat(calcularMontoConDescuento(montoUSD));
+
+  // Cupón de la ruleta: SOLO Cruz Celta ("Profunda") y Rueda del Año ("Anual").
+  // Nunca en Express. El descuento se aplica al monto real pero no se
+  // refleja en el precio visible de la tarjeta (no es información pública).
+  const promoAplicable = appliedPromo && (nombre === 'Profunda' || nombre === 'Anual');
+  if (promoAplicable) {
+    amount = Math.round(amount * (1 - appliedPromo.percent / 100) * 100) / 100;
+  }
+
+  const minimo = pais === 'UY' ? 200 : 25;
+  const moneda = pais === 'UY' ? 'UYU' : 'USD';
+  if (amount < minimo) {
+    errorMsg.textContent = `El monto mínimo para ${moneda} es $${minimo}.`;
+    errorMsg.style.display = 'block';
+    return;
+  }
+  procesando = true;
+  errorMsg.style.display = 'none';
+  tiradas.forEach(c => c.classList.remove('sugerida'));
+  card.classList.add('active');
+  tiradasGrid.classList.add('processing');
+  const precioEl = preciosMap[nombre];
+  const precioOriginal = precioEl ? precioEl.innerHTML : '';
+  if (precioEl) {
+    precioEl.innerHTML = `<span class="dots-loading"><span>✦</span><span>✦</span><span>✦</span></span>`;
+  }
+  loading.style.display = 'flex';
+  loadingText.textContent = `Preparando tu acceso a ${nombre === 'Profunda' ? 'la Cruz Celta' : nombre === 'Anual' ? 'la Rueda del Año' : 'la Lectura Express'}...`;
+
+  // Refuerzo intermitente: mensajes cambiantes
+  let fraseIdx = 0;
+  const intervalFrases = setInterval(() => {
+    loadingText.textContent = frasesEspera[fraseIdx % frasesEspera.length];
+    fraseIdx++;
+  }, 2000);
+
+  try {
+    const action = pais === 'UY' ? 'create_preference' : 'create_order_paypal';
+    let params = `action=${action}&amount=${amount}`;
+    params += `&reading_type=${encodeURIComponent(nombre)}`;
+    if (pais !== 'UY') {
+      params += `&country=${paisDetectado}&lang=${idiomaDetectado}`;
+    }
+    if (promoAplicable) {
+      params += `&promo_code=${encodeURIComponent(appliedPromo.code)}`;
+    }
+    const res = await fetch(`${BACKEND_URL}?${params}`);
+    const data = await res.json();
+    const redirectUrl = data.init_point || data.approve_url;
+    if (redirectUrl) {
+      clearInterval(intervalFrases);
+      if (promoAplicable) {
+        // Se quema recién ahora que el cupón ya se usó de verdad.
+        fetch(`${BACKEND_URL}?action=burn_promo&token=${encodeURIComponent(appliedPromo.code)}`).catch(() => {});
+        appliedPromo = null;
+      }
+      window.location.href = redirectUrl;
+    } else {
+      throw new Error(data.error || 'No se pudo generar el acceso.');
+    }
+  } catch (e) {
+    clearInterval(intervalFrases);
+    procesando = false;
+    loading.style.display = 'none';
+    tiradasGrid.classList.remove('processing');
+    card.classList.remove('active');
+    if (precioEl) precioEl.innerHTML = precioOriginal;
+    errorMsg.textContent = 'Hubo un problema con el servidor: ' + (e.message || 'intentá de nuevo');
+    errorMsg.style.display = 'block';
+    console.error('❌ Error en pago:', e);
+  }
+}
+
+tiradas.forEach(card => {
+  card.addEventListener('click', () => iniciarPago(card));
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      iniciarPago(card);
+    }
+  });
+});
+
+// ============================================================
+// PRESELECCIÓN POR ENLACE
+// ============================================================
+function preseleccionarDesdeEnlace() {
+  const params = new URLSearchParams(window.location.search);
+  const slug = (params.get('tirada') || '').toLowerCase().trim();
+  const slugMap = { 'express': 'Express', 'cruzceltic': 'Profunda', 'profunda': 'Profunda', 'cruz': 'Profunda', 'anual': 'Anual' };
+  const nombreObjetivo = slugMap[slug];
+  if (!nombreObjetivo) return;
+  const cardObjetivo = Array.from(tiradas).find(c => c.dataset.nombre === nombreObjetivo);
+  if (!cardObjetivo) return;
+  cardObjetivo.classList.add('sugerida');
+  setTimeout(() => {
+    cardObjetivo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 400);
+}
+
+// ============================================================
+// DETECTAR PAÍS
+// ============================================================
+(async function detectarPais() {
+  try {
+    const res = await fetch('https://get.geojs.io/v1/ip/country.json');
+    const data = await res.json();
+    paisDetectado = data.country || 'ES';
+    setPais(data.country === 'UY' ? 'UY' : 'OTRO');
+  } catch (e) {
+    setPais('UY');
+  }
+})();
+
+// ============================================================
+// INICIO - Cargar elementos dinámicos
+// ============================================================
+renderTestimonios();
+setTimeout(resetInterval, 2000);
+actualizarPrecios();
+preseleccionarDesdeEnlace();
+
+// ============================================================
+//  ELEMENTOS ADICIONALES (sesgos)
+// ============================================================
+
+// 1. Falacia del jugador: resultado reciente aleatorio
+const resultados = [
+  "🔮 La última persona que hizo la Cruz Celta encontró claridad en el amor",
+  "🌟 Quien eligió la Express recibió una respuesta inesperada pero certera",
+  "🌙 La Rueda del Año reveló un cambio importante en la carrera de su consultante",
+  "✨ Un usuario de la Cruz Celta confirmó que sus predicciones se cumplieron en 2 semanas",
+  "🃏 La lectura Express ayudó a alguien a tomar una decisión crucial en minutos"
+];
+document.getElementById('recentResult').textContent = resultados[Math.floor(Math.random() * resultados.length)];
+
+// 2. Persecución de pérdidas: plazas restantes
+const plazas = Math.floor(Math.random() * 10) + 3;
+document.getElementById('plazasRestantes').textContent = plazas;
+
+// ============================================================
+// ★ SISTEMA DE PREMIOS: CÓDIGO CANJEABLE ★
+// ============================================================
+//
+// Hay DOS tipos de código, ambos son tokens de un solo uso ("se queman"
+// al usarse) y NUNCA sirven en la misma visita/tirada en la que se
+// generaron — solo en una consulta futura:
+//
+//  · type = "gratis"   → debe funcionar como un token normal de acceso
+//                         a la página de lectura (el mismo sistema que
+//                         ya usa deepseek_html: ?action=validate&token=
+//                         y ?action=burn&token=). Por eso, al ganarlo,
+//                         el código generado tiene que insertarse en la
+//                         MISMA tabla/hoja que usan los tokens pagados,
+//                         para que la página de lectura lo acepte igual
+//                         que si hubiese pagado.
+//
+//  · type = "descuento" (7 / 10 / 15%) → modifica el monto real a pagar
+//                         SOLO en Cruz Celta y Rueda Anual (nunca en
+//                         Express). El descuento no se muestra en la
+//                         interfaz (no es información pública), solo se
+//                         aplica silenciosamente al monto enviado al
+//                         backend al iniciar el pago.
+//
+// ⚠️ Los nombres de acción de abajo (generate_gift_token,
+// generate_promo_token, validate_promo, burn_promo) son una PROPUESTA.
+// Necesito el Apps Script real (el mismo que ya usa BACKEND_URL) para
+// implementarlos de forma compatible con la tabla de tokens existente.
+//
+const READING_PAGE_URL = 'deepseek_html_corregido.html'; // ← AJUSTAR a la URL real de la página de lectura
+
+let appliedPromo = null; // { code, percent } si hay un descuento aplicado
+
+// ---------- Generar código de premio en el backend ----------
+async function generarCodigoPremio(tipo, percent) {
+  let params = `action=${tipo === 'gratis' ? 'generate_gift_token' : 'generate_promo_token'}`;
+  if (percent) params += `&percent=${percent}`;
+  try {
+    const res = await fetch(`${BACKEND_URL}?${params}`);
+    const data = await res.json();
+    if (data && data.token) return data.token;
+  } catch (e) {
+    console.error('No se pudo generar el código en el backend:', e);
+  }
+  return null;
+}
+
+// ---------- Validar un código ingresado por el usuario ----------
+async function validarCodigoIngresado(code) {
+  try {
+    const res = await fetch(`${BACKEND_URL}?action=validate_promo&token=${encodeURIComponent(code)}`);
+    const data = await res.json();
+    return data; // { valid, type: 'gratis'|'descuento', percent }
+  } catch (e) {
+    return { valid: false };
+  }
+}
+
+// ============================================================
+// ★ CANJE DE CÓDIGO (sección "¿Tenés un código?") ★
+// ============================================================
+const promoInput = document.getElementById('promoInput');
+const promoBtn = document.getElementById('promoBtn');
+const promoMsg = document.getElementById('promoMsg');
+
+promoBtn.addEventListener('click', async () => {
+  const code = promoInput.value.trim().toUpperCase();
+  if (!code) return;
+  promoBtn.disabled = true;
+  promoMsg.className = 'promo-redeem-msg';
+  promoMsg.textContent = 'Verificando…';
+
+  const data = await validarCodigoIngresado(code);
+
+  if (!data.valid) {
+    promoMsg.className = 'promo-redeem-msg err';
+    promoMsg.textContent = 'Ese código no es válido o ya fue usado.';
+    promoBtn.disabled = false;
+    return;
+  }
+
+  if (data.type === 'gratis') {
+    // Salta directo a la lectura, SIN pasar por el medio de pago.
+    promoMsg.className = 'promo-redeem-msg ok';
+    promoMsg.textContent = '¡Código válido! Redirigiendo a tu lectura…';
+    setTimeout(() => {
+      window.location.href = `${READING_PAGE_URL}?token=${encodeURIComponent(code)}`;
+    }, 900);
+    return;
+  }
+
+  // Tipo descuento: se aplica en silencio, sin mostrar el porcentaje.
+  appliedPromo = { code, percent: data.percent };
+  promoMsg.className = 'promo-redeem-msg ok';
+  promoMsg.textContent = '✓ Código aplicado a tu próxima compra.';
+  promoInput.disabled = true;
+  promoBtn.disabled = true;
+});
+
+// ============================================================
+// ★ RULETA SORPRESA (aparece a los 15s de entrar a la página) ★
+// ============================================================
+const SEGMENTOS_RULETA = [
+  { key: 'gratis',    label: 'GRATIS',            fill: ['#22b06a', '#178a4f'], text: '#ffffff',  shadow: 'rgba(10,60,30,0.6)' },
+  { key: 'descuento', label: '15% OFF', percent:15,fill: ['#4b2e9c', '#331f70'], text: '#a6b4ff',  shadow: 'rgba(10,5,40,0.6)' },
+  { key: 'nada',      label: 'LA PRÓXIMA\nTENDRÁS\nSUERTE', fill: ['#c22a2a', '#93191a'], text: '#f5e6c8', shadow: 'rgba(60,10,10,0.6)', small: true },
+  { key: 'descuento', label: '10% OFF', percent:10,fill: ['#cf58d6', '#a739af'], text: '#5b1f8c',  shadow: 'rgba(255,255,255,0.3)' },
+  { key: 'nada',      label: 'LA PRÓXIMA\nTENDRÁS\nSUERTE', fill: ['#f6d21c', '#e0ab0a'], text: '#a9650b', shadow:'rgba(255,255,255,0.35)', small: true },
+  { key: 'descuento', label: '7% OFF',  percent:7, fill: ['#f0912e', '#d4701a'], text: '#b5341c',  shadow: 'rgba(255,224,170,0.4)' }
+];
+
+const START_ANGLE_R = -Math.PI / 2;
+const ANGULO_R = (2 * Math.PI) / SEGMENTOS_RULETA.length;
+
+const ruletaCanvas = document.getElementById('ruletaCanvas');
+const rctx = ruletaCanvas.getContext('2d');
+let rotacionR = 0;
+let girandoR = false;
+
+function drawMoonR(x, y, r, color){
+  rctx.save(); rctx.translate(x, y);
+  rctx.beginPath();
+  rctx.arc(0, 0, r, 0.35*Math.PI, 1.65*Math.PI);
+  rctx.arc(r*0.55, 0, r*0.92, 1.65*Math.PI, 0.35*Math.PI, true);
+  rctx.closePath(); rctx.fillStyle = color; rctx.fill(); rctx.restore();
+}
+function drawStarR(x, y, r, color){
+  rctx.save(); rctx.translate(x, y); rctx.beginPath();
+  for (let i = 0; i < 5; i++){
+    const a1 = (Math.PI*2/5)*i - Math.PI/2, a2 = a1 + Math.PI/5;
+    rctx.lineTo(Math.cos(a1)*r, Math.sin(a1)*r);
+    rctx.lineTo(Math.cos(a2)*(r*0.42), Math.sin(a2)*(r*0.42));
+  }
+  rctx.closePath(); rctx.fillStyle = color; rctx.fill(); rctx.restore();
+}
+
+function dibujarRuletaSorpresa(rot = 0) {
+  const w = ruletaCanvas.width, h = ruletaCanvas.height;
+  const cx = w/2, cy = h/2;
+  const outerR = w/2 - 6;
+  const ringW = w * 0.075;
+  const innerRingR = outerR - ringW;
+  const wheelR = innerRingR - w*0.012;
+
+  rctx.clearRect(0,0,w,h);
+  rctx.save(); rctx.translate(cx,cy); rctx.rotate(rot);
+
+  const ringGrad = rctx.createRadialGradient(0,0,innerRingR,0,0,outerR);
+  ringGrad.addColorStop(0,'#2c2410'); ringGrad.addColorStop(0.28,'#a9822f');
+  ringGrad.addColorStop(0.5,'#efd28a'); ringGrad.addColorStop(0.72,'#8a6a22'); ringGrad.addColorStop(1,'#241c0c');
+  rctx.beginPath();
+  rctx.arc(0,0,outerR,0,Math.PI*2);
+  rctx.arc(0,0,innerRingR,0,Math.PI*2,true);
+  rctx.fillStyle = ringGrad; rctx.fill('evenodd');
+
+  const medR = (outerR+innerRingR)/2;
+  for (let i=0;i<28;i++){
+    const a=(Math.PI*2/28)*i;
+    const mx=Math.cos(a)*medR, my=Math.sin(a)*medR;
+    rctx.save(); rctx.translate(mx,my); rctx.rotate(a+Math.PI/2);
+    rctx.beginPath(); rctx.arc(0,0,w*0.014,0,Math.PI*2); rctx.fillStyle='#241c0c'; rctx.fill();
+    if (i%2===0) drawStarR(0,0,w*0.0105,'#f3dfa0'); else drawMoonR(0,0,w*0.0095,'#d8cde6');
+    rctx.restore();
+  }
+
+  SEGMENTOS_RULETA.forEach((seg,i)=>{
+    const start = START_ANGLE_R + i*ANGULO_R, end = start+ANGULO_R, mid = start+ANGULO_R/2;
+    const segGrad = rctx.createRadialGradient(0,0,wheelR*0.05,0,0,wheelR);
+    segGrad.addColorStop(0,seg.fill[0]); segGrad.addColorStop(1,seg.fill[1]);
+    rctx.beginPath(); rctx.moveTo(0,0); rctx.arc(0,0,wheelR,start,end); rctx.closePath();
+    rctx.fillStyle = segGrad; rctx.fill();
+    rctx.strokeStyle='rgba(20,15,5,0.55)'; rctx.lineWidth=w*0.006; rctx.stroke();
+
+    let textRot = mid;
+    if (textRot > Math.PI/2) textRot -= Math.PI;
+    if (textRot < -Math.PI/2) textRot += Math.PI;
+    const tr = seg.small ? wheelR*0.56 : wheelR*0.62;
+    rctx.save();
+    rctx.translate(Math.cos(mid)*tr, Math.sin(mid)*tr);
+    rctx.rotate(textRot);
+    rctx.fillStyle = seg.text; rctx.textAlign='center'; rctx.textBaseline='middle';
+    rctx.shadowColor = seg.shadow; rctx.shadowBlur = w*0.006; rctx.shadowOffsetY = w*0.003;
+    if (seg.small){
+      const lines = seg.label.split('\n');
+      const fs = w*0.028;
+      rctx.font = `800 ${fs}px 'Inter', sans-serif`;
+      const lh = fs*1.12, offset = -((lines.length-1)*lh)/2;
+      lines.forEach((line,li)=> rctx.fillText(line,0,offset+li*lh));
+    } else {
+      const fs = seg.label.length > 5 ? w*0.048 : w*0.062;
+      rctx.font = `800 ${fs}px 'Playfair Display', serif`;
+      rctx.fillText(seg.label,0,0);
+    }
+    rctx.restore();
+  });
+
+  rctx.restore();
+}
+dibujarRuletaSorpresa(0);
+
+// ---------- Elegir premio con las probabilidades reales ----------
+// gratis: 0.29%  |  descuento (7/10/15% repartido parejo): 0.95%  |  nada: resto (~98.76%)
+function elegirPremioReal() {
+  const r = Math.random() * 100;
+  if (r < 0.29) {
+    return { key: 'gratis' };
+  }
+  if (r < 0.29 + 0.95) {
+    const opciones = [7, 10, 15];
+    return { key: 'descuento', percent: opciones[Math.floor(Math.random()*opciones.length)] };
+  }
+  return { key: 'nada' };
+}
+
+// Busca, entre los segmentos dibujados, uno cuyo key/percent coincida con el premio real
+function indiceSegmentoParaPremio(premio) {
+  const candidatos = SEGMENTOS_RULETA
+    .map((s, i) => ({ ...s, i }))
+    .filter(s => s.key === premio.key && (premio.key !== 'descuento' || s.percent === premio.percent));
+  if (candidatos.length === 0) {
+    // fallback: cualquier segmento del mismo tipo general
+    const generico = SEGMENTOS_RULETA.map((s,i)=>({...s,i})).filter(s=>s.key===premio.key);
+    return generico.length ? generico[0].i : SEGMENTOS_RULETA.findIndex(s=>s.key==='nada');
+  }
+  return candidatos[Math.floor(Math.random()*candidatos.length)].i;
+}
+
+const ruletaHub = document.getElementById('ruletaHub');
+const ruletaResultado = document.getElementById('ruletaResultado');
+const ruletaCodigoBox = document.getElementById('ruletaCodigoBox');
+const ruletaCodigoTexto = document.getElementById('ruletaCodigoTexto');
+const ruletaCopiarBtn = document.getElementById('ruletaCopiarBtn');
+
+ruletaHub.addEventListener('click', async () => {
+  if (girandoR) return;
+  girandoR = true;
+  ruletaHub.disabled = true;
+  ruletaHub.classList.remove('pulse');
+  ruletaResultado.innerHTML = '';
+  ruletaCodigoBox.classList.remove('visible');
+
+  const premio = elegirPremioReal();
+  const idx = indiceSegmentoParaPremio(premio);
+  const targetMid = START_ANGLE_R + idx*ANGULO_R + ANGULO_R/2;
+  const rotNecesaria = (-Math.PI/2) - targetMid;
+  const vueltas = 6 + Math.random()*2;
+  const rotFinal = rotNecesaria + 2*Math.PI*vueltas;
+
+  const duracion = 5200; // giro largo, con ansiedad creciente
+  const inicio = performance.now();
+  const startRot = rotacionR;
+
+  function animar(now){
+    const elapsed = now - inicio;
+    const progress = Math.min(elapsed/duracion, 1);
+    // easing con "casi-freno" cerca del final para generar tensión
+    const eased = progress < 0.85
+      ? (progress/0.85) * 0.94
+      : 0.94 + (1 - Math.pow(1-((progress-0.85)/0.15), 3)) * 0.06;
+    rotacionR = startRot + rotFinal*eased;
+    dibujarRuletaSorpresa(rotacionR);
+    if (progress < 1) {
+      requestAnimationFrame(animar);
+    } else {
+      finalizarGiro(premio);
+    }
+  }
+  requestAnimationFrame(animar);
+});
+
+async function finalizarGiro(premio) {
+  girandoR = false;
+  ruletaHub.disabled = false;
+
+  if (premio.key === 'nada') {
+    ruletaResultado.innerHTML = `
+      <div class="titulo">✨ Casi...</div>
+      <div class="detalle">Esta vez no salió, pero las cartas siempre te dan otra vuelta. Volvé a intentarlo en tu próxima visita.</div>`;
+    return;
+  }
+
+  ruletaResultado.innerHTML = `<div class="titulo">🎉 ¡Ganaste!</div><div class="detalle">Generando tu código…</div>`;
+  const codigo = await generarCodigoPremio(premio.key, premio.percent);
+
+  if (!codigo) {
+    ruletaResultado.innerHTML = `
+      <div class="titulo">🎉 ¡Ganaste!</div>
+      <div class="detalle">Hubo un problema generando tu código. Escribinos y te lo acreditamos igual.</div>`;
+    return;
+  }
+
+  const detalleTexto = premio.key === 'gratis'
+    ? 'Una lectura completa, gratis. Usalo en tu próxima consulta.'
+    : 'Un descuento para tu próxima consulta (Cruz Celta o Rueda del Año).';
+
+  ruletaResultado.innerHTML = `
+    <div class="titulo">🎉 ¡Ganaste!</div>
+    <div class="detalle">${detalleTexto}</div>`;
+  ruletaCodigoTexto.textContent = codigo;
+  ruletaCodigoBox.classList.add('visible');
+}
+
+ruletaCopiarBtn.addEventListener('click', () => {
+  navigator.clipboard?.writeText(ruletaCodigoTexto.textContent).then(() => {
+    ruletaCopiarBtn.textContent = '¡Copiado!';
+    setTimeout(() => { ruletaCopiarBtn.textContent = 'Copiar'; }, 1600);
+  });
+});
+
+// ---------- Aparición automática a los 15 segundos ----------
+const ruletaOverlay = document.getElementById('ruletaOverlay');
+document.getElementById('ruletaClose').addEventListener('click', () => {
+  ruletaOverlay.classList.remove('show');
+});
+
+if (!sessionStorage.getItem('ruletaMostrada')) {
+  setTimeout(() => {
+    ruletaOverlay.classList.add('show');
+    sessionStorage.setItem('ruletaMostrada', '1');
+  }, 15000);
+}
+</script>
+</body>
+</html>
