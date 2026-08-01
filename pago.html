@@ -1638,7 +1638,7 @@ document.getElementById('plazasRestantes').textContent = plazas;
 //
 //  · type = "gratis"   → debe funcionar como un token normal de acceso
 //                         a la página de lectura (el mismo sistema que
-//                         ya usa deepseek_html: ?action=validate&token=
+//                         ya usa tarot_con_ia-20.html: ?action=validate&token=
 //                         y ?action=burn&token=). Por eso, al ganarlo,
 //                         el código generado tiene que insertarse en la
 //                         MISMA tabla/hoja que usan los tokens pagados,
@@ -1657,7 +1657,7 @@ document.getElementById('plazasRestantes').textContent = plazas;
 // Necesito el Apps Script real (el mismo que ya usa BACKEND_URL) para
 // implementarlos de forma compatible con la tabla de tokens existente.
 //
-const READING_PAGE_URL = 'deepseek_html_corregido.html'; // ← AJUSTAR a la URL real de la página de lectura
+const READING_PAGE_URL = 'https://marsellestarot.github.io/Cartas/tarot_con_ia-20.html';
 
 let appliedPromo = null; // { code, percent } si hay un descuento aplicado
 
@@ -1764,7 +1764,7 @@ function drawStarR(x, y, r, color){
   rctx.closePath(); rctx.fillStyle = color; rctx.fill(); rctx.restore();
 }
 
-function dibujarRuletaSorpresa(rot = 0) {
+function dibujarRuletaSorpresa(rot = 0, highlightIdx = -1) {
   const w = ruletaCanvas.width, h = ruletaCanvas.height;
   const cx = w/2, cy = h/2;
   const outerR = w/2 - 6;
@@ -1823,6 +1823,23 @@ function dibujarRuletaSorpresa(rot = 0) {
     }
     rctx.restore();
   });
+
+  // ★ Resalta con un borde brillante el segmento que REALMENTE ganó
+  // (mismo índice que usa la lógica de premio), para que no haya
+  // ambigüedad visual con dónde quedó el puntero.
+  if (highlightIdx >= 0) {
+    const start = START_ANGLE_R + highlightIdx * ANGULO_R;
+    const end = start + ANGULO_R;
+    rctx.beginPath();
+    rctx.moveTo(0, 0);
+    rctx.arc(0, 0, wheelR, start, end);
+    rctx.closePath();
+    rctx.strokeStyle = '#fff8e2';
+    rctx.lineWidth = w * 0.016;
+    rctx.shadowColor = 'rgba(255,248,226,0.9)';
+    rctx.shadowBlur = w * 0.02;
+    rctx.stroke();
+  }
 
   rctx.restore();
 }
@@ -1890,10 +1907,11 @@ ruletaHub.addEventListener('click', async () => {
       ? (progress/0.85) * 0.94
       : 0.94 + (1 - Math.pow(1-((progress-0.85)/0.15), 3)) * 0.06;
     rotacionR = startRot + rotFinal*eased;
-    dibujarRuletaSorpresa(rotacionR);
     if (progress < 1) {
+      dibujarRuletaSorpresa(rotacionR);
       requestAnimationFrame(animar);
     } else {
+      dibujarRuletaSorpresa(rotacionR, idx); // ★ marca el segmento que ganó de verdad
       finalizarGiro(premio);
     }
   }
