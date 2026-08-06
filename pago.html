@@ -1574,6 +1574,7 @@ sliderContainer.addEventListener('mouseleave', resetInterval);
 // ============================================================
 // Tasas aproximadas solo para mostrar equivalencia local (el cobro real no cambia)
 const TASAS_LOCALES = {
+  // LatAm
   AR: { code: 'ARS', symbol: '$', rate: 1400, name: 'pesos' },
   MX: { code: 'MXN', symbol: '$', rate: 20, name: 'pesos' },
   CO: { code: 'COP', symbol: '$', rate: 4100, name: 'pesos' },
@@ -1582,9 +1583,17 @@ const TASAS_LOCALES = {
   PY: { code: 'PYG', symbol: '₲', rate: 7800, name: 'guaraníes' },
   BO: { code: 'BOB', symbol: 'Bs', rate: 6.9, name: 'bolivianos' },
   GT: { code: 'GTQ', symbol: 'Q', rate: 7.75, name: 'quetzales' },
-  EC: { code: 'USD', symbol: '$', rate: 1, name: 'dólares' },
-  SV: { code: 'USD', symbol: '$', rate: 1, name: 'dólares' },
-  PA: { code: 'USD', symbol: '$', rate: 1, name: 'dólares' },
+  BR: { code: 'BRL', symbol: 'R$', rate: 5.5, name: 'reales' },
+  DO: { code: 'DOP', symbol: 'RD$', rate: 60, name: 'pesos' },
+  CR: { code: 'CRC', symbol: '₡', rate: 520, name: 'colones' },
+  // Dólar oficial
+  US: { code: 'USD', symbol: 'US$', rate: 1, name: 'dólares' },
+  PA: { code: 'USD', symbol: 'US$', rate: 1, name: 'dólares' },
+  EC: { code: 'USD', symbol: 'US$', rate: 1, name: 'dólares' },
+  SV: { code: 'USD', symbol: 'US$', rate: 1, name: 'dólares' },
+  // Europa
+  ES: { code: 'EUR', symbol: '€', rate: 0.92, name: 'euros' },
+  IT: { code: 'EUR', symbol: '€', rate: 0.92, name: 'euros' },
   VE: { code: 'VES', symbol: 'Bs', rate: 55, name: 'bolívares' },
   UY: { code: 'UYU', symbol: '$', rate: 1, name: 'pesos' }
 };
@@ -1597,19 +1606,36 @@ function calcularMontoConDescuento(montoUSD) {
 function formatearLocal(montoUSD) {
   const info = TASAS_LOCALES[paisDetectado] || null;
   const usdFinal = parseFloat(calcularMontoConDescuento(montoUSD));
-  if (!info || info.code === 'USD') {
-    // Sin equivalencia clara: mostrar número redondo sin decir "USD"
-    return info ? `${info.symbol}${usdFinal}` : `$${usdFinal}`;
+  if (!info) {
+    return '$' + usdFinal;
   }
-  let local = Math.round(usdFinal * info.rate);
-  // Redondeos legibles
+  // USD / países dolarizados: mostrar el monto cobrado
+  if (info.code === 'USD') {
+    const n = usdFinal % 1 === 0 ? usdFinal.toString() : usdFinal.toFixed(2);
+    return info.symbol + n;
+  }
+  // EUR: 2 decimales
+  if (info.code === 'EUR') {
+    const euros = (usdFinal * info.rate);
+    const n = euros.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return n + ' €';
+  }
+  // BRL: 2 decimales
+  if (info.code === 'BRL') {
+    const reales = usdFinal * info.rate;
+    const n = reales.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return 'R$ ' + n;
+  }
+  let local = usdFinal * info.rate;
+  // Redondeos legibles según magnitud
   if (local >= 10000) local = Math.round(local / 100) * 100;
   else if (local >= 1000) local = Math.round(local / 50) * 50;
-  const num = local.toLocaleString('es-AR');
-  if (info.symbol === 'S/' || info.symbol === 'Bs' || info.symbol === 'Q' || info.symbol === '₲') {
-    return `${info.symbol} ${num}`;
+  else local = Math.round(local);
+  const num = Math.round(local).toLocaleString('es-AR');
+  if (['S/', 'Bs', 'Q', '₲', 'R$', 'RD$', '₡'].includes(info.symbol)) {
+    return info.symbol + ' ' + num;
   }
-  return `${info.symbol}${num}`;
+  return info.symbol + num;
 }
 
 function actualizarPrecios() {
