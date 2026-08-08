@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Tarot · Sesiones</title>
+    <style>
+        /* Reset y base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* FONDO: amarillo turbo */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #FFCA08;
+            background-image: linear-gradient(160deg, #FFD43B 0%, #FFCA08 40%, #FFC107 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            color: #1A1A1A;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .card {
+            max-width: 420px;
+            width: 100%;
+            background: #FFFEF9;
+            border-radius: 32px;
+            padding: 48px 36px 40px;
+            box-shadow:
+                0 0 0 1px rgba(0, 0, 0, 0.02),
+                0 2px 8px rgba(0, 0, 0, 0.03),
+                0 12px 32px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 1);
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 8px;
+            letter-spacing: -0.6px;
+            line-height: 1.25;
+        }
+
+        .professional-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #334155;
+            margin-bottom: 8px;
+            letter-spacing: -0.1px;
+        }
+
+        .service-tagline {
+            font-size: 0.9rem;
+            color: #475569;
+            font-weight: 400;
+            margin-bottom: 4px;
+            line-height: 1.5;
+        }
+
+        .service-restriction {
+            font-size: 0.82rem;
+            color: #64748b;
+            font-weight: 400;
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        .subhead {
+            color: #475569;
+            font-size: 0.9rem;
+            font-weight: 400;
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        .subhead span {
+            display: inline-block;
+            background: #FFF3B0;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #92400E;
+            margin-right: 6px;
+            letter-spacing: 0.2px;
+        }
+
+        /* Leyenda de reserva → pago */
+        .reserve-note {
+            font-size: 0.78rem;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.45;
+        }
+
+        /* ──────────────────────────────────────────────────────
+           BOTONES: celeste más intenso + texto blanco
+           ────────────────────────────────────────────────────── */
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .btn-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-pay {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 20px 20px;
+            border: none;
+            border-radius: 18px;
+            text-align: center;
+            text-decoration: none;
+            background: #0096C7;
+            color: #ffffff;
+            box-shadow:
+                0 2px 4px rgba(0, 150, 199, 0.25),
+                0 8px 20px rgba(0, 150, 199, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            transition: all 0.22s ease;
+            cursor: pointer;
+            gap: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Shimmer en hover */
+        .btn-pay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: none;
+            pointer-events: none;
+        }
+
+        .btn-pay:hover::before {
+            left: 100%;
+            transition: left 0.6s ease;
+        }
+
+        .btn-pay:hover {
+            background: #00A8D8;
+            transform: translateY(-2px);
+            box-shadow:
+                0 4px 8px rgba(0, 150, 199, 0.3),
+                0 12px 28px rgba(0, 150, 199, 0.22),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-pay:active {
+            transform: translateY(0) scale(0.985);
+            transition: all 0.1s ease;
+        }
+
+        /* Micro-animación de escala del botón del medio */
+        .btn-pay.scale-pulse {
+            animation: btnScalePulse 300ms ease-out forwards;
+        }
+
+        @keyframes btnScalePulse {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.025); }
+            100% { transform: scale(1); }
+        }
+
+        .btn-main {
+            font-weight: 700;
+            font-size: 1.08rem;
+            color: #ffffff;
+            letter-spacing: -0.1px;
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-main .price-tag {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 4px 14px;
+            border-radius: 999px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0;
+        }
+
+        .btn-sub {
+            font-weight: 400;
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 0.1px;
+            line-height: 1.35;
+        }
+
+        /* ──────────────────────────────────────────────────────
+           BLOQUE DE ÍTEMS CON ✓
+           ────────────────────────────────────────────────────── */
+
+        .benefits-block {
+            margin-bottom: 28px;
+            text-align: center;
+        }
+
+        .benefits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .benefits-list div {
+            font-size: 0.84rem;
+            color: #475569;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .payment-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+            padding: 20px 0 0;
+            border-top: 1px solid #F1F5F9;
+        }
+
+        .payment-info .label {
+            text-align: center;
+            font-weight: 500;
+            font-size: 0.75rem;
+            color: #64748b;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .payment-info .methods {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .payment-info .method {
+            font-weight: 600;
+            font-size: 0.72rem;
+            color: #334155;
+            letter-spacing: 0.3px;
+        }
+
+        .payment-info .via {
+            color: #64748b;
+            font-weight: 400;
+            font-size: 0.72rem;
+        }
+
+        .notice-chat {
+            margin-bottom: 24px;
+        }
+
+        .notice-chat .text {
+            font-size: 0.78rem;
+            color: #64748b;
+            line-height: 1.55;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        .notice-chat .text strong {
+            font-weight: 500;
+            color: #334155;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 13px 18px;
+            background: #ECFDF5;
+            border-radius: 16px;
+            border: 1px solid #A7F3D0;
+        }
+
+        .trust-badge .icon {
+            font-size: 1.05rem;
+            line-height: 1;
+        }
+
+        .trust-badge .text {
+            font-size: 0.84rem;
+            color: #065F46;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .trust-badge .highlight {
+            font-weight: 600;
+        }
+
+        p, span, div {
+            line-height: 1.55;
+        }
+
+        /* Ripple effect */
+        .btn-pay .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(0);
+            animation: rippleAnim 0.6s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes rippleAnim {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 440px) {
+            body {
+                padding: 20px 16px;
+            }
+            .card {
+                padding: 36px 24px 32px;
+                border-radius: 28px;
+            }
+            h1 {
+                font-size: 1.55rem;
+            }
+            .btn-pay {
+                padding: 18px 16px;
+            }
+            .btn-main {
+                font-size: 1.02rem;
+            }
+            .buttons {
+                gap: 14px;
+                margin-bottom: 28px;
+            }
+            .professional-name {
+                font-size: 0.9rem;
+            }
+            .service-tagline {
+                font-size: 0.86rem;
+            }
+            .service-restriction {
+                font-size: 0.78rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+
+        <h1>Lecturas de tarot por chat</h1>
+
+        <div class="professional-name">Lic. Dra. Mariana G.</div>
+        <div class="service-tagline">Respuestas claras y confidenciales, solo por chat.</div>
+        <div class="service-restriction">Sin llamadas ni videollamadas.</div>
+
+        <div class="subhead">
+            <span>Uruguay</span> disponibles solo para el país
+        </div>
+
+        <div class="reserve-note">
+            Al tocar <strong>Reservar</strong> accedés al pago seguro de la lectura
+        </div>
+
+        <div class="buttons">
+            <div class="btn-wrapper">
+                <a href="https://mpago.la/2boWgkM" target="_blank" rel="noopener noreferrer" class="btn-pay">
+                    <span class="btn-main">Reservar Express <span class="price-tag">$200</span></span>
+                    <span class="btn-sub">Duda concreta · respuesta breve</span>
+                </a>
+            </div>
+            <div class="btn-wrapper">
+                <a href="https://mpago.la/2kyhjnY" target="_blank" rel="noopener noreferrer" class="btn-pay" id="middleBtn">
+                    <span class="btn-main">Reservar Cruz Celta <span class="price-tag">$350</span></span>
+                    <span class="btn-sub">Amor, trabajo o decisión importante</span>
+                </a>
+            </div>
+            <div class="btn-wrapper">
+                <a href="https://mpago.la/2UKfSMn" target="_blank" rel="noopener noreferrer" class="btn-pay">
+                    <span class="btn-main">Reservar Rueda Anual <span class="price-tag">$500</span></span>
+                    <span class="btn-sub">Los aspectos clave de tu año</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="benefits-block">
+            <div class="benefits-list">
+                <div>✓ Atención 100% personalizada</div>
+                <div>✓ Lectura confidencial</div>
+                <div>✓ Solo chat (sin llamadas ni video)</div>
+            </div>
+        </div>
+
+        <div class="payment-info">
+            <span class="label">Medios de pago aceptados</span>
+            <div class="methods">
+                <span class="method">PREX</span>
+                <span class="method">OCA</span>
+                <span class="method">VISA</span>
+                <span class="method">Mastercard</span>
+                <span class="method">Midinero</span>
+            </div>
+            <span class="via">a través de MercadoPago</span>
+        </div>
+
+        <div class="notice-chat">
+            <div class="text">
+                <strong>Una vez confirmado el pago</strong>, Mercado Pago te redirige automáticamente al chat para coordinar tu lectura.
+            </div>
+        </div>
+
+        <div class="trust-badge">
+            <span class="icon">🔒</span>
+            <span class="text">Pago seguro · <span class="highlight">tus datos están protegidos</span></span>
+        </div>
+
+    </div>
+
+    <script>
+        // Micro-animación de escala del botón del medio
+        setTimeout(function() {
+            var btn = document.getElementById('middleBtn');
+            if (btn) {
+                btn.classList.add('scale-pulse');
+                btn.addEventListener('animationend', function handler() {
+                    btn.classList.remove('scale-pulse');
+                    btn.removeEventListener('animationend', handler);
+                });
+            }
+        }, 2800);
+
+        // RIPPLE al hacer clic
+        document.querySelectorAll('.btn-pay').forEach(function(btn) {
+            btn.addEventListener('mousedown', function(e) {
+                var rect = this.getBoundingClientRect();
+                var x = e.clientX - rect.left;
+                var y = e.clientY - rect.top;
+
+                var ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.width = ripple.style.height = '10px';
+
+                this.appendChild(ripple);
+
+                ripple.addEventListener('animationend', function() {
+                    ripple.remove();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
