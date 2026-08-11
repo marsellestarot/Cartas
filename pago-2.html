@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <title>Marselles · Elige tu lectura</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+  <script>
+    (function() {
+      const url = new URL(window.location.href);
+      const trackingParams = ['fbclid', 'gclid', 'utm_source', 'utm_medium', 'utm_campaign'];
+      let changed = false;
+      trackingParams.forEach(param => {
+        if (url.searchParams.has(param)) {
+          url.searchParams.delete(param);
+          changed = true;
+        }
+      });
+      if (changed) {
+        window.history.replaceState({}, document.title, url.toString());
+      }
+    })();
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0HR3CJ0R1S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0HR3CJ0R1S');
+  </script>
+  <style>
+    /* ===== RESET Y VARIABLES ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #D4AF37;
+      --gold-soft: #E8C9A0;
+      --purple-glow: #A855F7;
+      --bg-deep: #0B0815;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --border-glass: rgba(212, 175, 55, 0.15);
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 10px;
+      background: radial-gradient(ellipse at 20% 20%, #1E1040 0%, #0A0F24 40%, #0B0815 80%);
+      font-family: 'Inter', sans-serif;
+      color: #F0EBE3;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 540px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      margin-bottom: 0;
+      width: 100%;
+    }
+
+    .brand-icon {
+      font-size: 1.4rem;
+      letter-spacing: 0.4em;
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 300;
+      opacity: 0.9;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #FDFBF7 0%, var(--gold-soft) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+      margin-top: 2px;
+    }
+
+    .subhead {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.35em;
+      color: #9A8CB0;
+      margin-top: -2px;
+      font-weight: 300;
+    }
+
+    .header-escape-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .header-escape-wrap img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #D4AF37;
+      flex-shrink: 0;
+    }
+
+    .subhead-escape {
+      font-size: 0.65rem;
+      font-style: italic;
+      opacity: 0.7;
+      color: #C4B5D4;
+      letter-spacing: 0.02em;
+      margin: 0;
+    }
+
+    /* ===== TARJETA PRINCIPAL ===== */
+    .card {
+      width: 100%;
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-glass);
+      border-radius: 28px;
+      padding: 18px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    /* ===== ETIQUETA DE SELECCIÓN ===== */
+    .selection-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding-bottom: 8px;
+    }
+
+    .selection-label .line1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #F0EBE3;
+      letter-spacing: -0.01em;
+    }
+
+    .selection-label .line2 {
+      font-size: 14px;
+      font-weight: 400;
+      text-transform: none;
+      color: #E5E7EB;
+      letter-spacing: 0.02em;
+    }
+
+    /* ===== GRID DE LECTURAS ===== */
+    .tiradas-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 0;
+    }
+
+    .tirada-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .tirada-card:hover {
+      background: rgba(168, 85, 247, 0.06);
+      border-color: rgba(168, 85, 247, 0.25);
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.04);
+    }
+
+    .tirada-card:active {
+      transform: scale(0.98);
+    }
+
+    .tirada-card.active {
+      background: rgba(212, 175, 55, 0.08);
+      border-color: var(--gold);
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.08), inset 0 0 20px rgba(212, 175, 55, 0.03);
+      transform: scale(1.01);
+    }
+
+    .tirada-card.sugerida {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.06);
+      animation: pulseGoldRing 2.2s ease-in-out infinite;
+    }
+
+    .tirada-card.sugerida::after {
+      content: 'RECOMENDADA'; /* unificado */
+      position: absolute;
+      top: -10px;
+      left: 16px;
+      background: var(--gold);
+      color: #0B0815;
+      font-size: 0.5rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 10px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+    }
+
+    .tirada-icon {
+      font-size: 1.3rem;
+      width: 34px;
+      text-align: center;
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+
+    .tirada-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .tirada-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #F0EBE3;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .tirada-desc {
+      font-size: 0.7rem;
+      color: #B0A2C4;
+      margin-top: 0;
+      font-weight: 300;
+    }
+
+    .tirada-popularidad {
+      font-size: 0.5rem;
+      color: #C4B5D4;
+      margin: 2px 0;
+      font-weight: 400;
+    }
+
+    .tirada-cta {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #D4AF37;
+      margin-top: 3px;
+      opacity: 0.9;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tirada-card:hover .tirada-cta {
+      color: #D4AF37;
+      opacity: 1;
+    }
+
+    .tirada-arrow {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.15);
+      flex-shrink: 0;
+      transition: all 0.25s;
+      margin-left: 2px;
+    }
+
+    .tirada-card:hover .tirada-arrow {
+      color: var(--gold);
+      transform: translateX(4px);
+    }
+
+    .tirada-precio {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--gold-soft);
+      background: rgba(212, 175, 55, 0.08);
+      padding: 4px 12px;
+      border-radius: 40px;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      white-space: nowrap;
+      transition: all 0.2s;
+      letter-spacing: 0.02em;
+    }
+
+    .tirada-card.active .tirada-precio {
+      background: rgba(212, 175, 55, 0.18);
+      border-color: var(--gold);
+      box-shadow: 0 0 16px rgba(212, 175, 55, 0.1);
+    }
+
+    .tirada-card .tirada-precio .dots-loading {
+      display: inline-flex;
+      gap: 3px;
+    }
+    .tirada-card .tirada-precio .dots-loading span {
+      animation: pulse 1.4s ease-in-out infinite;
+      opacity: 0.3;
+    }
+    .tirada-card .tirada-precio .dots-loading span:nth-child(2) { animation-delay: 0.2s; }
+    .tirada-card .tirada-precio .dots-loading span:nth-child(3) { animation-delay: 0.4s; }
+
+    .tiradas-grid.processing .tirada-card:not(.active) {
+      opacity: 0.3;
+      pointer-events: none;
+      filter: blur(0.8px);
+    }
+
+    
+    /* ===== BLOQUE PAGO INTERNACIONAL - MINIMALISTA OSCURO ===== */
+    #payment-info-intl {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-align: center;
+      padding: 8px 0;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+    #payment-info-intl.visible { display: flex; }
+    #payment-info-intl .pay-title { display: none; }
+    #payment-info-intl .pay-sub {
+      font-size: 0.58rem;
+      color: #6A5E7C;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    #payment-info-intl .pay-sub::before { content: '🔒'; }
+    #payment-info-intl .pay-icons { display: none; }
+    
+
+    /* ===== RESULTADO RECIENTE (falacia del jugador) ===== */
+    .recent-result {
+      font-size: 0.55rem;
+      color: #8378A0;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding-top: 8px;
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    /* ===== CONFIRMACIÓN ===== */
+    .confirmacion-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.7rem;
+      line-height: 1.5;
+      color: #C4B5D4;
+      background: rgba(168, 85, 247, 0.05);
+      border: 1px solid rgba(168, 85, 247, 0.12);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-top: 0;
+    }
+
+    .confirmacion-note .icono {
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .confirmacion-note strong {
+      color: #E8C9A0;
+      font-weight: 600;
+    }
+
+    /* ===== TESTIMONIOS (carrusel) ===== */
+    .testimonios-section {
+      margin: 0;
+      position: relative;
+    }
+
+    .testimonios-slider {
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 0;
+    }
+
+    .testimonios-track {
+      display: flex;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform;
+      width: 100%;
+    }
+
+    .testimonio-item {
+      flex: 0 0 100%;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border-radius: 8px;
+      transition: background 0.2s;
+      min-height: 120px;
+    }
+
+    .testimonio-item:hover { background: rgba(255, 255, 255, 0.03); }
+
+    .testimonio-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .testimonio-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(212,175,55,0.15);
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    .testimonio-info-nombre {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+      flex: 1;
+    }
+
+    .testimonio-nombre {
+      font-weight: 600;
+      font-size: 0.65rem;
+      color: #F0EBE3;
+    }
+
+    .testimonio-fecha {
+      font-size: 0.55rem;
+      color: #8378A0;
+      letter-spacing: 0.05em;
+    }
+
+    .testimonio-estrellas {
+      color: var(--gold);
+      font-size: 0.5rem;
+      letter-spacing: 2px;
+      margin-left: auto;
+      align-self: center;
+      white-space: nowrap;
+    }
+
+    .testimonio-texto {
+      font-size: 0.7rem;
+      line-height: 1.5;
+      color: #E4DCC8;
+      font-style: italic;
+      margin: 2px 0 0 0;
+      padding-left: 2px;
+      word-wrap: break-word;
+      overflow: visible;
+    }
+
+    .testimonio-texto::before {
+      content: '"';
+      color: var(--gold);
+      opacity: 0.4;
+      font-size: 0.8rem;
+      margin-right: 2px;
+    }
+    .testimonio-texto::after {
+      content: '"';
+      color: var(--gold);
+      opacity: 0.4;
+      font-size: 0.8rem;
+      margin-left: 2px;
+    }
+
+    .testimonio-meta {
+      font-size: 0.55rem;
+      color: #9A8CB0;
+      letter-spacing: 0.02em;
+      margin-top: 4px;
+      line-height: 1.4;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 8px;
+    }
+    .testimonio-meta .verificada {
+      color: #4ADE80;
+      font-weight: 600;
+    }
+    .testimonio-meta .bandera {
+      font-size: 0.7rem;
+      line-height: 1;
+    }
+
+    .testimonios-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 0 4px 0;
+      flex-wrap: wrap;
+    }
+
+    .testimonios-dots .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: 0.3s;
+      flex-shrink: 0;
+    }
+
+    .testimonios-dots .dot.active {
+      background: var(--gold);
+      box-shadow: 0 0 10px rgba(212,175,55,0.4);
+      transform: scale(1.2);
+    }
+
+    .testimonios-dots .dot:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* Desktop: 2 cards visibles */
+    @media (min-width: 640px) {
+      .testimonio-item {
+        flex: 0 0 50%;
+        padding: 14px 16px;
+      }
+      .testimonios-dots .dot {
+        width: 10px;
+        height: 10px;
+      }
+      .header-escape-wrap img {
+        width: 110px;
+        height: 110px;
+      }
+    }
+
+    /* ===== SELECTOR DE MONEDA ===== */
+    .country-toggle-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 0;
+      width: 100%;
+    }
+
+    .country-toggle-hint {
+      font-size: 0.55rem;
+      color: #6A5E7C;
+      line-height: 1.5;
+      text-align: center;
+      letter-spacing: 0.02em;
+      padding: 0 4px;
+    }
+
+    .country-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.6rem;
+      color: #9A8CB0;
+      letter-spacing: 0.04em;
+      padding-top: 0;
+      flex-wrap: wrap;
+    }
+
+    .country-badge {
+      display: flex;
+      gap: 3px;
+      background: rgba(255,255,255,0.03);
+      padding: 3px 8px 3px 5px;
+      border-radius: 40px;
+      border: 1px solid rgba(255,255,255,0.06);
+      cursor: pointer;
+      transition: 0.2s;
+      font-weight: 500;
+      font-size: 0.6rem;
+    }
+
+    .country-badge:hover {
+      border-color: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .country-badge .flag { font-size: 0.65rem; line-height: 1; }
+    .country-badge .moneda { color: #C4B5D4; font-weight: 600; }
+    .country-badge.active {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.08);
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.05);
+    }
+
+    /* ===== BLOQUE DE CONFIANZA ===== */
+    .trust-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 14px;
+      margin-top: 0;
+    }
+
+    .trust-title {
+      font-size: 0.55rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #7A6E8C;
+      text-align: center;
+    }
+
+    .trust-items {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 0.55rem;
+      color: #8A7E9C;
+      line-height: 1.5;
+      padding-left: 4px;
+    }
+
+    .trust-items span { display: flex; align-items: center; gap: 5px; }
+    .trust-items span::before { content: '✓'; color: var(--gold-soft); font-weight: 700; }
+
+    /* ===== ERROR ===== */
+    #errorMsg {
+      font-size: 0.6rem;
+      color: #F87171;
+      text-align: center;
+      display: none;
+      background: rgba(248, 113, 113, 0.08);
+      padding: 6px;
+      border-radius: 10px;
+      border: 1px solid rgba(248, 113, 113, 0.1);
+    }
+
+    /* ===== LOADING ===== */
+    .loading {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 0;
+    }
+
+    .loading-dots {
+      display: flex;
+      gap: 6px;
+      font-size: 1.1rem;
+      color: var(--gold);
+    }
+    .loading-dots span {
+      animation: pulse 1.4s ease-in-out infinite;
+      opacity: 0.3;
+    }
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    .loading-text {
+      font-size: 0.55rem;
+      color: #9A8CB0;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 300;
+      transition: opacity 0.3s;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer-pie {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      margin-top: 0;
+    }
+
+    .metodo-pago {
+      font-size: 0.5rem;
+      color: #5A4E6C;
+      letter-spacing: 0.04em;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .metodo-pago strong { color: #8A7E9C; font-weight: 500; }
+
+    .badges {
+      display: flex;
+      gap: 10px;
+      font-size: 0.45rem;
+      color: #5A4E6C;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding-top: 6px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .badges span {
+      background: rgba(255,255,255,0.02);
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    #cambiarPaisLink {
+      cursor: pointer;
+      color: #5A4E6C;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-size: 0.5rem;
+      transition: 0.2s;
+    }
+    #cambiarPaisLink:hover { color: var(--gold-soft); }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+      animation: fadeInOverlay 0.3s ease;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    @keyframes fadeInOverlay {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-container {
+      max-width: 420px;
+      width: 100%;
+      background: radial-gradient(ellipse at 50% 0%, #1E1040, #0A0F24);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 28px;
+      padding: 24px 20px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(212, 175, 55, 0.05);
+      animation: modalSlideIn 0.35s cubic-bezier(0.21, 1.02, 0.73, 1);
+      position: relative;
+    }
+
+    @keyframes modalSlideIn {
+      from { opacity: 0; transform: scale(0.9) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .modal-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(212, 175, 55, 0.3);
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    .modal-user-info { flex: 1; }
+    .modal-nombre { font-weight: 700; font-size: 0.95rem; color: #F0EBE3; }
+    .modal-fecha { font-size: 0.55rem; color: #5A4E6C; letter-spacing: 0.05em; }
+    .modal-estrellas { color: var(--gold); font-size: 0.75rem; letter-spacing: 3px; align-self: center; }
+
+    .modal-texto {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: #E4DCC8;
+      font-style: italic;
+      margin: 10px 0 14px 0;
+      padding: 0 4px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .modal-texto::before { content: '"'; color: var(--gold); opacity: 0.5; font-size: 1.3rem; margin-right: 5px; }
+    .modal-texto::after { content: '"'; color: var(--gold); opacity: 0.5; font-size: 1.3rem; margin-left: 5px; }
+
+    .modal-timer {
+      text-align: center;
+      font-size: 0.55rem;
+      color: #5A4E6C;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      padding-top: 10px;
+      margin-top: 2px;
+    }
+
+    .modal-timer span { color: var(--gold); font-weight: 700; }
+
+    .modal-texto::-webkit-scrollbar { width: 3px; }
+    .modal-texto::-webkit-scrollbar-track { background: transparent; }
+    .modal-texto::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 10px; }
+
+    /* ===== ANIMACIONES ===== */
+    @keyframes pulseGoldRing {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.25), inset 0 0 15px rgba(212, 175, 55, 0.02); }
+      50% { box-shadow: 0 0 0 8px rgba(212, 175, 55, 0.06), inset 0 0 15px rgba(212, 175, 55, 0.04); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.2; transform: translateY(0); }
+      50% { opacity: 0.9; transform: translateY(-4px); }
+    }
+
+    /* ===== UTILITY ===== */
+    .hidden { display: none !important; }
+
+    /* ===== MODAL ARGENTINA ===== */
+    @keyframes ruletaPopIn {
+      0% { opacity: 0; transform: scale(0.7) translateY(30px); }
+      60% { opacity: 1; }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    #arModalOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 20000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(4, 2, 12, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    #arModalOverlay.show { display: flex; }
+    #arModalOverlay .ar-modal {
+      width: 100%;
+      max-width: 400px;
+      background: radial-gradient(ellipse at 50% 0%, #241640, #0A0F24 70%);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 24px;
+      padding: 22px 18px 18px;
+      text-align: center;
+      box-shadow: 0 0 50px rgba(168, 85, 247, 0.2), 0 24px 60px rgba(0,0,0,0.85);
+      animation: ruletaPopIn 0.45s cubic-bezier(0.21,1.15,0.55,1);
+    }
+    #arModalOverlay .ar-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    #arModalOverlay .ar-sub {
+      font-size: 0.72rem;
+      color: #C4B5D4;
+      line-height: 1.45;
+      margin-bottom: 14px;
+    }
+    #arModalOverlay .ar-precios {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    #arModalOverlay .ar-precio-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(212,175,55,0.18);
+      border-radius: 12px;
+      font-size: 0.78rem;
+    }
+    #arModalOverlay .ar-precio-row .nombre {
+      color: #F0EBE3;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+    }
+    #arModalOverlay .ar-precio-row .monto {
+      color: var(--gold-soft);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    #arModalOverlay .ar-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    #arModalOverlay .ar-btn {
+      display: block;
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--gold);
+      background: linear-gradient(135deg, rgba(212,175,55,0.18), rgba(168,85,247,0.12));
+      color: var(--gold-soft);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    #arModalOverlay .ar-btn:hover {
+      background: linear-gradient(135deg, var(--gold), #e8c9a0);
+      color: #0B0815;
+    }
+    #arModalOverlay .ar-btn small {
+      display: block;
+      font-weight: 400;
+      font-size: 0.65rem;
+      opacity: 0.85;
+      margin-top: 3px;
+      letter-spacing: 0;
+    }
+    #arModalOverlay .ar-leyenda {
+      font-size: 0.62rem;
+      color: #9A8CB0;
+      line-height: 1.5;
+      text-align: left;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    #arModalOverlay .ar-leyenda strong { color: #E8DFF5; }
+
+  
+    .tirada-card.sugerida {
+      transform: scale(1.02);
+      border-color: #D4AF37;
+      background: linear-gradient(135deg, rgba(212,175,55,0.10), rgba(168,85,247,0.06));
+      box-shadow: 0 0 0 1px rgba(212,175,55,0.25), 0 12px 32px rgba(0,0,0,0.5);
+    }
+    .tirada-card.sugerida::after {
+      top: -10px !important;
+      font-size: 0.52rem !important;
+      padding: 3px 10px !important;
+      background: #D4AF37 !important;
+      color: #0B0815 !important;
+    }
+    /* Si tiene dos badges, ocultar el segundo */
+    .tirada-card.sugerida .tirada-card.sugerida { display: none; }
+    /* Selector moneda minimal */
+    .country-toggle-wrapper { opacity: 0.7; }
+    .country-toggle-hint { display: none; }
+    .country-badge { font-size: 0.55rem; border: none; background: rgba(255,255,255,0.05); }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand-icon">✦ ✦ ✦</div>
+    <h1>Oráculo de Marselles</h1>
+    <p class="subhead">Tarot · Conciencia · Transformación</p>
+    <div class="header-escape-wrap">
+      <img src="https://marsellestarot.github.io/Cartas/edited-photo.jpg" alt="Lic. Dra Mariana G." />
+      <p class="subhead-escape">Lic. Dra Mariana G.</p>
+    </div>
+  </header>
+
+  <div class="card">
+
+    <div class="selection-label">
+      <span class="line1">¿Qué necesitas aclarar hoy?</span>
+      <span class="line2">Elige tu lectura. Coordina después del pago.</span>
+    </div>
+
+    <div class="tiradas-grid" id="tiradasGrid">
+      <!-- Express -->
+      <div class="tirada-card" data-monto-usd="25" data-monto-uyu="200" data-nombre="Express" role="button" tabindex="0" aria-label="Reservar lectura Express">
+        <div class="tirada-icon">⚡</div>
+        <div class="tirada-info">
+          <div class="tirada-nombre">Lectura Express</div>
+          <div class="tirada-desc">3 cartas · Respuesta directa</div>
+          <div class="tirada-popularidad">🔥 <span class="pop-text">82% de usuarios la recomiendan</span></div>
+          <div class="tirada-cta">Reservar esta lectura <span class="tirada-arrow">→</span></div>
+        </div>
+        <div class="tirada-precio" id="precioExpress">$25 USD</div>
+      </div>
+
+      <!-- Cruz Celta (sugerida) -->
+      <div class="tirada-card sugerida" data-monto-usd="38" data-monto-uyu="350" data-nombre="Profunda" role="button" tabindex="0" aria-label="Reservar Cruz Celta">
+        <div class="tirada-icon">🔮</div>
+        <div class="tirada-info">
+          <div class="tirada-nombre">Cruz Celta</div>
+          <div class="tirada-desc">10 cartas · Mapa completo</div>
+          <div class="tirada-popularidad">🌟 <span class="pop-text">La más elegida hoy</span></div>
+          <div class="tirada-cta">Reservar esta lectura <span class="tirada-arrow">→</span></div>
+        </div>
+        <div class="tirada-precio" id="precioProfunda">$38 USD</div>
+      </div>
+
+      <!-- Anual -->
+      <div class="tirada-card" data-monto-usd="50" data-monto-uyu="500" data-nombre="Anual" role="button" tabindex="0" aria-label="Reservar Rueda del Año">
+        <div class="tirada-icon">🌙</div>
+        <div class="tirada-info">
+          <div class="tirada-nombre">Rueda del Año</div>
+          <div class="tirada-desc">12 meses · Visión anual</div>
+          <div class="tirada-popularidad">⏳ <span class="pop-text">Solo 3 disponibles hoy</span></div>
+          <div class="tirada-cta">Reservar esta lectura <span class="tirada-arrow">→</span></div>
+        </div>
+        <div class="tirada-precio" id="precioAnual">$50 USD</div>
+      </div>
+    </div>
+
+    <!-- BLOQUE PAGO INTERNACIONAL (visible solo si modo internacional) -->
+    <div id="payment-info-intl" class="visible">
+      <div class="pay-title">PAGO 100% SEGURO CON PAYPAL</div>
+      <div class="pay-sub">Pago protegido con tarjeta · Conversión automática a tu moneda local</div>
+      <div class="pay-icons">
+        <span>VISA</span>
+        <span>MASTERCARD</span>
+        <span>AMEX</span>
+        <span>PAYPAL</span>
+      </div>
+    </div>
+
+    <div class="confirmacion-note">
+      <span class="icono">🔮</span>
+      <span><strong>¿Qué sucede después?</strong> Al confirmar tu pago, accederás directamente a tu consulta. Responde las preguntas que se te presenten y una tarotista te guiará en breve.</span>
+    </div>
+
+    <!-- Testimonios -->
+    <div class="testimonios-section">
+      <div class="testimonios-slider" id="testimoniosSlider">
+        <div class="testimonios-track" id="testimoniosTrack"></div>
+        <div class="testimonios-dots" id="testimoniosDots"></div>
+      </div>
+    </div>
+
+    <!-- FALACIA DEL JUGADOR: resultado reciente -->
+    <div class="recent-result" id="recentResult">
+      🔮 La última persona que hizo la Cruz Celta encontró claridad en el amor
+    </div>
+
+    <!-- SELECTOR DE MONEDA (SIEMPRE VISIBLE) -->
+    <div class="country-toggle-wrapper" id="countryToggleWrapper">
+      <div class="country-toggle-hint">
+        Elige tu moneda de pago.
+      </div>
+      <div class="country-toggle" id="countryToggle">
+        <!-- Los botones se generan dinámicamente en JS -->
+      </div>
+    </div>
+
+    <div id="errorMsg"></div>
+
+    <div class="loading" id="loading">
+      <div class="loading-dots"><span>✦</span><span>✦</span><span>✦</span></div>
+      <div class="loading-text" id="loadingText">Preparando tu acceso...</div>
+    </div>
+
+    <!-- Bloque de confianza -->
+    <div class="trust-block">
+      <div class="trust-title">🔒 Compra con confianza</div>
+      <div class="trust-items">
+        <span>⏳ Solo <strong id="plazasRestantes">8</strong> consultas disponibles hoy</span>
+        <span>🔐 Pago seguro · Sin almacenamiento de datos</span>
+      </div>
+    </div>
+
+    <div class="footer-pie">
+      <div class="metodo-pago" id="pieMetodo">
+        Tu pago se procesa de forma segura a través de <strong>MercadoPago</strong>.<br />
+        En cuanto se confirme, recibirás tu tirada.
+      </div>
+      <div class="badges">
+        <span>🔒 Pago Seguro</span>
+        <span>⚡ Envío inmediato</span>
+      </div>
+      <span id="cambiarPaisLink">Cambiar moneda</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL ARGENTINA -->
+<div id="arModalOverlay">
+  <div class="ar-modal">
+    <div class="ar-title">🇦🇷 Pagos desde Argentina</div>
+    <p class="ar-sub">Por restricciones de PayPal con tarjetas argentinas, el pago se coordina por chat.</p>
+    <div class="ar-precios" id="arPreciosLista">
+      <div class="ar-precio-row"><span class="nombre">⚡ Express</span><span class="monto" id="arPrecioExpress">…</span></div>
+      <div class="ar-precio-row"><span class="nombre">🔮 Cruz Celta</span><span class="monto" id="arPrecioProfunda">…</span></div>
+      <div class="ar-precio-row"><span class="nombre">🌙 Rueda del Año</span><span class="monto" id="arPrecioAnual">…</span></div>
+    </div>
+    <div class="ar-btns">
+      <a class="ar-btn" id="arBtnPrex" href="#" target="_blank" rel="noopener">
+        Prex a Prex
+        <small>Solo desde tu Prex hacia la mía · no bancos ni otras billeteras</small>
+      </a>
+      <a class="ar-btn" id="arBtnWU" href="#" target="_blank" rel="noopener">
+        Giro Western Union
+        <small>Te paso los datos por el chat</small>
+      </a>
+    </div>
+    <div class="ar-leyenda">
+      <strong>¿Por qué no PayPal u otros medios?</strong><br>
+      Las tarjetas argentinas casi siempre son rechazadas por PayPal en cobros en dólares. Por eso solo aceptamos <strong>Prex a Prex</strong> (de Prex a Prex, no transferencia bancaria ni otras apps) o <strong>Western Union</strong>.<br><br>
+      <strong>Al tocar un botón</strong> se abre el chat de Instagram con el mensaje listo. Ahí te paso los datos y, cuando confirme el pago, tu link de lectura.
+    </div>
+  </div>
+</div>
+
+<!-- MODAL TESTIMONIO -->
+<div class="modal-overlay" id="testimonioModal">
+  <div class="modal-container">
+    <div class="modal-header">
+      <img class="modal-avatar" id="modalAvatar" src="" alt="Avatar" />
+      <div class="modal-user-info">
+        <div class="modal-nombre" id="modalNombre">Nombre</div>
+        <div class="modal-fecha" id="modalFecha">Fecha</div>
+      </div>
+      <div class="modal-estrellas" id="modalEstrellas">★★★★★</div>
+    </div>
+    <div class="modal-texto" id="modalTexto">Texto completo del testimonio...</div>
+    <div class="modal-timer">⏳ Cerrando en <span id="modalTimerContador">3</span>s</div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  ★ CONFIGURACIÓN ★
+// ============================================================
+const BACKEND_URL = 'https://script.google.com/macros/s/AKfycby_MZdNhRzElKaOoF6A6-Pfo0BWDwBjGpLzfAwNM7JtTOeSq4V1q6yv-H3bMKQqWdb9gg/exec';
+
+// ============================================================
+// REGISTRO DE ERRORES DE PAGO EN EL BACKEND (hoja ErroresPago)
+// ============================================================
+function registrarErrorPago(readingType, motivo, extra, uncaught) {
+  try {
+    let params = 'action=log_payment_error';
+    params += `&reading_type=${encodeURIComponent(readingType || 'desconocida')}`;
+    params += `&pais=${encodeURIComponent((typeof paisDetectado !== 'undefined' && paisDetectado) || 'desconocido')}`;
+    let motivoFinal = motivo || 'sin_motivo';
+    if (extra) motivoFinal += ' | ' + extra;
+    params += `&motivo=${encodeURIComponent(motivoFinal)}`;
+    params += `&uncaught=${uncaught ? 'true' : 'false'}`;
+    params += `&url=${encodeURIComponent(window.location.href)}`;
+    params += `&userAgent=${encodeURIComponent(navigator.userAgent)}`;
+    fetch(`${BACKEND_URL}?${params}`).catch(() => {});
+  } catch (e) {}
+}
+
+window.addEventListener('error', (e) => {
+  registrarErrorPago('desconocida', 'error_js_no_capturado', e.message || String(e), true);
+});
+window.addEventListener('unhandledrejection', (e) => {
+  const msg = e.reason && e.reason.message ? e.reason.message : String(e.reason);
+  registrarErrorPago('desconocida', 'promesa_rechazada_no_capturada', msg, true);
+});
+
+const TASA_MXN = 20;
+const TASAS = {
+  UY: { code: 'UYU', sym: '$', tasa: 1, fijo: true },
+  MX: { code: 'MXN', sym: '$', tasa: 20 },
+  BO: { code: 'BOB', sym: 'Bs', tasa: 6.9 },
+  AR: { code: 'ARS', sym: '$', tasa: 1400 },
+  CL: { code: 'CLP', sym: '$', tasa: 950 },
+  CO: { code: 'COP', sym: '$', tasa: 4200 },
+  PE: { code: 'PEN', sym: 'S/', tasa: 3.7 },
+  PY: { code: 'PYG', sym: '₲', tasa: 7500 },
+  EC: { code: 'USD', sym: '$', tasa: 1 },
+  BR: { code: 'BRL', sym: 'R$', tasa: 5.5 },
+  VE: { code: 'USD', sym: '$', tasa: 1 },
+  GT: { code: 'GTQ', sym: 'Q', tasa: 7.7 },
+  CR: { code: 'CRC', sym: '₡', tasa: 510 },
+  DO: { code: 'DOP', sym: 'RD$', tasa: 60 },
+  PA: { code: 'USD', sym: '$', tasa: 1 },
+  SV: { code: 'USD', sym: '$', tasa: 1 },
+  HN: { code: 'HNL', sym: 'L', tasa: 24.7 },
+  NI: { code: 'NIO', sym: 'C$', tasa: 36.7 },
+  US: { code: 'USD', sym: '$', tasa: 1 },
+  CA: { code: 'CAD', sym: '$', tasa: 1.36 },
+  ES: { code: 'EUR', sym: '€', tasa: 0.92 },
+  IT: { code: 'EUR', sym: '€', tasa: 0.92 },
+  FR: { code: 'EUR', sym: '€', tasa: 0.92 },
+  DE: { code: 'EUR', sym: '€', tasa: 0.92 },
+  PT: { code: 'EUR', sym: '€', tasa: 0.92 },
+  GB: { code: 'GBP', sym: '£', tasa: 0.79 },
+  CN: { code: 'CNY', sym: '¥', tasa: 7.2 },
+  JP: { code: 'JPY', sym: '¥', tasa: 155 },
+  AU: { code: 'AUD', sym: '$', tasa: 1.52 },
+  CL: { code: 'CLP', sym: '$', tasa: 950 }
+};
+function getTasa(p){
+  if(TASAS[p]) return TASAS[p];
+  const eu=['AT','BE','CY','EE','FI','GR','IE','LV','LT','LU','MT','NL','SK','SI'];
+  if(eu.includes(p)) return {code:'EUR',sym:'€',tasa:0.92};
+  return {code:'USD',sym:'$',tasa:1};
+}
+function fmtLocal(usd, cfg){
+  const v = usd * cfg.tasa;
+  const n = Math.round(v).toLocaleString('es-BO');
+  if(cfg.code==='BOB') return `Bs ${n}`;
+  if(cfg.code==='EUR') return `€${n}`;
+  if(cfg.code==='BRL') return `R$ ${n}`;
+  if(cfg.code==='PEN') return `S/ ${n}`;
+  if(cfg.code==='MXN') return `$${n} MXN`;
+  if(cfg.code==='ARS') return `$${n} ARS`;
+  if(cfg.code==='CLP') return `$${n} CLP`;
+  if(cfg.code==='CAD') return `$${n} CAD`;
+  if(cfg.code==='CNY') return `¥${n} CNY`;
+  return `$${n} ${cfg.code}`;
+}
+
+// ============================================================
+// TESTIMONIOS
+// ============================================================
+const BANDERAS = {
+  AR: '🇦🇷', MX: '🇲🇽', CO: '🇨🇴', CL: '🇨🇱', PE: '🇵🇪',
+  PY: '🇵🇾', BO: '🇧🇴', GT: '🇬🇹', BR: '🇧🇷', DO: '🇩🇴',
+  CR: '🇨🇷', US: '🇺🇸', PA: '🇵🇦', EC: '🇪🇨', SV: '🇸🇻',
+  ES: '🇪🇸', IT: '🇮🇹', VE: '🇻🇪', UY: '🇺🇾'
+};
+const PLANES = ['Express', 'Profunda', 'Anual'];
+
+const TESTIMONIOS_RAW = [
+  { nombre: 'Facundo G.', fecha: '15 ene 2026', avatarColor: '#1E3A8A', texto: 'Me re sirvió la tirada express, estaba con una desición importante y las cartas me dieron la claridad que precisaba. Gracias bo!' },
+  { nombre: 'Valentina R.', fecha: '22 feb 2026', avatarColor: '#B91C1C', texto: 'No sabía si confiar pero la verdad que fue increíble. Viste que uno a veces duda, pero la lectura de la Cruz Celta me mostró cosas que ni yo misma veia. Super recomendable!' },
+  { nombre: 'Rodrigo P.', fecha: '10 mar 2026', avatarColor: '#065F46', texto: 'La verdad es que no soy muy creyente, pero mi polola me insistió y le hice caso. Quede loco con la precisión. La tarotista ha de tener un don especial. Saludos desde Chile po.' },
+  { nombre: 'Agustina M.', fecha: '5 abr 2026', avatarColor: '#6D28D9', texto: 'Ta divino el servicio. Aver si hago la anual el mes que viene porque esta fue muy corta pero certera. Me encantó la energía. Recomiendo 100%' },
+  { nombre: 'Matías L.', fecha: '18 may 2026', avatarColor: '#BE123C', texto: 'Posta que estaba en una encrucijada con el laburo. La tirada me echo luz sobre lo que realmente queria. No es magia, es guía, y me ayudó un montón.' },
+  { nombre: 'Camila S.', fecha: '1 jun 2026', avatarColor: '#0E7490', texto: 'Soy de Santiago y encontré esta página de casualidad. La tirada fue muy bakan, super certera con lo que estoy viviendo en el amor. La recomiendo a todas mis amigas.' },
+  { nombre: 'Sofía T.', fecha: '20 jun 2026', avatarColor: '#854D0E', texto: 'Si, tal cual como dice ahi. Me sentí escuchada y las cartas no me mintieron. Me dio paz interior y eso no tiene precio. Muchas gracias!' },
+  { nombre: 'Tomás V.', fecha: '12 jul 2026', avatarColor: '#1D4ED8', texto: 'Espectacular la verdad. No sabia adonde ir con mi vida amorosa y la tirada me marco el camino. Fue como tener una sesión de terapia pero con cartas. Increible.' },
+  { nombre: 'Ignacio A.', fecha: '19 jul 2026', avatarColor: '#831843', texto: 'Valla que me sorprendió. Le pedí que me hable de mi situación familiar y clavó todas las cartas. Ojo, no es para débiles de corazón porque te dice la verdad. Muy bueno.' },
+  { nombre: 'Julieta Z.', fecha: '28 abr 2026', avatarColor: '#0369A1', texto: 'Hice la tirada anual y fue un montón de información pero re valiosa. Ya pasaron 3 meses y las predicciones se estan cumpliendo. Una locura. Gracias totales.' },
+  { nombre: 'Martín F.', fecha: '30 may 2026', avatarColor: '#7E22CE', texto: 'Yo estaba re perdido con mi emprendimiento. La tirada me dijo que le de para adelante sin miedo y hay vamos, paso a paso. La verdad que me dio el empujón que necesitaba.' },
+  { nombre: 'Francisca P.', fecha: '15 jun 2026', avatarColor: '#0F766E', texto: 'Súper recomendable. La atención es excelente y la lectura fue súper clara. Me ayudó a entender mi relación de pareja desde otra perspectiva. Volvere seguro.' }
+];
+
+function esTextoCoherenteConUY(texto) {
+  const prohibidas = ['Santiago', 'Chile', 'México'];
+  return !prohibidas.some(palabra => texto.includes(palabra));
+}
+
+function asignarPaisesConValidacion() {
+  const paisesDisponibles = ['AR','MX','CO','CL','PE','PY','BO','GT','BR','DO','CR','US','PA','EC','SV','ES','IT','VE','UY'];
+  return TESTIMONIOS_RAW.map(t => {
+    let pais;
+    if (esTextoCoherenteConUY(t.texto)) {
+      pais = paisesDisponibles[Math.floor(Math.random() * paisesDisponibles.length)];
+    } else {
+      const otros = paisesDisponibles.filter(p => p !== 'UY');
+      pais = otros[Math.floor(Math.random() * otros.length)];
+    }
+    return {
+      ...t,
+      pais: pais,
+      plan: PLANES[Math.floor(Math.random() * PLANES.length)],
+      bandera: BANDERAS[pais] || '🌎'
+    };
+  });
+}
+const testimonios = asignarPaisesConValidacion();
+if (!testimonios.some(t => t.pais === 'UY')) {
+  const candidato = testimonios.find(t => esTextoCoherenteConUY(t.texto));
+  if (candidato) { candidato.pais = 'UY'; candidato.bandera = BANDERAS['UY']; }
+}
+
+// ============================================================
+// CARRUSEL DE TESTIMONIOS
+// ============================================================
+const track = document.getElementById('testimoniosTrack');
+const dotsContainer = document.getElementById('testimoniosDots');
+let currentIndex = 0;
+let intervalId = null;
+let isPaused = false;
+let testimoniosFiltrados = [];
+
+function getPaisVisitante() { return paisDetectado || 'UY'; }
+
+function filtrarTestimonios() {
+  const paisUser = getPaisVisitante();
+  const filtrados = testimonios.filter(t => t.pais === paisUser);
+  return filtrados.length > 0 ? filtrados : testimonios;
+}
+
+function buildTestimonioHTML(t) {
+  const initials = t.nombre.split(' ').map(n => n[0]).join('').toUpperCase();
+  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${t.avatarColor.replace('#', '')}&color=fff&size=28&font-size=0.5`;
+  return `
+    <div class="testimonio-item">
+      <div class="testimonio-header">
+        <img class="testimonio-avatar" src="${avatarUrl}" alt="${t.nombre}" />
+        <div class="testimonio-info-nombre">
+          <div class="testimonio-nombre">${t.nombre}</div>
+          <div class="testimonio-fecha">${t.fecha}</div>
+        </div>
+        <div class="testimonio-estrellas">★★★★★</div>
+      </div>
+      <div class="testimonio-texto">${t.texto}</div>
+      <div class="testimonio-meta">
+        <span class="bandera">${t.bandera || '🌎'}</span>
+        <span>${t.nombre}</span>
+        <span>${t.plan}</span>
+        <span class="verificada">Compra verificada</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderizarCarrusel() {
+  testimoniosFiltrados = filtrarTestimonios();
+  if (testimoniosFiltrados.length === 0) testimoniosFiltrados = testimonios;
+  track.innerHTML = testimoniosFiltrados.map(t => buildTestimonioHTML(t)).join('');
+  track.style.transform = 'translateX(0px)';
+  dotsContainer.innerHTML = '';
+  testimoniosFiltrados.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', `Testimonio ${i+1}`);
+    dot.addEventListener('click', () => irAlTestimonio(i));
+    dotsContainer.appendChild(dot);
+  });
+  currentIndex = 0;
+  actualizarPosicion();
+  reiniciarIntervalo();
+}
+
+function actualizarPosicion() {
+  const total = testimoniosFiltrados.length;
+  if (total === 0) return;
+  const itemsPorSlide = window.innerWidth >= 640 ? 2 : 1;
+  const maxIndex = Math.max(0, total - itemsPorSlide);
+  if (currentIndex > maxIndex) currentIndex = maxIndex;
+  const offset = (currentIndex / total) * 100;
+  track.style.transform = `translateX(-${offset}%)`;
+  const dots = dotsContainer.querySelectorAll('.dot');
+  dots.forEach((dot, i) => { dot.classList.toggle('active', i === currentIndex); });
+}
+
+function irAlTestimonio(index) {
+  if (index < 0 || index >= testimoniosFiltrados.length) return;
+  currentIndex = index;
+  actualizarPosicion();
+  reiniciarIntervalo();
+}
+
+function siguienteTestimonio() {
+  if (testimoniosFiltrados.length === 0) return;
+  const total = testimoniosFiltrados.length;
+  const itemsPorSlide = window.innerWidth >= 640 ? 2 : 1;
+  const maxIndex = Math.max(0, total - itemsPorSlide);
+  currentIndex = (currentIndex >= maxIndex) ? 0 : currentIndex + 1;
+  actualizarPosicion();
+}
+
+function reiniciarIntervalo() {
+  if (intervalId) clearInterval(intervalId);
+  if (!isPaused && testimoniosFiltrados.length > 0) {
+    intervalId = setInterval(siguienteTestimonio, 6000);
+  }
+}
+
+function pausarRotacion() { if (intervalId) { clearInterval(intervalId); intervalId = null; } isPaused = true; }
+function reanudarRotacion() { isPaused = false; if (testimoniosFiltrados.length > 0) reiniciarIntervalo(); }
+
+const slider = document.getElementById('testimoniosSlider');
+slider.addEventListener('mouseenter', pausarRotacion);
+slider.addEventListener('mouseleave', reanudarRotacion);
+slider.addEventListener('touchstart', pausarRotacion);
+slider.addEventListener('touchend', reanudarRotacion);
+
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(() => { actualizarPosicion(); reiniciarIntervalo(); }, 200);
+});
+
+// ============================================================
+// ESTADO
+// ============================================================
+let pais = 'UY'; // 'UY' o 'OTRO'
+let paisDetectado = 'ES';
+const idiomaDetectado = ((navigator.language || navigator.userLanguage || 'es').split('-')[0]).toLowerCase();
+let procesando = false;
+
+// ============================================================
+// DOM REFS
+// ============================================================
+const tiradas = document.querySelectorAll('.tirada-card');
+const loading = document.getElementById('loading');
+const loadingText = document.getElementById('loadingText');
+const errorMsg = document.getElementById('errorMsg');
+const pieMetodo = document.getElementById('pieMetodo');
+const paymentInfoIntl = document.getElementById('payment-info-intl');
+const countryToggle = document.getElementById('countryToggle');
+const cambiarPaisLink = document.getElementById('cambiarPaisLink');
+
+const precioExpress = document.getElementById('precioExpress');
+const precioProfunda = document.getElementById('precioProfunda');
+const precioAnual = document.getElementById('precioAnual');
+const preciosMap = { 'Express': precioExpress, 'Profunda': precioProfunda, 'Anual': precioAnual };
+
+// ============================================================
+// MODAL TESTIMONIO
+// ============================================================
+const modalOverlay = document.getElementById('testimonioModal');
+const modalAvatar = document.getElementById('modalAvatar');
+const modalNombre = document.getElementById('modalNombre');
+const modalFecha = document.getElementById('modalFecha');
+const modalEstrellas = document.getElementById('modalEstrellas');
+const modalTexto = document.getElementById('modalTexto');
+const modalTimerContador = document.getElementById('modalTimerContador');
+let modalTimeout = null, countdownInterval = null;
+
+function abrirModal(index) {
+  const t = testimoniosFiltrados[index] || testimonios[0];
+  if (!t) return;
+  if (modalTimeout) clearTimeout(modalTimeout);
+  if (countdownInterval) clearInterval(countdownInterval);
+  const initials = t.nombre.split(' ').map(n => n[0]).join('').toUpperCase();
+  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${t.avatarColor.replace('#', '')}&color=fff&size=48&font-size=0.5`;
+  modalAvatar.src = avatarUrl;
+  modalAvatar.alt = t.nombre;
+  modalNombre.textContent = t.nombre;
+  modalFecha.textContent = t.fecha;
+  modalEstrellas.textContent = '★★★★★';
+  modalTexto.textContent = t.texto;
+  modalOverlay.classList.add('active');
+  let segundos = 3;
+  modalTimerContador.textContent = segundos;
+  countdownInterval = setInterval(() => {
+    segundos -= 1;
+    modalTimerContador.textContent = segundos;
+    if (segundos <= 0) { clearInterval(countdownInterval); countdownInterval = null; }
+  }, 1000);
+  modalTimeout = setTimeout(() => cerrarModal(), 3000);
+}
+
+function cerrarModal() {
+  modalOverlay.classList.remove('active');
+  if (modalTimeout) { clearTimeout(modalTimeout); modalTimeout = null; }
+  if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
+  modalTimerContador.textContent = '3';
+}
+
+modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) cerrarModal(); });
+track.addEventListener('click', (e) => {
+  const item = e.target.closest('.testimonio-item');
+  if (!item) return;
+  const idx = Array.from(track.children).indexOf(item);
+  if (idx >= 0 && idx < testimoniosFiltrados.length) abrirModal(idx);
+});
+
+// ============================================================
+// FUNCIONES DE ACTUALIZACIÓN DE UI
+// ============================================================
+function formatearMXN(monto) {
+  return '$' + Math.round(monto).toLocaleString('es-MX');
+}
+function actualizarPrecios() {
+  tiradas.forEach(card => {
+    const nombre = card.dataset.nombre;
+    const span = preciosMap[nombre];
+    if (!span) return;
+    const montoUYU = parseInt(card.dataset.montoUyu);
+    const montoUSD = parseInt(card.dataset.montoUsd);
+    const cfg = getTasa(pais);
+    if (pais === 'UY') {
+      span.textContent = `$ ${montoUYU}`;
+    } else {
+      span.textContent = fmtLocal(montoUSD, cfg);
+    }
+  });
+
+  // Bloque PayPal
+  paymentInfoIntl.classList.toggle('visible', pais !== 'UY');
+
+  // Selector de moneda (siempre visible)
+  renderSelector();
+
+  // Footer
+  if (pais === 'UY') {
+    pieMetodo.innerHTML = `Tu pago se procesa de forma segura a través de <strong>Mercado Pago</strong>.<br>En cuanto se confirme, recibirás tu tirada.`;
+  } else {
+    pieMetodo.innerHTML = `Tu pago se procesa de forma segura con <strong>PayPal</strong> (tarjeta sin cuenta).<br>En cuanto se confirme, recibirás tu tirada.`;
+  }
+}
+
+function renderSelector() {
+  // Mapa simple de banderas
+  const BANDERAS = { UY:'🇺🇾', BO:'🇧🇴', BR:'🇧🇷', AR:'🇦🇷', CL:'🇨🇱', MX:'🇲🇽', CO:'🇨🇴', PE:'🇵🇪', ES:'🇪🇸', US:'🇺🇸', CA:'🇨🇦', CN:'🇨🇳', GB:'🇬🇧', IT:'🇮🇹', FR:'🇫🇷', DE:'🇩🇪', PY:'🇵🇾', EC:'🇪🇨', GT:'🇬🇹', CR:'🇨🇷', DO:'🇩🇴', PA:'🇵🇦', VE:'🇻🇪', AU:'🇦🇺', JP:'🇯🇵' };
+  const cfg = getTasa(pais);
+  const esUY = pais === 'UY';
+  const flagActual = BANDERAS[pais] || '🌎';
+  
+  let htmlSel = '';
+  if(esUY){
+    htmlSel = `
+      <span style="font-size:0.55rem;color:#6A5E7C">Tu moneda:</span>
+      <span class="country-badge active" data-pais="UY"><span class="flag">🇺🇾</span> UYU - Mercado Pago</span>
+      <span class="country-badge" data-pais="US" style="text-decoration:underline;cursor:pointer;opacity:0.7">Cambiar a internacional</span>
+    `;
+  } else {
+    // Mostrar moneda real del país
+    htmlSel = `
+      <span style="font-size:0.55rem;color:#6A5E7C">Mostrando precios en ${cfg.code} · Detectado: ${flagActual} ${pais}</span>
+      <span class="country-badge" data-pais="UY" style="text-decoration:underline;cursor:pointer;opacity:0.6;font-size:0.5rem">¿Estás en Uruguay? Cambiar a UYU</span>
+    `;
+  }
+  countryToggle.innerHTML = htmlSel;
+  countryToggle.querySelectorAll('.country-badge').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const np = el.dataset.pais;
+      if(np && np!==pais) setPais(np);
+    });
+  });
+}
+
+function setPais(p) {
+  if(!p) p='US';
+  if(p==='OTRO') p='US';
+  pais = p;
+  paisDetectado = p;
+  if(typeof errorMsg !== 'undefined' && errorMsg) errorMsg.style.display = 'none';
+  actualizarPrecios();
+}
+
+// ============================================================
+// INICIO DE PAGO
+// ============================================================
+const frasesEspera = [
+  "Las cartas se están alineando para ti...",
+  "El universo escucha tu pregunta...",
+  "Casi listo, la energía se concentra...",
+  "Tu destino se está escribiendo...",
+  "Un momento, el oráculo está respondiendo..."
+];
+
+async function iniciarPago(card) {
+  if (procesando) return;
+
+  if (paisDetectado === 'AR') {
+    mostrarModalArgentina();
+    return;
+  }
+
+  if (paisDetectado === 'VE') {
+    errorMsg.innerHTML = `Para Venezuela el medio disponible es <strong>Western Union</strong>.<br>Escribime por Instagram y te paso los datos al instante ✨`;
+    errorMsg.style.display = 'block';
+    return;
+  }
+
+  const montoUYU = parseInt(card.dataset.montoUyu);
+  const montoUSD = parseInt(card.dataset.montoUsd);
+  const nombre = card.dataset.nombre;
+
+  let amount;
+  if (pais === 'UY') {
+    amount = montoUYU;
+  } else {
+    amount = montoUSD;
+  }
+
+  const minimo = pais === 'UY' ? 200 : 25;
+  const moneda = pais === 'UY' ? 'UYU' : 'USD';
+  if (amount < minimo) {
+    errorMsg.textContent = `El monto mínimo para ${moneda} es $${minimo}.`;
+    errorMsg.style.display = 'block';
+    return;
+  }
+
+  procesando = true;
+  errorMsg.style.display = 'none';
+  tiradas.forEach(c => c.classList.remove('sugerida'));
+  card.classList.add('active');
+  document.querySelector('.tiradas-grid').classList.add('processing');
+
+  const precioEl = preciosMap[nombre];
+  const precioOriginal = precioEl ? precioEl.innerHTML : '';
+  if (precioEl) {
+    precioEl.innerHTML = `<span class="dots-loading"><span>✦</span><span>✦</span><span>✦</span></span>`;
+  }
+
+  loading.style.display = 'flex';
+  loadingText.textContent = `Preparando tu acceso a ${nombre === 'Profunda' ? 'la Cruz Celta' : nombre === 'Anual' ? 'la Rueda del Año' : 'la Lectura Express'}...`;
+
+  let fraseIdx = 0;
+  const intervalFrases = setInterval(() => {
+    loadingText.textContent = frasesEspera[fraseIdx % frasesEspera.length];
+    fraseIdx++;
+  }, 2000);
+
+  try {
+    if (pais === 'UY') {
+      // Mercado Pago (sin cambios)
+      let params = `action=create_preference&amount=${amount}`;
+      params += `&reading_type=${encodeURIComponent(nombre)}`;
+      const res = await fetch(`${BACKEND_URL}?${params}`);
+      const data = await res.json();
+      if (data.init_point) {
+        clearInterval(intervalFrases);
+        window.location.href = data.init_point;
+      } else {
+        registrarErrorPago(nombre, 'error_creando_preferencia_mp', data.error || 'sin_init_point');
+        throw new Error(data.error || 'No se pudo generar el acceso.');
+      }
+    } else {
+      // ★ PayPal clásico: generamos token único y armamos formulario _xclick
+      let params = `action=create_paypal_token&amount=${amount}`;
+      params += `&reading_type=${encodeURIComponent(nombre)}`;
+      params += `&country=${paisDetectado}&lang=${idiomaDetectado}`;
+      const res = await fetch(`${BACKEND_URL}?${params}`);
+      const data = await res.json();
+
+      if (data.error || !data.token) {
+        registrarErrorPago(nombre, 'error_creando_token_paypal', data.error || 'sin_token');
+        throw new Error(data.error || data.message || 'No se pudo generar el acceso.');
+      }
+
+      // Armar y enviar formulario clásico de PayPal
+      clearInterval(intervalFrases);
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'https://www.paypal.com/cgi-bin/webscr';
+      form.style.display = 'none';
+
+      const fields = {
+        cmd: '_xclick',
+        business: data.business,
+        item_name: data.item_name,
+        amount: data.amount,
+        currency_code: 'USD',
+        custom: data.token,                    // ← el token único va acá
+        return: data.return_url,               // al terminar → oracle con ?token=
+        cancel_return: data.cancel_url,
+        notify_url: data.notify_url,           // IPN → Apps Script
+        no_shipping: '1',
+        no_note: '1',
+        rm: '1',                               // GET en el return
+        lc: (paisDetectado || 'ES').toUpperCase().slice(0, 2),
+        landing_page: 'Billing'                // fuerza formulario de tarjeta primero
+      };
+
+      for (const [name, value] of Object.entries(fields)) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = value;
+        form.appendChild(input);
+      }
+
+      document.body.appendChild(form);
+      form.submit();
+    }
+  } catch (e) {
+    clearInterval(intervalFrases);
+    procesando = false;
+    loading.style.display = 'none';
+    document.querySelector('.tiradas-grid').classList.remove('processing');
+    card.classList.remove('active');
+    if (precioEl) precioEl.innerHTML = precioOriginal;
+    errorMsg.textContent = 'Hubo un problema con el servidor: ' + (e.message || 'intentá de nuevo');
+    errorMsg.style.display = 'block';
+    console.error('❌ Error en pago:', e);
+    registrarErrorPago(nombre, 'excepcion_iniciar_pago', e.message || String(e));
+  }
+}
+
+tiradas.forEach(card => {
+  card.addEventListener('click', () => iniciarPago(card));
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); iniciarPago(card); }
+  });
+});
+
+// ============================================================
+// PRESELECCIÓN POR ENLACE
+// ============================================================
+function preseleccionarDesdeEnlace() {
+  const params = new URLSearchParams(window.location.search);
+  const slug = (params.get('tirada') || '').toLowerCase().trim();
+  const slugMap = { 'express': 'Express', 'cruzceltic': 'Profunda', 'profunda': 'Profunda', 'cruz': 'Profunda', 'anual': 'Anual' };
+  const nombreObjetivo = slugMap[slug];
+  if (!nombreObjetivo) return;
+  const cardObjetivo = Array.from(tiradas).find(c => c.dataset.nombre === nombreObjetivo);
+  if (!cardObjetivo) return;
+  cardObjetivo.classList.add('sugerida');
+  setTimeout(() => { cardObjetivo.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 400);
+}
+
+// ============================================================
+// DETECCIÓN DE PAÍS Y ARGENTINA
+// ============================================================
+const IG_USER = 'Marselles.tarot';
+function igLink(texto) { return 'https://ig.me/m/' + IG_USER + '?text=' + encodeURIComponent(texto); }
+
+async function obtenerTasaARS() {
+  try {
+    const r = await fetch('https://api.frankfurter.app/latest?from=USD&to=ARS');
+    if (r.ok) { const d = await r.json(); if (d && d.rates && d.rates.ARS) return d.rates.ARS; }
+  } catch (e) {}
+  try {
+    const r = await fetch('https://open.er-api.com/v6/latest/USD');
+    if (r.ok) { const d = await r.json(); if (d && d.rates && d.rates.ARS) return d.rates.ARS; }
+  } catch (e) {}
+  return 1400;
+}
+
+function formatearARS(n) { return '$' + Math.round(n).toLocaleString('es-AR'); }
+
+async function mostrarModalArgentina() {
+  const overlay = document.getElementById('arModalOverlay');
+  if (!overlay) return;
+  const preciosUSD = { Express: 25, Profunda: 37.5, Anual: 50 };
+  const tasa = await obtenerTasaARS();
+  const arsExpress = Math.round(preciosUSD.Express * tasa / 100) * 100;
+  const arsProfunda = Math.round(preciosUSD.Profunda * tasa / 100) * 100;
+  const arsAnual = Math.round(preciosUSD.Anual * tasa / 100) * 100;
+  const elE = document.getElementById('arPrecioExpress');
+  const elP = document.getElementById('arPrecioProfunda');
+  const elA = document.getElementById('arPrecioAnual');
+  if (elE) elE.textContent = formatearARS(arsExpress) + ' ARS';
+  if (elP) elP.textContent = formatearARS(arsProfunda) + ' ARS';
+  if (elA) elA.textContent = formatearARS(arsAnual) + ' ARS';
+  document.getElementById('arBtnPrex').href = igLink('PREX A PREX - Hola, quiero pagar por Prex a Prex');
+  document.getElementById('arBtnWU').href = igLink('WESTERN UNION - Hola, quiero pagar por Western Union');
+  overlay.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+// Detectar país al cargar
+(async function detectarPais() {
+  try {
+    const res = await fetch('https://get.geojs.io/v1/ip/country.json');
+    const data = await res.json();
+    paisDetectado = (data.country || 'US').toUpperCase();
+    setPais(paisDetectado);
+  } catch (e) {
+    paisDetectado = 'US';
+    setPais('US');
+  }
+  if (paisDetectado === 'AR') mostrarModalArgentina();
+  renderizarCarrusel();
+})();
+
+// Manejar retorno de pago rechazado
+(function manejarRetornoPago() {
+  const params = new URLSearchParams(window.location.search);
+  const rechazo = params.get('pago') === 'rechazado' || params.get('cancel') === '1' || params.get('cancelled') === 'true';
+  if (!rechazo) return;
+  const esAR = paisDetectado === 'AR' || params.get('country') === 'AR';
+  setTimeout(() => {
+    errorMsg.innerHTML = esAR
+      ? `Si tu pago fue rechazado, no te preocupes.<br>Podés transferir por <strong>Prex</strong> o <strong>Western Union</strong>.<br>Escribime al chat de Instagram y te paso los datos al instante ✨`
+      : `Si tu pago fue rechazado, escribime por Instagram y te indico otro medio de pago ✨`;
+    errorMsg.style.display = 'block';
+    errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 400);
+})();
+
+// ============================================================
+// INICIALIZACIÓN
+// ============================================================
+actualizarPrecios();
+preseleccionarDesdeEnlace();
+
+// ============================================================
+// ELEMENTOS ADICIONALES (sesgos)
+// ============================================================
+const resultados = [
+  "🔮 La última persona que hizo la Cruz Celta encontró claridad en el amor",
+  "🌟 Quien eligió la Express recibió una respuesta inesperada pero certera",
+  "🌙 La Rueda del Año reveló un cambio importante en la carrera de su consultante",
+  "✨ Un usuario de la Cruz Celta confirmó que sus predicciones se cumplieron en 2 semanas",
+  "🃏 La lectura Express ayudó a alguien a tomar una decisión crucial en minutos"
+];
+document.getElementById('recentResult').textContent = resultados[Math.floor(Math.random() * resultados.length)];
+document.getElementById('plazasRestantes').textContent = Math.floor(Math.random() * 10) + 3;
+
+</script>
+</body>
+</html>
