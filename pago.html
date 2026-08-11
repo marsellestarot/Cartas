@@ -185,264 +185,6 @@
       letter-spacing: 0.02em;
     }
 
-    /* ===== CANJE DE CÓDIGO ===== */
-    .promo-redeem {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      padding: 10px 12px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 14px;
-    }
-    .promo-redeem-label {
-      font-size: 0.6rem;
-      color: #9A8CB0;
-      letter-spacing: 0.04em;
-      text-align: center;
-    }
-    .promo-redeem-row {
-      display: flex;
-      gap: 6px;
-    }
-    .promo-redeem-row input {
-      flex: 1;
-      min-width: 0;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 10px;
-      color: #F0EBE3;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      padding: 8px 10px;
-      outline: none;
-      text-transform: uppercase;
-    }
-    .promo-redeem-row input:focus { border-color: var(--gold); }
-    .promo-redeem-row button {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 0 14px;
-      border-radius: 10px;
-      border: 1px solid var(--gold);
-      background: transparent;
-      color: var(--gold-soft);
-      cursor: pointer;
-      transition: 0.2s;
-      white-space: nowrap;
-    }
-    .promo-redeem-row button:hover { background: var(--gold); color: #0B0815; }
-    .promo-redeem-row button:disabled { opacity: 0.5; cursor: default; }
-    .promo-redeem-msg {
-      font-size: 0.62rem;
-      text-align: center;
-      min-height: 1.2em;
-    }
-    .promo-redeem-msg.ok { color: #4ADE80; }
-    .promo-redeem-msg.err { color: #F87171; }
-
-    /* ===== RULETA SORPRESA ===== */
-    #ruletaOverlay {
-      position: fixed;
-      inset: 0;
-      z-index: 10000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      background: rgba(4,2,10,0.86);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-    }
-    #ruletaOverlay.show { display: flex; }
-    #ruletaOverlay .ruleta-card {
-      position: relative;
-      width: 100%;
-      max-width: 380px;
-      background: radial-gradient(ellipse at 50% 0%, #241640, #0A0F24 70%);
-      border: 1px solid rgba(212,175,55,0.35);
-      border-radius: 28px;
-      padding: 22px 18px 20px;
-      text-align: center;
-      box-shadow: 0 0 60px rgba(168,85,247,0.25), 0 30px 80px rgba(0,0,0,0.9);
-      animation: ruletaPopIn 0.55s cubic-bezier(0.21,1.15,0.55,1);
-    }
-    @keyframes ruletaPopIn {
-      0% { opacity: 0; transform: scale(0.7) translateY(30px); }
-      60% { opacity: 1; }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    #ruletaOverlay .ruleta-close {
-      position: absolute;
-      top: 10px; right: 14px;
-      font-size: 1.1rem;
-      color: #6A5E7C;
-      cursor: pointer;
-      line-height: 1;
-      padding: 4px;
-    }
-    #ruletaOverlay .ruleta-close:hover { color: var(--gold-soft); }
-    #ruletaOverlay h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
-      margin-bottom: 4px;
-      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    #ruletaOverlay .ruleta-sub {
-      font-size: 0.68rem;
-      color: #C4B5D4;
-      margin-bottom: 14px;
-      line-height: 1.4;
-    }
-    .ruleta-wheel-wrapper {
-      position: relative;
-      width: 78%;
-      max-width: 250px;
-      margin: 0 auto;
-      aspect-ratio: 1/1;
-      filter: drop-shadow(0 0 30px rgba(168,85,247,0.35));
-    }
-    .ruleta-wheel-wrapper canvas { width: 100%; height: 100%; display: block; }
-    .ruleta-pointer {
-      position: absolute; top: -6%; left: 50%; transform: translateX(-50%);
-      z-index: 5; display: flex; flex-direction: column; align-items: center;
-      pointer-events: none;
-    }
-    .ruleta-pointer .star-badge {
-      width: 22px; height: 22px; border-radius: 50%;
-      background: radial-gradient(circle at 35% 28%, #fff8e2, #eccb6f 45%, #93711f 100%);
-      border: 1.5px solid #6b5220;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.6rem; color: #6b4a10;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.55);
-      margin-bottom: -7px; z-index: 2;
-    }
-    .ruleta-pointer .arrow-shape {
-      width: 26px; height: 24px;
-      background: linear-gradient(160deg,#f8e6ae 0%, #d4af37 45%, #7f6120 100%);
-      clip-path: polygon(50% 100%, 4% 32%, 22% 0%, 78% 0%, 96% 32%);
-      box-shadow: 0 3px 8px rgba(0,0,0,0.55);
-      border: 1px solid #6b5220;
-    }
-    .ruleta-hub {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      width: 34%; aspect-ratio: 1/1; border-radius: 50%;
-      background: radial-gradient(circle at 32% 26%, #f4dfa4 0%, #c9a24b 30%, #8a6a22 62%, #4a3413 100%);
-      box-shadow: inset 0 2px 4px rgba(255,255,255,0.55), inset 0 -6px 10px rgba(0,0,0,0.55), 0 4px 14px rgba(0,0,0,0.6);
-      display: flex; align-items: center; justify-content: center;
-      border: none; cursor: pointer; z-index: 4;
-    }
-    .ruleta-hub span {
-      font-family: 'Playfair Display', serif; font-weight: 700;
-      font-size: 0.85rem; letter-spacing: 0.03em; color: #3a2708;
-      text-shadow: 0 1px 0 rgba(255,224,160,0.55);
-    }
-    .ruleta-hub:disabled { cursor: default; }
-    .ruleta-hub.pulse { animation: hubPulse 1.4s ease-in-out infinite; }
-    @keyframes hubPulse {
-      0%,100% { box-shadow: inset 0 2px 4px rgba(255,255,255,0.55), inset 0 -6px 10px rgba(0,0,0,0.55), 0 0 0 0 rgba(212,175,55,0.5); }
-      50% { box-shadow: inset 0 2px 4px rgba(255,255,255,0.55), inset 0 -6px 10px rgba(0,0,0,0.55), 0 0 0 10px rgba(212,175,55,0); }
-    }
-    .ruleta-resultado {
-      margin-top: 16px;
-      min-height: 2.4em;
-    }
-    .ruleta-resultado .titulo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.05rem;
-      color: #f0d9a0;
-    }
-    .ruleta-resultado .detalle {
-      font-size: 0.68rem;
-      color: #C4B5D4;
-      margin-top: 4px;
-      line-height: 1.5;
-    }
-    .ruleta-codigo-box {
-      display: none;
-      margin-top: 10px;
-      padding: 10px 12px;
-      background: rgba(212,175,55,0.08);
-      border: 1px dashed rgba(212,175,55,0.4);
-      border-radius: 12px;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .ruleta-codigo-box.visible { display: flex; }
-    .ruleta-codigo-box code {
-      font-size: 0.85rem;
-      letter-spacing: 0.05em;
-      color: var(--gold-soft);
-      font-weight: 700;
-    }
-    .ruleta-codigo-box button {
-      font-size: 0.6rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 5px 10px;
-      border-radius: 8px;
-      border: 1px solid var(--gold);
-      background: transparent;
-      color: var(--gold-soft);
-      cursor: pointer;
-    }
-    .ruleta-codigo-box button:hover { background: var(--gold); color: #0B0815; }
-    .ruleta-warning {
-      font-size: 0.58rem;
-      color: #8378A0;
-      font-style: italic;
-      margin-top: 8px;
-      line-height: 1.5;
-    }
-
-    /* ===== PROMO BANNER ===== */
-    .promo-banner {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-      text-align: center;
-      padding: 10px 14px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(212, 175, 55, 0.15));
-      border: 1px solid rgba(212, 175, 55, 0.35);
-      box-shadow: 0 0 24px rgba(168, 85, 247, 0.15), inset 0 1px 0 rgba(255,255,255,0.06);
-      animation: pulseGoldRing 2.6s ease-in-out infinite;
-    }
-
-    .promo-banner.visible { display: flex; }
-
-    .promo-banner-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .promo-banner-sub {
-      font-size: 0.7rem;
-      color: #E8DFF5;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-    }
-
-    .promo-banner-note {
-      font-size: 0.6rem;
-      color: #B0A2C4;
-      font-style: italic;
-      margin-top: 2px;
-    }
-
     /* ===== GRID DE LECTURAS ===== */
     .tiradas-grid {
       display: flex;
@@ -592,20 +334,6 @@
       background: rgba(212, 175, 55, 0.18);
       border-color: var(--gold);
       box-shadow: 0 0 16px rgba(212, 175, 55, 0.1);
-    }
-
-    .tirada-precio .precio-tachado {
-      color: #8378A0;
-      text-decoration: line-through;
-      font-weight: 500;
-      opacity: 0.7;
-      margin-right: 6px;
-      font-size: 0.7rem;
-    }
-
-    .tirada-precio .precio-final {
-      color: #4ADE80;
-      font-weight: 800;
     }
 
     .tirada-card .tirada-precio .dots-loading {
@@ -1145,6 +873,11 @@
     .hidden { display: none !important; }
 
     /* ===== MODAL ARGENTINA ===== */
+    @keyframes ruletaPopIn {
+      0% { opacity: 0; transform: scale(0.7) translateY(30px); }
+      60% { opacity: 1; }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
     #arModalOverlay {
       position: fixed;
       inset: 0;
@@ -1299,15 +1032,9 @@
       <span class="line2">Elige tu lectura. Coordina después del pago.</span>
     </div>
 
-    <div class="promo-banner" id="promoBanner">
-      <div class="promo-banner-title">🌎 PROMOCIÓN INTERNACIONAL</div>
-      <div class="promo-banner-sub">50% OFF por tiempo limitado</div>
-      <div class="promo-banner-note">Descuento aplicado automáticamente al finalizar tu compra.</div>
-    </div>
-
     <div class="tiradas-grid" id="tiradasGrid">
       <!-- Express -->
-      <div class="tirada-card" data-monto-usd="50" data-monto-uyu="200" data-nombre="Express" role="button" tabindex="0" aria-label="Reservar lectura Express">
+      <div class="tirada-card" data-monto-usd="25" data-monto-uyu="200" data-nombre="Express" role="button" tabindex="0" aria-label="Reservar lectura Express">
         <div class="tirada-icon">⚡</div>
         <div class="tirada-info">
           <div class="tirada-nombre">Lectura Express</div>
@@ -1315,11 +1042,11 @@
           <div class="tirada-popularidad">🔥 <span class="pop-text">82% de usuarios la recomiendan</span></div>
           <div class="tirada-cta">Reservar esta lectura <span class="tirada-arrow">→</span></div>
         </div>
-        <div class="tirada-precio" id="precioExpress">$50 USD</div>
+        <div class="tirada-precio" id="precioExpress">$25 USD</div>
       </div>
 
       <!-- Cruz Celta (sugerida) -->
-      <div class="tirada-card sugerida" data-monto-usd="75" data-monto-uyu="350" data-nombre="Profunda" role="button" tabindex="0" aria-label="Reservar Cruz Celta">
+      <div class="tirada-card sugerida" data-monto-usd="38" data-monto-uyu="350" data-nombre="Profunda" role="button" tabindex="0" aria-label="Reservar Cruz Celta">
         <div class="tirada-icon">🔮</div>
         <div class="tirada-info">
           <div class="tirada-nombre">Cruz Celta</div>
@@ -1327,11 +1054,11 @@
           <div class="tirada-popularidad">🌟 <span class="pop-text">La más elegida hoy</span></div>
           <div class="tirada-cta">Reservar esta lectura <span class="tirada-arrow">→</span></div>
         </div>
-        <div class="tirada-precio" id="precioProfunda">$75 USD</div>
+        <div class="tirada-precio" id="precioProfunda">$38 USD</div>
       </div>
 
       <!-- Anual -->
-      <div class="tirada-card" data-monto-usd="100" data-monto-uyu="500" data-nombre="Anual" role="button" tabindex="0" aria-label="Reservar Rueda del Año">
+      <div class="tirada-card" data-monto-usd="50" data-monto-uyu="500" data-nombre="Anual" role="button" tabindex="0" aria-label="Reservar Rueda del Año">
         <div class="tirada-icon">🌙</div>
         <div class="tirada-info">
           <div class="tirada-nombre">Rueda del Año</div>
@@ -1339,7 +1066,7 @@
           <div class="tirada-popularidad">⏳ <span class="pop-text">Solo 3 disponibles hoy</span></div>
           <div class="tirada-cta">Reservar esta lectura <span class="tirada-arrow">→</span></div>
         </div>
-        <div class="tirada-precio" id="precioAnual">$100 USD</div>
+        <div class="tirada-precio" id="precioAnual">$50 USD</div>
       </div>
     </div>
 
@@ -1376,21 +1103,11 @@
     <!-- SELECTOR DE MONEDA (SIEMPRE VISIBLE) -->
     <div class="country-toggle-wrapper" id="countryToggleWrapper">
       <div class="country-toggle-hint">
-        Elige tu moneda de pago. El descuento se aplica automáticamente.
+        Elige tu moneda de pago.
       </div>
       <div class="country-toggle" id="countryToggle">
         <!-- Los botones se generan dinámicamente en JS -->
       </div>
-    </div>
-
-    <!-- CANJE DE CÓDIGO GANADO EN UNA TIRADA ANTERIOR -->
-    <div class="promo-redeem">
-      <div class="promo-redeem-label">¿Tenés un código de una tirada anterior?</div>
-      <div class="promo-redeem-row">
-        <input type="text" id="promoInput" placeholder="Ingresá tu código" maxlength="24" />
-        <button type="button" id="promoBtn">Aplicar</button>
-      </div>
-      <div class="promo-redeem-msg" id="promoMsg"></div>
     </div>
 
     <div id="errorMsg"></div>
@@ -1424,7 +1141,6 @@
   </div>
 </div>
 
-<!-- RULETA SORPRESA -->
 <!-- MODAL ARGENTINA -->
 <div id="arModalOverlay">
   <div class="ar-modal">
@@ -1453,28 +1169,6 @@
   </div>
 </div>
 
-<div id="ruletaOverlay">
-  <div class="ruleta-card">
-    <span class="ruleta-close" id="ruletaClose">✕</span>
-    <h3 id="ruletaTitulo">✨ Antes de irte… ✨</h3>
-    <p class="ruleta-sub" id="ruletaSub">Hay una sorpresa esperándote. Tocá el centro para descubrir tu regalo. El premio es para tu <strong>próxima</strong> consulta.</p>
-    <div class="ruleta-wheel-wrapper">
-      <div class="ruleta-pointer">
-        <div class="star-badge">★</div>
-        <div class="arrow-shape"></div>
-      </div>
-      <canvas id="ruletaCanvas" width="600" height="600"></canvas>
-      <button type="button" class="ruleta-hub pulse" id="ruletaHub"><span>GIRAR</span></button>
-    </div>
-    <div class="ruleta-resultado" id="ruletaResultado"></div>
-    <div class="ruleta-codigo-box" id="ruletaCodigoBox">
-      <code id="ruletaCodigoTexto"></code>
-      <button type="button" id="ruletaCopiarBtn">Copiar</button>
-    </div>
-    <div class="ruleta-warning">Este código es válido únicamente para tu <strong>próxima</strong> consulta, nunca para la de hoy. Guardalo, no se puede recuperar.</div>
-  </div>
-</div>
-
 <!-- MODAL TESTIMONIO -->
 <div class="modal-overlay" id="testimonioModal">
   <div class="modal-container">
@@ -1496,7 +1190,33 @@
 //  ★ CONFIGURACIÓN ★
 // ============================================================
 const BACKEND_URL = 'https://script.google.com/macros/s/AKfycby_MZdNhRzElKaOoF6A6-Pfo0BWDwBjGpLzfAwNM7JtTOeSq4V1q6yv-H3bMKQqWdb9gg/exec';
-const DESCUENTO_INTERNACIONAL = 0.5;
+
+// ============================================================
+// REGISTRO DE ERRORES DE PAGO EN EL BACKEND (hoja ErroresPago)
+// ============================================================
+function registrarErrorPago(readingType, motivo, extra, uncaught) {
+  try {
+    let params = 'action=log_payment_error';
+    params += `&reading_type=${encodeURIComponent(readingType || 'desconocida')}`;
+    params += `&pais=${encodeURIComponent((typeof paisDetectado !== 'undefined' && paisDetectado) || 'desconocido')}`;
+    let motivoFinal = motivo || 'sin_motivo';
+    if (extra) motivoFinal += ' | ' + extra;
+    params += `&motivo=${encodeURIComponent(motivoFinal)}`;
+    params += `&uncaught=${uncaught ? 'true' : 'false'}`;
+    params += `&url=${encodeURIComponent(window.location.href)}`;
+    params += `&userAgent=${encodeURIComponent(navigator.userAgent)}`;
+    fetch(`${BACKEND_URL}?${params}`).catch(() => {});
+  } catch (e) {}
+}
+
+window.addEventListener('error', (e) => {
+  registrarErrorPago('desconocida', 'error_js_no_capturado', e.message || String(e), true);
+});
+window.addEventListener('unhandledrejection', (e) => {
+  const msg = e.reason && e.reason.message ? e.reason.message : String(e.reason);
+  registrarErrorPago('desconocida', 'promesa_rechazada_no_capturada', msg, true);
+});
+
 const TASA_MXN = 20;
 const TASAS = {
   UY: { code: 'UYU', sym: '$', tasa: 1, fijo: true },
@@ -1732,7 +1452,6 @@ const loading = document.getElementById('loading');
 const loadingText = document.getElementById('loadingText');
 const errorMsg = document.getElementById('errorMsg');
 const pieMetodo = document.getElementById('pieMetodo');
-const promoBanner = document.getElementById('promoBanner');
 const paymentInfoIntl = document.getElementById('payment-info-intl');
 const countryToggle = document.getElementById('countryToggle');
 const cambiarPaisLink = document.getElementById('cambiarPaisLink');
@@ -1810,13 +1529,9 @@ function actualizarPrecios() {
     if (pais === 'UY') {
       span.textContent = `$ ${montoUYU}`;
     } else {
-      const original = fmtLocal(montoUSD, cfg);
-      const final = fmtLocal(montoUSD * DESCUENTO_INTERNACIONAL, cfg);
-      // tachado en gris, final en verde/oro segun diseño original pero con moneda local
-      span.innerHTML = `<span class="precio-tachado">${original}</span> <span class="precio-final">${final} hoy</span>`;
+      span.textContent = fmtLocal(montoUSD, cfg);
     }
   });
-  promoBanner.classList.toggle('visible', pais !== 'UY');
 
   // Bloque PayPal
   paymentInfoIntl.classList.toggle('visible', pais !== 'UY');
@@ -1882,8 +1597,6 @@ const frasesEspera = [
   "Un momento, el oráculo está respondiendo..."
 ];
 
-let appliedPromo = null;
-
 async function iniciarPago(card) {
   if (procesando) return;
 
@@ -1906,12 +1619,7 @@ async function iniciarPago(card) {
   if (pais === 'UY') {
     amount = montoUYU;
   } else {
-    amount = parseFloat((montoUSD * DESCUENTO_INTERNACIONAL).toFixed(2));
-  }
-
-  const promoAplicable = appliedPromo && (nombre === 'Profunda' || nombre === 'Anual');
-  if (promoAplicable) {
-    amount = Math.round(amount * (1 - appliedPromo.percent / 100) * 100) / 100;
+    amount = montoUSD;
   }
 
   const minimo = pais === 'UY' ? 200 : 25;
@@ -1944,27 +1652,65 @@ async function iniciarPago(card) {
   }, 2000);
 
   try {
-    const action = pais === 'UY' ? 'create_preference' : 'create_order_paypal';
-    let params = `action=${action}&amount=${amount}`;
-    params += `&reading_type=${encodeURIComponent(nombre)}`;
-    if (pais !== 'UY') {
-      params += `&country=${paisDetectado}&lang=${idiomaDetectado}`;
-    }
-    if (promoAplicable) {
-      params += `&promo_code=${encodeURIComponent(appliedPromo.code)}`;
-    }
-    const res = await fetch(`${BACKEND_URL}?${params}`);
-    const data = await res.json();
-    const redirectUrl = data.init_point || data.approve_url;
-    if (redirectUrl) {
-      clearInterval(intervalFrases);
-      if (promoAplicable) {
-        fetch(`${BACKEND_URL}?action=burn_promo&token=${encodeURIComponent(appliedPromo.code)}`).catch(() => {});
-        appliedPromo = null;
+    if (pais === 'UY') {
+      // Mercado Pago (sin cambios)
+      let params = `action=create_preference&amount=${amount}`;
+      params += `&reading_type=${encodeURIComponent(nombre)}`;
+      const res = await fetch(`${BACKEND_URL}?${params}`);
+      const data = await res.json();
+      if (data.init_point) {
+        clearInterval(intervalFrases);
+        window.location.href = data.init_point;
+      } else {
+        registrarErrorPago(nombre, 'error_creando_preferencia_mp', data.error || 'sin_init_point');
+        throw new Error(data.error || 'No se pudo generar el acceso.');
       }
-      window.location.href = redirectUrl;
     } else {
-      throw new Error(data.error || 'No se pudo generar el acceso.');
+      // ★ PayPal clásico: generamos token único y armamos formulario _xclick
+      let params = `action=create_paypal_token&amount=${amount}`;
+      params += `&reading_type=${encodeURIComponent(nombre)}`;
+      params += `&country=${paisDetectado}&lang=${idiomaDetectado}`;
+      const res = await fetch(`${BACKEND_URL}?${params}`);
+      const data = await res.json();
+
+      if (data.error || !data.token) {
+        registrarErrorPago(nombre, 'error_creando_token_paypal', data.error || 'sin_token');
+        throw new Error(data.error || data.message || 'No se pudo generar el acceso.');
+      }
+
+      // Armar y enviar formulario clásico de PayPal
+      clearInterval(intervalFrases);
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'https://www.paypal.com/cgi-bin/webscr';
+      form.style.display = 'none';
+
+      const fields = {
+        cmd: '_xclick',
+        business: data.business,
+        item_name: data.item_name,
+        amount: data.amount,
+        currency_code: 'USD',
+        custom: data.token,                    // ← el token único va acá
+        return: data.return_url,               // al terminar → oracle con ?token=
+        cancel_return: data.cancel_url,
+        notify_url: data.notify_url,           // IPN → Apps Script
+        no_shipping: '1',
+        no_note: '1',
+        rm: '1',                               // GET en el return
+        lc: (paisDetectado || 'ES').toUpperCase().slice(0, 2)
+      };
+
+      for (const [name, value] of Object.entries(fields)) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = value;
+        form.appendChild(input);
+      }
+
+      document.body.appendChild(form);
+      form.submit();
     }
   } catch (e) {
     clearInterval(intervalFrases);
@@ -1976,6 +1722,7 @@ async function iniciarPago(card) {
     errorMsg.textContent = 'Hubo un problema con el servidor: ' + (e.message || 'intentá de nuevo');
     errorMsg.style.display = 'block';
     console.error('❌ Error en pago:', e);
+    registrarErrorPago(nombre, 'excepcion_iniciar_pago', e.message || String(e));
   }
 }
 
@@ -2089,112 +1836,6 @@ const resultados = [
 ];
 document.getElementById('recentResult').textContent = resultados[Math.floor(Math.random() * resultados.length)];
 document.getElementById('plazasRestantes').textContent = Math.floor(Math.random() * 10) + 3;
-
-// ============================================================
-// SISTEMA DE PREMIOS: CÓDIGO CANJEABLE
-// ============================================================
-const READING_PAGE_URL = 'https://marsellestarot.github.io/Cartas/tarot_con_ia-20.html';
-
-async function generarCodigoPremio(tipo, percent) {
-  let params = `action=${tipo === 'gratis' ? 'generate_gift_token' : 'generate_promo_token'}`;
-  if (percent) params += `&percent=${percent}`;
-  try {
-    const res = await fetch(`${BACKEND_URL}?${params}`);
-    const data = await res.json();
-    if (data && data.token) return data.token;
-  } catch (e) { console.error('Error generando código:', e); }
-  return null;
-}
-
-async function validarCodigoIngresado(code) {
-  try {
-    const res = await fetch(`${BACKEND_URL}?action=validate_promo&token=${encodeURIComponent(code)}`);
-    return await res.json();
-  } catch (e) { return { valid: false }; }
-}
-
-const promoInput = document.getElementById('promoInput');
-const promoBtn = document.getElementById('promoBtn');
-const promoMsg = document.getElementById('promoMsg');
-
-promoBtn.addEventListener('click', async () => {
-  const code = promoInput.value.trim().toUpperCase();
-  if (!code) return;
-  promoBtn.disabled = true;
-  promoMsg.className = 'promo-redeem-msg';
-  promoMsg.textContent = 'Verificando…';
-  const data = await validarCodigoIngresado(code);
-  if (!data.valid) {
-    promoMsg.className = 'promo-redeem-msg err';
-    promoMsg.textContent = 'Ese código no es válido o ya fue usado.';
-    promoBtn.disabled = false;
-    return;
-  }
-  if (data.type === 'gratis') {
-    promoMsg.className = 'promo-redeem-msg ok';
-    promoMsg.textContent = '¡Código válido! Redirigiendo a tu lectura…';
-    setTimeout(() => { window.location.href = `${READING_PAGE_URL}?token=${encodeURIComponent(code)}`; }, 900);
-    return;
-  }
-  appliedPromo = { code, percent: data.percent };
-  promoMsg.className = 'promo-redeem-msg ok';
-  promoMsg.textContent = '✓ Código aplicado a tu próxima compra.';
-  promoInput.disabled = true;
-  promoBtn.disabled = true;
-});
-
-// ============================================================
-// RULETA SORPRESA (sin cambios)
-// ============================================================
-const SEGMENTOS_RULETA = [
-  { key: 'gratis',    label: 'GRATIS',            fill: ['#22b06a', '#178a4f'], text: '#ffffff',  shadow: 'rgba(10,60,30,0.6)' },
-  { key: 'descuento', label: '15% OFF', percent:15,fill: ['#4b2e9c', '#331f70'], text: '#a6b4ff',  shadow: 'rgba(10,5,40,0.6)' },
-  { key: 'nada',      label: 'LA PRÓXIMA\nTENDRÁS\nSUERTE', fill: ['#c22a2a', '#93191a'], text: '#f5e6c8', shadow: 'rgba(60,10,10,0.6)', small: true },
-  { key: 'descuento', label: '10% OFF', percent:10,fill: ['#cf58d6', '#a739af'], text: '#5b1f8c',  shadow: 'rgba(255,255,255,0.3)' },
-  { key: 'nada',      label: 'LA PRÓXIMA\nTENDRÁS\nSUERTE', fill: ['#f6d21c', '#e0ab0a'], text: '#a9650b', shadow:'rgba(255,255,255,0.35)', small: true },
-  { key: 'descuento', label: '7% OFF',  percent:7, fill: ['#f0912e', '#d4701a'], text: '#b5341c',  shadow: 'rgba(255,224,170,0.4)' }
-];
-const START_ANGLE_R = -Math.PI/2, ANGULO_R = (2*Math.PI)/SEGMENTOS_RULETA.length;
-const ruletaCanvas = document.getElementById('ruletaCanvas');
-const rctx = ruletaCanvas.getContext('2d');
-let rotacionR = 0, girandoR = false;
-
-function dibujarRuletaSorpresa(rot=0, highlightIdx=-1) {
-  const w=ruletaCanvas.width, h=ruletaCanvas.height, cx=w/2, cy=h/2, outerR=w/2-6, ringW=w*0.075, innerRingR=outerR-ringW, wheelR=innerRingR-w*0.012;
-  rctx.clearRect(0,0,w,h); rctx.save(); rctx.translate(cx,cy); rctx.rotate(rot);
-  const ringGrad = rctx.createRadialGradient(0,0,innerRingR,0,0,outerR);
-  ringGrad.addColorStop(0,'#2c2410'); ringGrad.addColorStop(0.28,'#a9822f'); ringGrad.addColorStop(0.5,'#efd28a'); ringGrad.addColorStop(0.72,'#8a6a22'); ringGrad.addColorStop(1,'#241c0c');
-  rctx.beginPath(); rctx.arc(0,0,outerR,0,Math.PI*2); rctx.arc(0,0,innerRingR,0,Math.PI*2,true); rctx.fillStyle=ringGrad; rctx.fill('evenodd');
-  const medR=(outerR+innerRingR)/2;
-  for(let i=0;i<28;i++){ const a=(Math.PI*2/28)*i; const mx=Math.cos(a)*medR, my=Math.sin(a)*medR; rctx.save(); rctx.translate(mx,my); rctx.rotate(a+Math.PI/2); rctx.beginPath(); rctx.arc(0,0,w*0.014,0,Math.PI*2); rctx.fillStyle='#241c0c'; rctx.fill(); if(i%2===0){ rctx.beginPath(); for(let j=0;j<5;j++){const a1=(Math.PI*2/5)*j-Math.PI/2,a2=a1+Math.PI/5; rctx.lineTo(Math.cos(a1)*w*0.0105,Math.sin(a1)*w*0.0105); rctx.lineTo(Math.cos(a2)*(w*0.0105*0.42),Math.sin(a2)*(w*0.0105*0.42));} rctx.closePath(); rctx.fillStyle='#f3dfa0'; rctx.fill(); } else { rctx.beginPath(); rctx.arc(0,0,w*0.0095,0.35*Math.PI,1.65*Math.PI); rctx.arc(w*0.0095*0.55,0,w*0.0095*0.92,1.65*Math.PI,0.35*Math.PI,true); rctx.closePath(); rctx.fillStyle='#d8cde6'; rctx.fill(); } rctx.restore(); }
-  SEGMENTOS_RULETA.forEach((seg,i)=>{ const start=START_ANGLE_R+i*ANGULO_R, end=start+ANGULO_R, mid=start+ANGULO_R/2; const segGrad=rctx.createRadialGradient(0,0,wheelR*0.05,0,0,wheelR); segGrad.addColorStop(0,seg.fill[0]); segGrad.addColorStop(1,seg.fill[1]); rctx.beginPath(); rctx.moveTo(0,0); rctx.arc(0,0,wheelR,start,end); rctx.closePath(); rctx.fillStyle=segGrad; rctx.fill(); rctx.strokeStyle='rgba(20,15,5,0.55)'; rctx.lineWidth=w*0.006; rctx.stroke(); let textRot=mid; if(textRot>Math.PI/2) textRot-=Math.PI; if(textRot<-Math.PI/2) textRot+=Math.PI; const tr=seg.small?wheelR*0.56:wheelR*0.62; rctx.save(); rctx.translate(Math.cos(mid)*tr,Math.sin(mid)*tr); rctx.rotate(textRot); rctx.fillStyle=seg.text; rctx.textAlign='center'; rctx.textBaseline='middle'; rctx.shadowColor=seg.shadow; rctx.shadowBlur=w*0.006; rctx.shadowOffsetY=w*0.003; if(seg.small){ const lines=seg.label.split('\n'); const fs=w*0.028; rctx.font=`800 ${fs}px 'Inter', sans-serif`; const lh=fs*1.12, offset=-((lines.length-1)*lh)/2; lines.forEach((line,li)=>rctx.fillText(line,0,offset+li*lh)); } else { const fs=seg.label.length>5?w*0.048:w*0.062; rctx.font=`800 ${fs}px 'Playfair Display', serif`; rctx.fillText(seg.label,0,0); } rctx.restore(); });
-  if(highlightIdx>=0){ const start=START_ANGLE_R+highlightIdx*ANGULO_R, end=start+ANGULO_R; rctx.beginPath(); rctx.moveTo(0,0); rctx.arc(0,0,wheelR,start,end); rctx.closePath(); rctx.strokeStyle='#fff8e2'; rctx.lineWidth=w*0.016; rctx.shadowColor='rgba(255,248,226,0.9)'; rctx.shadowBlur=w*0.02; rctx.stroke(); }
-  rctx.restore();
-}
-dibujarRuletaSorpresa(0);
-
-function elegirPremioReal(){ const r=Math.random()*100; if(r<0.29)return{key:'gratis'}; if(r<0.29+0.95){ const opciones=[7,10,15]; return{key:'descuento', percent:opciones[Math.floor(Math.random()*opciones.length)]}; } return{key:'nada'}; }
-function indiceSegmentoParaPremio(premio){ const candidatos=SEGMENTOS_RULETA.map((s,i)=>({...s,i})).filter(s=>s.key===premio.key&&(premio.key!=='descuento'||s.percent===premio.percent)); if(candidatos.length===0){ const generico=SEGMENTOS_RULETA.map((s,i)=>({...s,i})).filter(s=>s.key===premio.key); return generico.length?generico[0].i:SEGMENTOS_RULETA.findIndex(s=>s.key==='nada'); } return candidatos[Math.floor(Math.random()*candidatos.length)].i; }
-
-const ruletaHub=document.getElementById('ruletaHub'), ruletaResultado=document.getElementById('ruletaResultado'), ruletaCodigoBox=document.getElementById('ruletaCodigoBox'), ruletaCodigoTexto=document.getElementById('ruletaCodigoTexto'), ruletaCopiarBtn=document.getElementById('ruletaCopiarBtn');
-ruletaHub.addEventListener('click', async ()=>{
-  if(girandoR||localStorage.getItem('ruletaGirada'))return; localStorage.setItem('ruletaGirada','1'); girandoR=true; ruletaHub.disabled=true; ruletaHub.classList.remove('pulse'); ruletaResultado.innerHTML=''; ruletaCodigoBox.classList.remove('visible');
-  const premio=elegirPremioReal(); const idx=indiceSegmentoParaPremio(premio); const targetMid=START_ANGLE_R+idx*ANGULO_R+ANGULO_R/2; const rotNecesaria=(-Math.PI/2)-targetMid; const vueltas=6+Math.random()*2; const rotFinal=rotNecesaria+2*Math.PI*vueltas; const duracion=5200; const inicio=performance.now(); const startRot=rotacionR;
-  function animar(now){ const elapsed=now-inicio; const progress=Math.min(elapsed/duracion,1); const eased=progress<0.85?(progress/0.85)*0.94:0.94+(1-Math.pow(1-((progress-0.85)/0.15),3))*0.06; rotacionR=startRot+rotFinal*eased; if(progress<1){ dibujarRuletaSorpresa(rotacionR); requestAnimationFrame(animar); }else{ dibujarRuletaSorpresa(rotacionR,idx); finalizarGiro(premio); } }
-  requestAnimationFrame(animar);
-});
-async function finalizarGiro(premio){ girandoR=false; if(premio.key==='nada'){ ruletaResultado.innerHTML=`<div class="titulo">✨ Casi...</div><div class="detalle">Esta vez no salió, pero las cartas siempre te dan otra vuelta. Volvé a intentarlo en tu próxima visita.</div>`; return; } ruletaResultado.innerHTML=`<div class="titulo">🎉 ¡Ganaste!</div><div class="detalle">Generando tu código…</div>`; const codigo=await generarCodigoPremio(premio.key,premio.percent); if(!codigo){ ruletaResultado.innerHTML=`<div class="titulo">🎉 ¡Ganaste!</div><div class="detalle">Hubo un problema generando tu código. Escribinos y te lo acreditamos igual.</div>`; return; } const detalleTexto=premio.key==='gratis'?'Una lectura completa, gratis. Usalo en tu próxima consulta.':'Un descuento para tu próxima consulta (Cruz Celta o Rueda del Año).'; ruletaResultado.innerHTML=`<div class="titulo">🎉 ¡Ganaste!</div><div class="detalle">${detalleTexto}</div>`; ruletaCodigoTexto.textContent=codigo; ruletaCodigoBox.classList.add('visible'); }
-ruletaCopiarBtn.addEventListener('click',()=>{ navigator.clipboard?.writeText(ruletaCodigoTexto.textContent).then(()=>{ ruletaCopiarBtn.textContent='¡Copiado!'; setTimeout(()=>{ruletaCopiarBtn.textContent='Copiar';},1600); }); });
-
-const ruletaOverlay=document.getElementById('ruletaOverlay');
-document.getElementById('ruletaClose').addEventListener('click',()=>{ ruletaOverlay.classList.remove('show'); });
-
-function mostrarRuletaSiCorresponde(){ if(sessionStorage.getItem('ruletaMostrada')||localStorage.getItem('ruletaGirada')||procesando||ruletaOverlay.classList.contains('show'))return; ruletaOverlay.classList.add('show'); sessionStorage.setItem('ruletaMostrada','1'); }
-let inactividadTimer=null;
-function resetInactividad(){ if(inactividadTimer)clearTimeout(inactividadTimer); inactividadTimer=setTimeout(mostrarRuletaSiCorresponde,28000); }
-['click','touchstart','scroll','keydown','mousemove'].forEach(ev=>{ document.addEventListener(ev,resetInactividad,{passive:true}); });
-resetInactividad();
-document.addEventListener('mouseout',(e)=>{ if(e.clientY<10&&e.relatedTarget===null)mostrarRuletaSiCorresponde(); });
 
 </script>
 </body>
