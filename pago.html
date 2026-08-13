@@ -144,6 +144,30 @@
       margin: 0;
     }
 
+    .whatsapp-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      padding: 5px 12px;
+      background: rgba(37, 211, 102, 0.1);
+      border: 1px solid rgba(37, 211, 102, 0.3);
+      border-radius: 999px;
+      font-size: 0.6rem;
+      color: #C4B5D4;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .whatsapp-chip:hover {
+      background: rgba(37, 211, 102, 0.18);
+      border-color: rgba(37, 211, 102, 0.5);
+    }
+    .whatsapp-chip svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+    }
+
     /* ===== TARJETA PRINCIPAL ===== */
     .card {
       width: 100%;
@@ -1023,6 +1047,10 @@
       <img src="https://marsellestarot.github.io/Cartas/edited-photo.jpg" alt="Lic. Dra Mariana G." />
       <p class="subhead-escape">Lic. Dra Mariana G.</p>
     </div>
+    <a class="whatsapp-chip" href="https://wa.me/+59897748950" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="#25D366" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.868-2.03-.967-.273-.099-.472-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.001 2C6.478 2 2 6.477 2 12c0 1.85.5 3.622 1.436 5.166L2.045 22l4.968-1.34A9.933 9.933 0 0 0 12.001 22C17.523 22 22 17.523 22 12S17.523 2 12.001 2zm5.821 15.716c-.267.751-1.28 1.402-1.767 1.478-.487.076-1.116.076-1.802-.115-.415-.117-.947-.288-1.634-.564-2.876-1.241-4.756-4.116-4.9-4.309-.144-.192-1.176-1.566-1.176-2.988s.744-2.121 1.007-2.41c.263-.288.575-.36.767-.36.192 0 .384.002.552.01.177.008.415-.067.647.494.24.577.816 1.994.888 2.14.072.144.12.312.024.505-.096.192-.144.312-.288.48-.144.168-.302.375-.432.504-.144.144-.293.3-.126.588.168.288.744 1.228 1.596 1.99 1.097.978 2.021 1.28 2.313 1.424.288.144.457.12.625-.072.168-.192.719-.84.912-1.128.192-.288.384-.24.648-.144.264.096 1.68.792 1.968.936.288.144.48.216.552.336.072.12.072.696-.192 1.447z"/></svg>
+      ¿Dudas sobre cómo reservar? Escribime
+    </a>
   </header>
 
   <div class="card">
@@ -1597,6 +1625,36 @@ const frasesEspera = [
   "Un momento, el oráculo está respondiendo..."
 ];
 
+// Reintenta una vez si la primera respuesta no es JSON válido
+// (Apps Script a veces falla en el primer request por "cold start" del lado de Google)
+async function fetchJSONConReintento(url, intentos = 2) {
+  let ultimoError;
+  for (let i = 0; i < intentos; i++) {
+    try {
+      const res = await fetch(url);
+      const texto = await res.text();
+      try {
+        return JSON.parse(texto);
+      } catch (parseErr) {
+        ultimoError = new Error('Respuesta no válida del servidor');
+        if (i < intentos - 1) {
+          await new Promise(r => setTimeout(r, 1200));
+          continue;
+        }
+        throw ultimoError;
+      }
+    } catch (fetchErr) {
+      ultimoError = fetchErr;
+      if (i < intentos - 1) {
+        await new Promise(r => setTimeout(r, 1200));
+        continue;
+      }
+      throw ultimoError;
+    }
+  }
+  throw ultimoError;
+}
+
 async function iniciarPago(card) {
   if (procesando) return;
 
@@ -1656,8 +1714,7 @@ async function iniciarPago(card) {
       // Mercado Pago (sin cambios)
       let params = `action=create_preference&amount=${amount}`;
       params += `&reading_type=${encodeURIComponent(nombre)}`;
-      const res = await fetch(`${BACKEND_URL}?${params}`);
-      const data = await res.json();
+      const data = await fetchJSONConReintento(`${BACKEND_URL}?${params}`);
       if (data.init_point) {
         clearInterval(intervalFrases);
         window.location.href = data.init_point;
@@ -1670,8 +1727,7 @@ async function iniciarPago(card) {
       let params = `action=create_paypal_token&amount=${amount}`;
       params += `&reading_type=${encodeURIComponent(nombre)}`;
       params += `&country=${paisDetectado}&lang=${idiomaDetectado}`;
-      const res = await fetch(`${BACKEND_URL}?${params}`);
-      const data = await res.json();
+      const data = await fetchJSONConReintento(`${BACKEND_URL}?${params}`);
 
       if (data.error || !data.token) {
         registrarErrorPago(nombre, 'error_creando_token_paypal', data.error || 'sin_token');
