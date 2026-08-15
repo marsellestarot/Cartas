@@ -1275,8 +1275,7 @@ const TASAS = {
   GB: { code: 'GBP', sym: '£', tasa: 0.79 },
   CN: { code: 'CNY', sym: '¥', tasa: 7.2 },
   JP: { code: 'JPY', sym: '¥', tasa: 155 },
-  AU: { code: 'AUD', sym: '$', tasa: 1.52 },
-  CL: { code: 'CLP', sym: '$', tasa: 950 }
+  AU: { code: 'AUD', sym: '$', tasa: 1.52 }
 };
 function getTasa(p){
   if(TASAS[p]) return TASAS[p];
@@ -1625,28 +1624,29 @@ const frasesEspera = [
   "Un momento, el oráculo está respondiendo..."
 ];
 
-// Reintenta una vez si la primera respuesta no es JSON válido
-// (Apps Script a veces falla en el primer request por "cold start" del lado de Google)
-async function fetchJSONConReintento(url, intentos = 2) {
+// Reintenta con backoff creciente si la respuesta no es JSON válido
+// (Apps Script a veces falla en el primer request por "cold start" del lado
+// de Google y devuelve una página HTML de error en vez de JSON, lo que
+// rompía JSON.parse con "Unexpected token '<'"). Además, cada intento tiene
+// su propio timeout para no dejar al usuario esperando indefinidamente.
+async function fetchJSONConReintento(url, intentos = 3, timeoutMs = 8000) {
   let ultimoError;
   for (let i = 0; i < intentos; i++) {
     try {
-      const res = await fetch(url);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+      const res = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeoutId);
       const texto = await res.text();
-      try {
-        return JSON.parse(texto);
-      } catch (parseErr) {
-        ultimoError = new Error('Respuesta no válida del servidor');
-        if (i < intentos - 1) {
-          await new Promise(r => setTimeout(r, 1200));
-          continue;
-        }
-        throw ultimoError;
+      const limpio = texto.trim();
+      if (!limpio.startsWith('{') && !limpio.startsWith('[')) {
+        throw new Error('El servidor tardó en responder (cold start) o devolvió un error.');
       }
-    } catch (fetchErr) {
-      ultimoError = fetchErr;
+      return JSON.parse(limpio);
+    } catch (err) {
+      ultimoError = err;
       if (i < intentos - 1) {
-        await new Promise(r => setTimeout(r, 1200));
+        await new Promise(r => setTimeout(r, 1200 * (i + 1)));
         continue;
       }
       throw ultimoError;
@@ -1709,15 +1709,25 @@ async function iniciarPago(card) {
     fraseIdx++;
   }, 2000);
 
+  // Abrimos la ventana/pestaña de destino AHORA, todavía de forma síncrona
+  // dentro del gesto de clic del usuario (nada de lo anterior tuvo un
+  // await). Recién más abajo, una vez resuelto el fetch, le asignamos la
+  // URL final. Esto es lo que evita que Instagram/Facebook/Safari bloqueen
+  // la navegación por "pérdida del gesto de clic".
+  let ventanaPago = window.open('', '_blank');
+  if (ventanaPago) {
+    try { ventanaPago.document.title = 'Conectando con la pasarela de pago...'; } catch (e) {}
+  }
+  let destinoPago = null;
+
   try {
     if (pais === 'UY') {
-      // Mercado Pago (sin cambios)
       let params = `action=create_preference&amount=${amount}`;
       params += `&reading_type=${encodeURIComponent(nombre)}`;
       const data = await fetchJSONConReintento(`${BACKEND_URL}?${params}`);
       if (data.init_point) {
         clearInterval(intervalFrases);
-        window.location.href = data.init_point;
+        destinoPago = data.init_point;
       } else {
         registrarErrorPago(nombre, 'error_creando_preferencia_mp', data.error || 'sin_init_point');
         throw new Error(data.error || 'No se pudo generar el acceso.');
@@ -1734,43 +1744,48 @@ async function iniciarPago(card) {
         throw new Error(data.error || data.message || 'No se pudo generar el acceso.');
       }
 
-      // Armar y enviar formulario clásico de PayPal
+      // Redirección GET limpia (en vez de <form method="POST"> dinámico).
+      // Un formulario inyectado y enviado tras un await pierde el gesto de
+      // clic original y las políticas SameSite/anti-popup de los navegadores
+      // móviles (sobre todo dentro del navegador interno de Instagram/Facebook)
+      // suelen bloquear ese submit. cgi-bin/webscr acepta los mismos
+      // parámetros por querystring, así que armamos la URL y navegamos con
+      // la ventana que ya abrimos al hacer clic (ver más abajo).
       clearInterval(intervalFrases);
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = 'https://www.paypal.com/cgi-bin/webscr';
-      form.style.display = 'none';
-
-      const fields = {
+      const paypalUrl = new URL('https://www.paypal.com/cgi-bin/webscr');
+      const paypalParams = {
         cmd: '_xclick',
         business: data.business,
         item_name: data.item_name,
         amount: data.amount,
         currency_code: 'USD',
-        custom: data.token,                    // ← el token único va acá
-        return: data.return_url,               // al terminar → oracle con ?token=
+        custom: data.token,
+        return: data.return_url,
         cancel_return: data.cancel_url,
-        notify_url: data.notify_url,           // IPN → Apps Script
+        notify_url: data.notify_url,
         no_shipping: '1',
         no_note: '1',
-        rm: '1',                               // GET en el return
+        rm: '1',
         lc: (paisDetectado || 'ES').toUpperCase().slice(0, 2),
-        landing_page: 'Billing'                // fuerza formulario de tarjeta primero
+        landing_page: 'Billing'
       };
-
-      for (const [name, value] of Object.entries(fields)) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = name;
-        input.value = value;
-        form.appendChild(input);
-      }
-
-      document.body.appendChild(form);
-      form.submit();
+      Object.entries(paypalParams).forEach(([k, v]) => paypalUrl.searchParams.append(k, v));
+      destinoPago = paypalUrl.toString();
     }
+
+    if (ventanaPago && !ventanaPago.closed) {
+      ventanaPago.location.href = destinoPago;
+    } else {
+      window.location.href = destinoPago;
+    }
+    loading.style.display = 'none';
+    document.querySelector('.tiradas-grid').classList.remove('processing');
+    procesando = false;
   } catch (e) {
     clearInterval(intervalFrases);
+    if (ventanaPago && !ventanaPago.closed) {
+      try { ventanaPago.close(); } catch (err) {}
+    }
     procesando = false;
     loading.style.display = 'none';
     document.querySelector('.tiradas-grid').classList.remove('processing');
@@ -1848,11 +1863,15 @@ async function mostrarModalArgentina() {
 // Detectar país al cargar
 (async function detectarPais() {
   try {
-    const res = await fetch('https://get.geojs.io/v1/ip/country.json');
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
+    const res = await fetch('https://get.geojs.io/v1/ip/country.json', { signal: controller.signal });
+    clearTimeout(timeoutId);
     const data = await res.json();
     paisDetectado = (data.country || 'US').toUpperCase();
     setPais(paisDetectado);
   } catch (e) {
+    console.warn('GeoJS no disponible (bloqueador o timeout), usando fallback:', e);
     paisDetectado = 'US';
     setPais('US');
   }
