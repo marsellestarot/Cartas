@@ -308,42 +308,43 @@
             line-height: 1.35;
         }
 
-        /* Botón CTA */
-        .pay-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+        /* Botones oficiales PayPal (estructura recomendada + estilo naranja) */
+        .paypal-btn-wrap {
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .paypal-btn-wrap form {
+            width: 100%;
+        }
+
+        .pp-btn {
+            display: block;
             width: 100%;
             text-align: center;
             background: #FF6B00;
             color: #FFFFFF;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 0.92rem;
             font-weight: 600;
             letter-spacing: 0.01em;
-            padding: 11px 18px;
+            height: 2.6rem;
             border-radius: 12px;
-            text-decoration: none;
             border: none;
             cursor: pointer;
             transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
             box-shadow: 0 2px 8px rgba(255, 107, 0, 0.25);
         }
 
-        .pay-button:hover {
+        .pp-btn:hover {
             background: #E55F00;
             transform: translateY(-1px);
             box-shadow: 0 4px 14px rgba(255, 107, 0, 0.35);
         }
 
-        .pay-button:active {
+        .pp-btn:active {
             transform: translateY(0);
             box-shadow: 0 2px 6px rgba(255, 107, 0, 0.25);
-        }
-
-        .pay-button svg {
-            flex-shrink: 0;
         }
 
         /* Trust section */
@@ -432,15 +433,18 @@
                 <div class="card-top">
                     <span class="product-name">Cruz Celta</span>
                     <div class="price-block">
-                        <span class="price" data-usd="37.5">37.5<span>USD</span></span>
+                        <span class="price" data-usd="38">38<span>USD</span></span>
                         <div class="price-converted"></div>
                     </div>
                 </div>
                 <p class="ideal-for">Para entender qué pasó, qué sentís hoy y qué viene</p>
-                <a href="https://www.paypal.com/ncp/payment/82F5WPVYL7DTN" class="pay-button" target="_blank" rel="noopener">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                    Pagar con PayPal
-                </a>
+                <div class="paypal-btn-wrap">
+                    <form action="https://www.paypal.com/ncp/payment/82F5WPVYL7DTN" method="post" target="_blank" style="display:inline-grid;justify-items:center;align-content:start;gap:0.5rem;width:100%;">
+                        <input class="pp-btn" type="submit" value="Pagar ahora" />
+                        <img src="https://www.paypalobjects.com/images/Debit_Credit.svg" alt="cards" />
+                        <section style="font-size:0.75rem;color:#5B6B7C;">Con la tecnología de <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;"/></section>
+                    </form>
+                </div>
             </div>
 
             <!-- Rueda Anual -->
@@ -453,10 +457,13 @@
                     </div>
                 </div>
                 <p class="ideal-for">El siguiente paso, para planificar con calma lo que viene</p>
-                <a href="https://www.paypal.com/ncp/payment/W48X7JMAKAWCQ" class="pay-button" target="_blank" rel="noopener">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                    Pagar con PayPal
-                </a>
+                <div class="paypal-btn-wrap">
+                    <form action="https://www.paypal.com/ncp/payment/W48X7JMAKAWCQ" method="post" target="_blank" style="display:inline-grid;justify-items:center;align-content:start;gap:0.5rem;width:100%;">
+                        <input class="pp-btn" type="submit" value="Pagar ahora" />
+                        <img src="https://www.paypalobjects.com/images/Debit_Credit.svg" alt="cards" />
+                        <section style="font-size:0.75rem;color:#5B6B7C;">Con la tecnología de <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;"/></section>
+                    </form>
+                </div>
             </div>
 
             <!-- Una Carta -->
@@ -469,14 +476,17 @@
                     </div>
                 </div>
                 <p class="ideal-for">Para una duda puntual, no para una historia completa</p>
-                <a href="https://www.paypal.com/ncp/payment/QMJ52Y42WG7CS" class="pay-button" target="_blank" rel="noopener">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                    Pagar con PayPal
-                </a>
+                <div class="paypal-btn-wrap">
+                    <form action="https://www.paypal.com/ncp/payment/QMJ52Y42WG7CS" method="post" target="_blank" style="display:inline-grid;justify-items:center;align-content:start;gap:0.5rem;width:100%;">
+                        <input class="pp-btn" type="submit" value="Pagar ahora" />
+                        <img src="https://www.paypalobjects.com/images/Debit_Credit.svg" alt="cards" />
+                        <section style="font-size:0.75rem;color:#5B6B7C;">Con la tecnología de <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;"/></section>
+                    </form>
+                </div>
             </div>
         </div>
 
-        <p class="no-account-note">¿No tenés cuenta de PayPal? Al tocar "Pagar con PayPal" elegí la opción <strong>"Pagar con tarjeta de débito o crédito"</strong> sin necesidad de iniciar sesión</p>
+        <p class="no-account-note">¿No tenés cuenta de PayPal? Al tocar "Pagar ahora" elegí la opción <strong>"Pagar con tarjeta de débito o crédito"</strong> sin necesidad de iniciar sesión</p>
 
         <div class="trust">
             <div class="trust-icons">
