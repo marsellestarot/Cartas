@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto · Marselles Tarot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #F7F8FA;
+            min-height: 100vh;
+            color: #0B1F3A;
+            padding: 32px 16px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 440px;
+            width: 100%;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #5B6B7C;
+            margin-bottom: 18px;
+        }
+
+        .brand-dot {
+            width: 8px;
+            height: 8px;
+            background: #FF6B00;
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.85rem;
+            color: #5B6B7C;
+            line-height: 1.45;
+            max-width: 340px;
+            margin: 0 auto 28px;
+            text-align: center;
+        }
+
+        .info-card {
+            background: #FFFFFF;
+            border: 1px solid #E5E9EF;
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 24px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+
+        .info-row + .info-row {
+            border-top: 1px solid #F0F2F5;
+        }
+
+        .info-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #FFF3EA;
+            color: #FF6B00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .info-text a {
+            color: #0B1F3A;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.88rem;
+        }
+
+        .info-text span {
+            display: block;
+            font-size: 0.68rem;
+            color: #8A97A8;
+            font-weight: 500;
+        }
+
+        form {
+            background: #FFFFFF;
+            border: 1px solid #E5E9EF;
+            border-radius: 16px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #0B1F3A;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input, textarea {
+            width: 100%;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: #0B1F3A;
+            border: 1px solid #E5E9EF;
+            border-radius: 10px;
+            padding: 11px 13px;
+            background: #F7F8FA;
+        }
+
+        input:focus, textarea:focus {
+            outline: 2px solid #FF6B00;
+            outline-offset: 1px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+
+        button {
+            margin-top: 4px;
+            border: none;
+            border-radius: 12px;
+            padding: 13px;
+            background: #0B1F3A;
+            color: #FFFFFF;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.92rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        button:hover {
+            background: #16305A;
+        }
+
+        .form-note {
+            font-size: 0.68rem;
+            color: #8A97A8;
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        .site-footer {
+            margin-top: 28px;
+            padding-top: 16px;
+            border-top: 1px solid #E5E9EF;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .site-footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px 14px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .site-footer-links a {
+            color: #5B6B7C;
+            text-decoration: none;
+        }
+
+        .site-footer-links a:hover {
+            color: #FF6B00;
+        }
+
+        .footer-note {
+            font-size: 0.72rem;
+            color: #8A97A8;
+            line-height: 1.5;
+        }
+
+        .site-footer-legal {
+            font-size: 0.66rem;
+            color: #8A97A8;
+            text-align: center;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="brand"><span class="brand-dot"></span>Marselles Tarot</div>
+        <h1>Contacto</h1>
+        <p class="subtitle">Escribinos por el medio que prefieras. Respondemos en el día.</p>
+
+        <div class="info-card">
+            <div class="info-row">
+                <div class="info-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6l-10 7L2 6"/><path d="M2 6h20v12H2z"/></svg>
+                </div>
+                <div class="info-text">
+                    <a href="mailto:lumieretarot7@gmail.com">lumieretarot7@gmail.com</a>
+                    <span>Correo electrónico</span>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.014 2C6.486 2 2 6.486 2 12.014c0 2.11.652 4.067 1.766 5.68L2.5 22l4.417-1.213A9.94 9.94 0 0 0 12.014 22c5.528 0 10.014-4.486 10.014-9.986C22.028 6.486 17.542 2 12.014 2zm0 18.13a8.08 8.08 0 0 1-4.362-1.28l-.313-.187-3.246.892.87-3.183-.204-.327a8.089 8.089 0 0 1-1.257-4.32c0-4.482 3.65-8.13 8.152-8.13 4.483 0 8.13 3.648 8.13 8.13 0 4.483-3.647 8.405-7.77 8.405z"/></svg>
+                </div>
+                <div class="info-text">
+                    <a href="https://wa.me/59897748950" target="_blank" rel="noopener">+598 97 748 950</a>
+                    <span>WhatsApp</span>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></svg>
+                </div>
+                <div class="info-text">
+                    <a href="https://instagram.com/marselles.tarot" target="_blank" rel="noopener">@marselles.tarot</a>
+                    <span>Instagram</span>
+                </div>
+            </div>
+        </div>
+
+        <form action="https://formsubmit.co/lumieretarot7@gmail.com" method="POST">
+            <input type="hidden" name="_subject" value="Nuevo mensaje desde marselles.tarot">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://marselles.tarot/contacto.html?enviado=1">
+
+            <div>
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="Nombre" required>
+            </div>
+            <div>
+                <label for="correo">Correo electrónico</label>
+                <input type="email" id="correo" name="Correo" required>
+            </div>
+            <div>
+                <label for="mensaje">Mensaje</label>
+                <textarea id="mensaje" name="Mensaje" required></textarea>
+            </div>
+            <button type="submit">Enviar mensaje</button>
+            <p class="form-note">Al enviar, tu mensaje llega directo a nuestro correo.</p>
+        </form>
+
+        <div class="site-footer">
+            <p class="footer-note">Marselles Tarot · Lecturas personalizadas</p>
+            <div class="site-footer-links">
+                <a href="pago.html">Inicio</a>
+                <a href="terminos.html">Términos y Condiciones</a>
+            </div>
+            <p class="site-footer-legal">
+                Sitio administrado por Christian A. Recalde Núñez · Doc. 4.679.664-9<br>
+                lumieretarot7@gmail.com · +598 97 748 950
+            </p>
+        </div>
+    </div>
+</body>
+</html>

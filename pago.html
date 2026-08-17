@@ -129,6 +129,42 @@
             color: #8A97A8;
             line-height: 1.5;
         }
+
+        .site-footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #E5E9EF;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .site-footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px 14px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .site-footer-links a {
+            color: #5B6B7C;
+            text-decoration: none;
+        }
+
+        .site-footer-links a:hover {
+            color: #FF6B00;
+        }
+
+        .site-footer-legal {
+            font-size: 0.66rem;
+            color: #8A97A8;
+            text-align: center;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
@@ -172,7 +208,18 @@
             </a>
         </div>
 
-        <p class="footer-note">Marselles Tarot · Lecturas personalizadas</p>
+        <div class="site-footer">
+            <p class="footer-note">Marselles Tarot · Lecturas personalizadas</p>
+            <div class="site-footer-links">
+                <a href="contacto.html">Contacto</a>
+                <a href="terminos.html">Términos y Condiciones</a>
+                <a href="https://instagram.com/marselles.tarot" target="_blank" rel="noopener">Instagram</a>
+            </div>
+            <p class="site-footer-legal">
+                Sitio administrado por Christian A. Recalde Núñez · Doc. 4.679.664-9<br>
+                lumieretarot7@gmail.com · +598 97 748 950
+            </p>
+        </div>
     </div>
 </body>
 </html>
