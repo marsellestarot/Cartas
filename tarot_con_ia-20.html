@@ -23,8 +23,8 @@
   default-src 'self';
   style-src   'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src    https://fonts.gstatic.com;
-  img-src     https://marsellestarot.github.io data: blob:;
-  connect-src https://api.groq.com https://script.google.com https://script.googleusercontent.com https://generativelanguage.googleapis.com;
+  img-src     https://marsellestarot.github.io https://*.github.io data: blob:;
+  connect-src 'self' https://script.google.com https://script.googleusercontent.com https://marsellestarot.github.io https://api.groq.com https://generativelanguage.googleapis.com;
   script-src  'self' 'unsafe-inline';
   object-src  'none';
   base-uri    'self';
@@ -551,21 +551,20 @@
   const CARD_BASE_URL = 'https://marsellestarot.github.io/Cartas/cartas/';
   const IMG_EXT = 'jpg';
 
+  // ★ KEYS ACTUALIZADAS - FAILOVER RAPIDO ★
   function getGroqKey() {
-    const _a = 'Z3NrX0wxbFdLVE90cmxYckNoUGU=';
-    const _b = 'bktjMldHZHliM0ZZY254M0tOOFM=';
-    const _c = 'Z0Mzc2pXSnEyNFZmTFE5ag==';
-    return atob(_a) + atob(_b) + atob(_c);
+    const _a = 'Z3NrX2l1T0QwdDN5VGtIeVJ3';
+    const _b = 'MVdlZW5PV0dkeWIzRllvWG04';
+    const _c = 'eWZOcGdoaWk3T0duS3NnR0I3QXQ=';
+    try { return atob(_a) + atob(_b) + atob(_c); } catch(e) { return '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'; }
   }
-
   function getGeminiKeys() {
     return [
-      'AQ.Ab8RN6JYPSB7W99w28aGAi6PhSAXEpgTiRSM_AR9gMj8h9bGHg',
-      'AQ.Ab8RN6J6QT_B5RVT0dyJfUXz_G5PygMRWUUhSOvvlwIo_moaFA',
-      'AQ.Ab8RN6IeYH_05I7Yx9pD9EdOcuITEg5AgZtob84GgQI8socQzA',
-      'AQ.Ab8RN6K2jugvWpsxoGJtKDEt7wHN1lCZizuVGXFvHwzTbLe9mw'
+      'AQ.Ab8RN6LqaYEmJjW8Wvm-kaivBiRge_qWx9DClrpb9A6sGi6jUA',
+      'AQ.Ab8RN6IGEoKGTTt-FB4lJvP51sjrwgRoq8yMbRfVOq1Q7aRfRw'
     ];
   }
+  const GEMINI_MODELS = ['gemini-2.5-flash','gemini-3.6-flash','gemini-flash-latest','gemini-2.5-pro'];
 
   // ══════════════════════════════════════════
   //  ★ ELEMENTOS Y VARIABLES GLOBALES ★
@@ -891,7 +890,9 @@
     const paisLinea = country ? `País: ${country}` : '';
     const contexto = [nombreLinea, zodiacoLinea, paisLinea].filter(Boolean).join(' · ');
 
-    return `Sos una lectora de tarot de Marsella con más de 20 años de experiencia. Hablás como una amiga cercana que sabe leer cartas: directa, cálida, humana. Ni fría ni confrontativa. Usás español rioplatense natural: vos, tenés, y «mirá» solo cuando señala algo concreto. NUNCA uses «che», «boludo», «boluda» ni muletillas similares.
+    return `Sos una lectora de tarot de entretenimiento. Esta lectura es interpretativa y de entretenimiento, no reemplaza consejo médico, legal o financiero profesional.
+
+Sos una lectora de tarot de Marsella con más de 20 años de experiencia. Hablás como una amiga cercana que sabe leer cartas: directa, cálida, humana. Ni fría ni confrontativa. Usás español rioplatense natural: vos, tenés, y «mirá» solo cuando señala algo concreto. NUNCA uses «che», «boludo», «boluda» ni muletillas similares.
 
 ${zodiac ? `El consultante es ${zodiac}. Integrá los rasgos de su signo de forma natural, como parte del razonamiento, nunca como dato suelto.` : ''}
 
@@ -931,10 +932,12 @@ CÓMO ESCRIBIR:
 
 Tono según el tipo de consulta:
 - Amor: íntimo, franco, sin dureza innecesaria.
-- Trabajo / dinero: práctico, orientado a acción.
-- Salud: respetuoso, sin alarmismo.
+- Trabajo / dinero: práctico, orientado a acción (siempre como reflexión simbólica, nunca como predicción financiera absoluta).
+- Salud: respetuoso, sin alarmismo; hablá en clave simbólica y emocional, nunca como diagnóstico ni pronóstico médico.
 - Decisión: claro, comparativo.
 - General: observacional, con calidez.
+
+Recordá siempre: esta lectura es de entretenimiento e interpretación simbólica. No des diagnósticos médicos, legales ni consejos financieros absolutos.
 
 Datos de esta tirada:
 
@@ -1183,48 +1186,18 @@ Escribí ahora la lectura completa, en español rioplatense natural (vos / tené
 
   async function fetchBannerFraseWithFallback() {
     let frasesObtenidas = [];
-    const geminiKeys = getGeminiKeys();
-    for (const key of geminiKeys) {
-      try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`;
-        const resp = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: 'Generá 20 frases breves (máximo 120 caracteres cada una) sobre curiosidades, historia o beneficios del tarot, en español rioplatense, una por línea, sin numeración ni viñetas.' }] }]
-          })
-        });
-        if (!resp.ok) continue;
-        const data = await resp.json();
-        const texto = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-        const lineas = texto.split('\n').map(l => l.replace(/^[-•\d.\s]+/, '').trim()).filter(l => l.length > 5 && l.length <= 140);
-        if (lineas.length >= 10) { frasesObtenidas = lineas.slice(0, 20); break; }
-      } catch(e) { console.warn('Gemini frase falló', e); }
+        // CORREGIDO: frases ahora vienen del backend o respaldo local para evitar 400 de Gemini
+    try {
+      const res = await fetch(`${BACKEND_URL}?action=frases`);
+      const data = await res.json();
+      if (data.ok && data.frases && data.frases.length >= 10) {
+        frasesObtenidas = data.frases;
+      } else {
+        frasesObtenidas = [...FRASES_RESPALDO];
+      }
+    } catch(e) {
+      frasesObtenidas = [...FRASES_RESPALDO];
     }
-    if (frasesObtenidas.length < 10) {
-      try {
-        const GROQ_API_KEY = getGroqKey();
-        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
-          body: JSON.stringify({
-            model: 'llama-3.3-70b-versatile',
-            max_tokens: 300,
-            temperature: 0.8,
-            messages: [
-              { role: 'system', content: 'Sos un experto en tarot. Generá frases breves, interesantes y variadas sobre el tarot.' },
-              { role: 'user', content: 'Generá 20 frases cortas (máximo 120 caracteres) sobre curiosidades, historia o beneficios del tarot, en español rioplatense, una por línea, sin numeración ni viñetas.' }
-            ]
-          })
-        });
-        if (!response.ok) throw new Error('HTTP ' + response.status);
-        const data = await response.json();
-        const texto = data.choices?.[0]?.message?.content || '';
-        const lineas = texto.split('\n').map(l => l.replace(/^[-•\d.\s]+/, '').trim()).filter(l => l.length > 5 && l.length <= 140);
-        if (lineas.length >= 10) frasesObtenidas = lineas.slice(0, 20);
-      } catch(e) { console.warn('Groq frase falló', e); }
-    }
-    if (frasesObtenidas.length < 10) { frasesObtenidas = [...FRASES_RESPALDO]; }
     frases = frasesObtenidas;
     barajarFrases();
   }
@@ -1518,56 +1491,91 @@ Escribí ahora la lectura completa, en español rioplatense natural (vos / tené
   async function groqRequest(messages, maxTokens) {
     const GROQ_API_KEY = getGroqKey();
     if (!GROQ_API_KEY) throw new Error('Clave de Groq no configurada');
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        max_tokens: maxTokens,
-        temperature: 0.78,
-        messages
-      })
-    });
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err?.error?.message || `Error HTTP ${response.status}`);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 7000);
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
+        signal: controller.signal,
+        body: JSON.stringify({
+          model: 'groq/compound',
+          max_tokens: maxTokens,
+          temperature: 0.78,
+          messages
+        })
+      });
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err?.error?.message || `Error HTTP ${response.status}`);
+      }
+      const data = await response.json();
+      return {
+        text: data.choices?.[0]?.message?.content || '',
+        cortada: data.choices?.[0]?.finish_reason === 'length'
+      };
+    } finally {
+      clearTimeout(timer);
     }
-    const data = await response.json();
-    return {
-      text: data.choices?.[0]?.message?.content || '',
-      cortada: data.choices?.[0]?.finish_reason === 'length'
-    };
   }
 
-  async function geminiRequestWithFailover(prompt, model = 'gemini-2.0-flash') {
+  async function geminiRequestWithFailover(prompt) {
     const keys = getGeminiKeys();
+    const models = GEMINI_MODELS;
     let ultimoError = null;
-    for (const key of keys) {
-      try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.78, maxOutputTokens: 2500 }
-          })
-        });
-        if (!response.ok) {
-          const err = await response.json().catch(() => ({}));
-          ultimoError = new Error(err?.error?.message || `HTTP ${response.status}`);
-          console.warn(`Key Gemini falló: ${key.substring(0,15)}...`, ultimoError.message);
-          continue;
+    for (const model of models) {
+      for (const key of keys) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 6000);
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            signal: controller.signal,
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: { maxOutputTokens: 1800, temperature: 0.8 },
+              safetySettings: [
+                { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
+                { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
+                { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
+                { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
+                { category: 'HARM_CATEGORY_CIVIC_INTEGRITY', threshold: 'BLOCK_ONLY_HIGH' }
+              ]
+            })
+          });
+          if (!response.ok) {
+            const status = response.status;
+            const err = await response.json().catch(() => ({}));
+            ultimoError = new Error(err?.error?.message || `HTTP ${status}`);
+            console.warn(`Gemini ${model} key ${key.substring(0,12)}… falló:`, ultimoError.message);
+            continue;
+          }
+          const data = await response.json();
+          const candidate = data.candidates?.[0];
+          const finish = candidate?.finishReason || '';
+          if (finish === 'SAFETY' || !candidate) {
+            ultimoError = new Error(`Gemini bloqueó por SAFETY (${model})`);
+            console.warn(ultimoError.message, data.promptFeedback || '');
+            continue;
+          }
+          const text = candidate?.content?.parts?.[0]?.text || '';
+          if (text.trim()) return { text, cortada: finish === 'MAX_TOKENS' };
+          ultimoError = new Error(`Respuesta vacía de ${model}`);
+        } catch (e) {
+          if (e.name === 'AbortError') {
+            ultimoError = new Error(`Timeout Gemini ${model}`);
+          } else {
+            ultimoError = e;
+          }
+          console.warn(`Gemini ${model} key ${key.substring(0,12)}… error:`, ultimoError.message);
+        } finally {
+          clearTimeout(timer);
         }
-        const data = await response.json();
-        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-        return { text, cortada: false };
-      } catch (e) {
-        ultimoError = e;
-        console.warn(`Key Gemini falló: ${key.substring(0,15)}...`, e.message);
       }
     }
-    throw ultimoError || new Error('Todas las keys de Gemini fallaron');
+    throw ultimoError || new Error('Todas las keys/modelos de Gemini fallaron');
   }
 
   async function performReadingWithFallback(question, name, dob, country, spread, cards, revs) {
@@ -1577,7 +1585,7 @@ Escribí ahora la lectura completa, en español rioplatense natural (vos / tené
     try {
       const systemMsg = {
         role: 'system',
-        content: 'Sos una lectora de tarot de Marsella con años de experiencia. Leés con honestidad y calidez humana: ni cruel ni confrontativa. Español rioplatense natural (vos, tenés). «Mirá» solo cuando señala algo concreto (mirá esta carta, mirá esta situación); no como muletilla de impacto. NUNCA uses «che», «boludo», «boluda». NUNCA reformules la pregunta («entiendo que querés saber…»). El As es masculino: «el As de Espadas», nunca «la As». Cuando mencionás una carta, nombrala completa. El artículo la/el va en minúscula si no inicia la oración. Preferí aperturas suaves («noto que las cartas muestran…») antes que frases de choque. Nunca uses «en resumen»; preferí «en definitiva», «lo que se ve claro acá».'
+        content: 'Sos una lectora de tarot de entretenimiento. Esta lectura es interpretativa y de entretenimiento, no reemplaza consejo médico, legal o financiero profesional. Sos una lectora de tarot de Marsella con años de experiencia. Leés con honestidad y calidez humana: ni cruel ni confrontativa. Español rioplatense natural (vos, tenés). «Mirá» solo cuando señala algo concreto (mirá esta carta, mirá esta situación); no como muletilla de impacto. NUNCA uses «che», «boludo», «boluda». NUNCA reformules la pregunta («entiendo que querés saber…»). El As es masculino: «el As de Espadas», nunca «la As». Cuando mencionás una carta, nombrala completa. El artículo la/el va en minúscula si no inicia la oración. Preferí aperturas suaves («noto que las cartas muestran…») antes que frases de choque. Nunca uses «en resumen»; preferí «en definitiva», «lo que se ve claro acá».'
       };
       let { text, cortada } = await groqRequest([systemMsg, { role: 'user', content: prompt }], 1800);
       let intentosCierre = 0;
@@ -1596,7 +1604,7 @@ Escribí ahora la lectura completa, en español rioplatense natural (vos / tené
     } catch (e) {
       apiGroqFallo = true;
       errores.push('Groq: ' + e.message);
-      console.warn('Groq falló, intentando con Gemini (4 keys)...', e);
+      console.warn('Groq falló, intentando con Gemini...', e);
     }
 
     try {
