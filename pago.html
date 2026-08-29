@@ -140,6 +140,14 @@
             font-size: 1.75rem;
             box-shadow: 0 2px 8px rgba(46, 36, 26, 0.04);
             transition: transform 0.18s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+        }
+
+        .country-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .country-tile:hover .country-circle,
@@ -221,31 +229,31 @@
 
         <div class="grid">
             <a class="country-tile" href="pago-uruguay-tarot.html">
-                <div class="country-circle">🇺🇾</div>
+                <div class="country-circle"><img src="https://flagcdn.com/w80/uy.png" alt="Uruguay" width="64" height="64"></div>
                 <span class="country-name">Uruguay</span>
             </a>
             <a class="country-tile" href="pago-marselles-tarot.html?from=US">
-                <div class="country-circle">🇺🇸</div>
+                <div class="country-circle"><img src="https://flagcdn.com/w80/us.png" alt="USA" width="64" height="64"></div>
                 <span class="country-name">USA</span>
             </a>
             <a class="country-tile" href="pago-marselles-tarot.html?from=PA">
-                <div class="country-circle">🇵🇦</div>
+                <div class="country-circle"><img src="https://flagcdn.com/w80/pa.png" alt="Panamá" width="64" height="64"></div>
                 <span class="country-name">Panamá</span>
             </a>
             <a class="country-tile" href="pago-marselles-tarot.html?from=CL">
-                <div class="country-circle">🇨🇱</div>
+                <div class="country-circle"><img src="https://flagcdn.com/w80/cl.png" alt="Chile" width="64" height="64"></div>
                 <span class="country-name">Chile</span>
             </a>
             <a class="country-tile" href="pago-marselles-tarot.html?from=MX">
-                <div class="country-circle">🇲🇽</div>
+                <div class="country-circle"><img src="https://flagcdn.com/w80/mx.png" alt="México" width="64" height="64"></div>
                 <span class="country-name">México</span>
             </a>
             <a class="country-tile" href="pago-marselles-tarot.html?from=CO">
-                <div class="country-circle">🇨🇴</div>
+                <div class="country-circle"><img src="https://flagcdn.com/w80/co.png" alt="Colombia" width="64" height="64"></div>
                 <span class="country-name">Colombia</span>
             </a>
             <a class="country-tile" href="pago-marselles-tarot.html?from=ES">
-                <div class="country-circle">🇪🇸</div>
+                <div class="country-circle"><img src="https://flagcdn.com/w80/es.png" alt="España" width="64" height="64"></div>
                 <span class="country-name">España</span>
             </a>
         </div>
