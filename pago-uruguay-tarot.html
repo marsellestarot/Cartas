@@ -3,14 +3,58 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <meta http-equiv="refresh" content="0; url=https://tarotmarsellesesenuruguay.netlify.app/">
-    <title>Elige tu tirada · Tarot</title>
-    <script>
-        window.location.replace("https://tarotmarsellesesenuruguay.netlify.app/");
-    </script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+    <title>Tarot · Sesiones</title>
 
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '2314240265989427');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=2314240265989427&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://marsellestaroturuguay.netlify.app/" />
+
+    <!-- Open Graph / Facebook, WhatsApp, iMessage, Slack, etc. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://marsellestaroturuguay.netlify.app/" />
+    <meta property="og:title" content="Marselles Tarot" />
+    <meta property="og:description" content="Lecturas de tarot personalizadas" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Marselles Tarot" />
+    <meta name="twitter:description" content="Lecturas de tarot personalizadas" />
+
+    <!-- Imagen para compartir -->
+    <meta property="og:image" content="https://marsellestarot.github.io/Cartas/edited-photo.jpg" />
+    <meta name="twitter:image" content="https://marsellestarot.github.io/Cartas/edited-photo.jpg" />
+    <!--
+      Nota: esta imagen es de 160x160px (cuadrada). Lo recomendado por Open Graph
+      es 1200x630px (horizontal); con el tamaño actual, algunas plataformas pueden
+      mostrarla chica o recortada. Cuando tengas una versión de 1200x630px, reemplazá
+      la URL de arriba por esa.
+    -->
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Boutique premium: fondo dorado cálido, carbón, acentos crema */
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: #F6F8FA;
@@ -18,9 +62,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
+            padding: 20px 20px;
             color: #2E241A;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .card {
@@ -28,7 +73,7 @@
             width: 100%;
             background: #F5EFDE;
             border-radius: 24px;
-            padding: 40px 32px 32px;
+            padding: 26px 32px 24px;
             border: 1px solid rgba(46, 36, 26, 0.07);
             box-shadow:
                 0 1px 2px rgba(46, 36, 26, 0.04),
@@ -36,121 +81,146 @@
                 0 24px 48px rgba(46, 36, 26, 0.05);
         }
 
-        .tarotista {
-            display: flex;
+        .eyebrow {
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
+            background: #FFF1EC;
+            color: #E8471E;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 999px;
             margin-bottom: 18px;
         }
 
-        .tarotista-photo {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #FFFFFF;
-            box-shadow: 0 0 0 1.5px rgba(46, 36, 26, 0.12), 0 2px 6px rgba(46, 36, 26, 0.08);
-        }
-
-        .tarotista-name {
-            font-size: 0.84rem;
-            font-weight: 600;
-            color: #2E241A;
-            line-height: 1.3;
-        }
-
-        .tarotista-name span {
-            display: block;
-            font-size: 0.68rem;
-            font-weight: 500;
-            color: #6B551C;
-        }
-
         h1 {
-            font-size: 1.55rem;
+            font-size: 1.6rem;
             font-weight: 800;
             color: #2E241A;
-            margin-bottom: 6px;
-            letter-spacing: -0.5px;
-            line-height: 1.2;
+            margin-bottom: 4px;
+            letter-spacing: -0.6px;
+            line-height: 1.15;
         }
 
         .professional-name {
             font-size: 0.92rem;
             font-weight: 600;
             color: #6B551C;
+            margin-bottom: 4px;
+        }
+
+        /* Header con foto de perfil */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .avatar-img {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #FFFFFF;
+            box-shadow: 0 1px 4px rgba(46, 36, 26, 0.18);
+            flex-shrink: 0;
+        }
+
+        .header-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #2E241A;
+            line-height: 1.25;
+        }
+
+        .header-brand {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #B8860B;
+            line-height: 1.25;
+        }
+
+        .availability {
+            display: flex;
+            align-items: center;
+            gap: 5px;
             margin-bottom: 8px;
+        }
+
+        .dot-green {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #4CA771;
+            flex-shrink: 0;
+        }
+
+        .availability-text {
+            font-size: 0.64rem;
+            font-weight: 600;
+            color: #6B6350;
+        }
+
+        .service-tagline {
+            font-size: 0.88rem;
+            color: #4A3B12;
+            font-weight: 400;
+            margin-bottom: 14px;
+            line-height: 1.45;
+        }
+
+        .service-tagline strong {
+            color: #2E241A;
+            font-weight: 600;
         }
 
         .whisper-line {
             font-style: italic;
-            font-size: 0.88rem;
-            color: #5B4B12;
-            opacity: 0.9;
-            margin-bottom: 12px;
-            line-height: 1.45;
-        }
-
-        .service-tagline {
+            font-weight: 400;
             font-size: 0.86rem;
-            color: #4A3B12;
-            margin-bottom: 8px;
-            line-height: 1.5;
+            color: #5B4B12;
+            opacity: 0.85;
+            margin-bottom: 10px;
+            line-height: 1.4;
         }
 
-        .service-tagline a {
+        .whatsapp-link {
             color: #2E241A;
             font-weight: 600;
             text-decoration: none;
             border-bottom: 1.5px solid rgba(46, 36, 26, 0.35);
         }
 
-        .service-tagline a:hover {
+        .whatsapp-link:hover {
             border-bottom-color: #2E241A;
         }
 
-        .whatsapp-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.72rem;
-            font-weight: 500;
-            color: #4A3B12;
-            background: #FFFFFF;
-            border: 1px solid rgba(46, 36, 26, 0.1);
-            padding: 5px 12px;
-            border-radius: 20px;
-            text-decoration: none;
-            margin-bottom: 22px;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .whatsapp-chip:hover {
-            border-color: rgba(46, 36, 26, 0.25);
-            box-shadow: 0 2px 8px rgba(46, 36, 26, 0.08);
-        }
-
-        .whatsapp-chip svg {
-            width: 12px;
-            height: 12px;
-            flex-shrink: 0;
-        }
+        /* ──────────────────────────────────────────────────────
+           BOTONES: coral sólido, sin pasos intermedios
+           ────────────────────────────────────────────────────── */
 
         .buttons {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 22px;
+            gap: 10px;
+            margin-bottom: 16px;
         }
 
-        .btn-wrapper { position: relative; }
+        .btn-wrapper {
+            position: relative;
+        }
 
         .btn-pay {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            padding: 18px 20px;
+            padding: 14px 20px;
+            border: none;
             border-radius: 16px;
             text-decoration: none;
             background: #FFFFFF;
@@ -168,6 +238,8 @@
             align-items: flex-start;
             gap: 3px;
             text-align: left;
+            min-width: 0;
+            flex: 1 1 auto;
         }
 
         .btn-main {
@@ -193,6 +265,32 @@
             margin-left: 12px;
         }
 
+        .right-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+            margin-left: 8px;
+            flex-shrink: 0;
+        }
+
+        .right-col .price-tag {
+            margin-left: 0;
+        }
+
+        .installments-tag {
+            font-size: 0.54rem;
+            font-weight: 600;
+            color: #6B551C;
+            background: #FFF8E8;
+            border: 1px solid rgba(46, 36, 26, 0.12);
+            border-radius: 10px;
+            padding: 3px 6px;
+            text-align: center;
+            line-height: 1.2;
+            max-width: 58px;
+        }
+
         .btn-pay:hover {
             border-color: rgba(46, 36, 26, 0.16);
             transform: translateY(-1px);
@@ -203,6 +301,7 @@
             transform: translateY(0) scale(0.99);
         }
 
+        /* Botón destacado (recomendado): borde giratorio multicolor */
         .featured-border {
             position: relative;
             border-radius: 18px;
@@ -215,7 +314,14 @@
             content: '';
             position: absolute;
             inset: -60%;
-            background: conic-gradient(from 0deg, #2E241A, #E8B923, #FFFDF7, #E8B923, #2E241A);
+            background: conic-gradient(
+                from 0deg,
+                #2E241A,
+                #E8B923,
+                #FFFDF7,
+                #E8B923,
+                #2E241A
+            );
             animation: spinBorder 6s linear infinite;
             z-index: 0;
         }
@@ -232,6 +338,21 @@
             border-radius: 15.5px;
         }
 
+        .featured-border .btn-pay.featured .btn-main,
+        .featured-border .btn-pay.featured .price-tag {
+            color: #2E241A;
+        }
+
+        .featured-border .btn-pay.featured .btn-sub {
+            color: #6B6350;
+        }
+
+        .featured-border .btn-pay.featured .btn-main {
+            font-size: 0.7rem;
+            letter-spacing: -0.2px;
+            white-space: nowrap;
+        }
+
         .featured-border .btn-pay.featured:hover {
             transform: none;
             box-shadow: none;
@@ -244,7 +365,9 @@
             gap: 6px;
         }
 
-        .btn-wrapper.has-badge .featured-border { width: 100%; }
+        .btn-wrapper.has-badge .featured-border {
+            width: 100%;
+        }
 
         .featured-badge {
             background: #2E241A;
@@ -258,6 +381,7 @@
             margin-left: 4px;
         }
 
+        /* Ripple */
         .btn-pay .ripple {
             position: absolute;
             border-radius: 50%;
@@ -268,14 +392,21 @@
         }
 
         @keyframes rippleAnim {
-            to { transform: scale(4); opacity: 0; }
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
         }
+
+        /* ──────────────────────────────────────────────────────
+           BENEFICIOS: fila compacta con check circular
+           ────────────────────────────────────────────────────── */
 
         .benefits-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-bottom: 22px;
+            gap: 8px;
+            margin-bottom: 16px;
         }
 
         .benefit {
@@ -301,19 +432,20 @@
         .benefit span:last-child {
             font-size: 0.84rem;
             color: #4A3B12;
+            font-weight: 400;
         }
 
         .divider {
             height: 1px;
             background: rgba(46, 36, 26, 0.10);
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
 
         .payment-info {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
 
         .payment-info .label {
@@ -341,7 +473,10 @@
             border-radius: 14px;
         }
 
-        .trust-badge .icon { font-size: 0.95rem; line-height: 1; }
+        .trust-badge .icon {
+            font-size: 0.95rem;
+            line-height: 1;
+        }
 
         .trust-badge .text {
             font-size: 0.8rem;
@@ -350,90 +485,92 @@
             line-height: 1.4;
         }
 
-        .site-footer {
-            margin-top: 28px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(46, 36, 26, 0.1);
+        .countdown-banner {
+            display: none;
+            width: 100%;
             text-align: center;
-        }
-
-        .site-footer-links {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 6px 14px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .site-footer-links a {
-            color: #6B551C;
-            text-decoration: none;
-        }
-
-        .site-footer-links a:hover { color: #2E241A; }
-
-        .site-footer-legal {
             font-size: 0.66rem;
-            color: #8A7A5A;
-            line-height: 1.5;
+            font-weight: 600;
+            color: #8A5C74;
+            background: #F5E9EF;
+            border: 1px solid rgba(138, 92, 116, 0.15);
+            border-radius: 10px;
+            padding: 7px 14px;
+            line-height: 1.35;
+            margin-bottom: 16px;
+            animation: softBlink 1.8s ease-in-out infinite;
+        }
+
+        @keyframes softBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         @media (max-width: 440px) {
-            body { padding: 20px 16px; }
-            .card { padding: 32px 22px 26px; border-radius: 20px; }
-            h1 { font-size: 1.38rem; }
-            .btn-pay { padding: 16px 16px; }
+            body { padding: 14px 14px; }
+            .card { padding: 20px 20px 18px; border-radius: 20px; }
+            h1 { font-size: 1.42rem; }
+            .btn-pay { padding: 12px 16px; }
             .btn-main { font-size: 0.92rem; }
         }
     </style>
 </head>
 <body>
     <div class="card">
-        <div class="tarotista">
-            <img class="tarotista-photo" src="data:image/jpeg;base64,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" alt="Lic. Dra Mariana G.">
-            <div class="tarotista-name">Lic. Dra Mariana G.<span>Marselles Tarot</span></div>
+
+        <div class="profile-header">
+            <img src="https://marsellestarot.github.io/Cartas/edited-photo.jpg" alt="Lic. Dra Mariana G." class="avatar-img" />
+            <div>
+                <div class="header-name">Lic. Dra Mariana G.</div>
+                <div class="header-brand">Marselles Tarot</div>
+            </div>
+        </div>
+
+        <div class="availability">
+            <span class="dot-green"></span>
+            <span class="availability-text">Disponible</span>
         </div>
 
         <h1>Lecturas de tarot por chat</h1>
         <div class="professional-name">Lic. Dra. Mariana G.</div>
-        <p class="whisper-line">Cuando la cabeza no para de dar vueltas con la misma persona, a veces lo que falta es otra mirada.</p>
-        <p class="service-tagline">Elegí tu lectura. Al pagar, <a href="https://wa.me/59896620355" target="_blank" rel="noopener noreferrer">decime acá</a> tu nombre y apellido.</p>
+        <div class="whisper-line">Cuando la cabeza no para de dar vueltas con la misma persona, a veces lo que falta es otra mirada.</div>
+        <div class="service-tagline">Elegí tu lectura. Al pagar, <a href="https://wa.me/59896620355" target="_blank" rel="noopener noreferrer" class="whatsapp-link">decime acá</a> tu nombre y apellido.</div>
 
-        <a href="https://wa.me/59896620355" class="whatsapp-chip" target="_blank" rel="noopener">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.014 2C6.486 2 2 6.486 2 12.014c0 2.11.652 4.067 1.766 5.68L2.5 22l4.417-1.213A9.94 9.94 0 0 0 12.014 22c5.528 0 10.014-4.486 10.014-9.986C22.028 6.486 17.542 2 12.014 2zm0 18.13a8.08 8.08 0 0 1-4.362-1.28l-.313-.187-3.246.892.87-3.183-.204-.327a8.089 8.089 0 0 1-1.257-4.32c0-4.482 3.65-8.13 8.152-8.13 4.483 0 8.13 3.648 8.13 8.13 0 4.483-3.647 8.405-7.77 8.405z"/></svg>
-            ¿Dudas sobre cómo reservar? Escribime
-        </a>
+        <div class="countdown-banner" id="countdownBanner">
+            Reserve antes de los próximos <span id="countdownValue">7:00</span> para ser atendido a la brevedad
+        </div>
 
         <div class="buttons">
-            <div class="btn-wrapper">
-                <a href="https://mpago.la/2boWgkM" target="_blank" rel="noopener noreferrer" class="btn-pay">
-                    <span class="left">
-                        <span class="btn-main">Express</span>
-                        <span class="btn-sub">Duda concreta · respuesta breve</span>
-                    </span>
-                    <span class="price-tag">$200</span>
-                </a>
-            </div>
             <div class="btn-wrapper">
                 <a href="https://mpago.la/2kyhjnY" target="_blank" rel="noopener noreferrer" class="btn-pay">
                     <span class="left">
                         <span class="btn-main">Cruz Celta</span>
-                        <span class="btn-sub">Amor, trabajo o decisión importante</span>
+                        <span class="btn-sub">Dinero, trabajo o decisión importante</span>
                     </span>
                     <span class="price-tag">$350</span>
+                </a>
+            </div>
+            <div class="btn-wrapper">
+                <a href="https://mpago.la/2UKfSMn" target="_blank" rel="noopener noreferrer" class="btn-pay">
+                    <span class="left">
+                        <span class="btn-main">Rueda Anual</span>
+                        <span class="btn-sub">Los aspectos que marcarán tu año (completa)</span>
+                    </span>
+                    <span class="price-tag">$500</span>
                 </a>
             </div>
             <div class="btn-wrapper has-badge">
                 <span class="featured-badge">Más elegida</span>
                 <div class="featured-border">
-                    <a href="https://mpago.la/2UKfSMn" target="_blank" rel="noopener noreferrer" class="btn-pay featured" id="middleBtn">
+                    <a href="https://mpago.la/33TrtsY" target="_blank" rel="noopener noreferrer" class="btn-pay featured" id="middleBtn">
                         <span class="left">
-                            <span class="btn-main">Rueda Anual</span>
-                            <span class="btn-sub">Los aspectos clave de tu año</span>
+                            <span class="btn-main">Lectura de vínculo amoroso (exclusivo)</span>
+                            <span class="btn-sub">Una mirada profunda a lo que los une, lo que sienten y hacia dónde puede ir el vínculo. (completa + profunda)</span>
                         </span>
-                        <span class="price-tag">$500</span>
+                        <span class="right-col">
+                            <span class="price-tag">$1000</span>
+                            <span class="installments-tag">Hasta 12 cuotas sin interés</span>
+                        </span>
                     </a>
                 </div>
             </div>
@@ -456,17 +593,6 @@
             <span class="text">Pago 100% seguro vía MercadoPago</span>
         </div>
 
-        <div class="site-footer">
-            <div class="site-footer-links">
-                <a href="contacto.html">Contacto</a>
-                <a href="terminos.html">Términos y Condiciones</a>
-                <a href="https://instagram.com/marselles.tarot" target="_blank" rel="noopener">Instagram</a>
-            </div>
-            <p class="site-footer-legal">
-                Sitio administrado por C.A.R.N.<br>
-                lumieretarot7@gmail.com · +598 96 620 355
-            </p>
-        </div>
     </div>
 
     <script>
@@ -479,20 +605,74 @@
             }
         }, 100);
 
+        setTimeout(function() {
+            var banner = document.getElementById('countdownBanner');
+            var valueEl = document.getElementById('countdownValue');
+            if (!banner || !valueEl) return;
+
+            banner.style.display = 'block';
+            var remaining = 7 * 60;
+
+            var countdownInterval = setInterval(function() {
+                remaining--;
+                if (remaining <= 0) {
+                    clearInterval(countdownInterval);
+                    banner.style.display = 'none';
+                    return;
+                }
+                var m = Math.floor(remaining / 60);
+                var s = remaining % 60;
+                valueEl.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+            }, 1000);
+        }, 40000);
+
         document.querySelectorAll('.btn-pay').forEach(function(btn) {
             btn.addEventListener('mousedown', function(e) {
                 var rect = this.getBoundingClientRect();
                 var x = e.clientX - rect.left;
                 var y = e.clientY - rect.top;
+
                 var ripple = document.createElement('span');
                 ripple.classList.add('ripple');
                 ripple.style.left = x + 'px';
                 ripple.style.top = y + 'px';
                 ripple.style.width = ripple.style.height = '10px';
+
                 this.appendChild(ripple);
-                ripple.addEventListener('animationend', function() { ripple.remove(); });
+
+                ripple.addEventListener('animationend', function() {
+                    ripple.remove();
+                });
             });
         });
     </script>
+
+    <script>
+        // Meta Pixel - Purchase al clic (MercadoPago)
+        (function () {
+            function trackPurchase(value) {
+                if (typeof fbq === 'function') {
+                    fbq('track', 'Purchase', {
+                        value: value,
+                        currency: 'UYU'
+                    });
+                }
+            }
+
+            // Cruz Celta - $350
+            document.querySelectorAll('a[href*="2kyhjnY"]').forEach(function (el) {
+                el.addEventListener('click', function () { trackPurchase(350); });
+            });
+            // Rueda Anual - $500
+            document.querySelectorAll('a[href*="2UKfSMn"]').forEach(function (el) {
+                el.addEventListener('click', function () { trackPurchase(500); });
+            });
+            // Lectura de vínculo amoroso - $1000
+            document.querySelectorAll('a[href*="33TrtsY"]').forEach(function (el) {
+                el.addEventListener('click', function () { trackPurchase(1000); });
+            });
+        })();
+    </script>
+
 </body>
 </html>

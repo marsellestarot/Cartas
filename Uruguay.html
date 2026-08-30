@@ -3,11 +3,50 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <meta http-equiv="refresh" content="0; url=https://tarotmarsellesesenuruguay.netlify.app/">
     <title>Tarot · Sesiones</title>
+
+    <!-- Meta Pixel Code -->
     <script>
-        window.location.replace("https://tarotmarsellesesenuruguay.netlify.app/");
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '2314240265989427');
+      fbq('track', 'PageView');
     </script>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=2314240265989427&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://marsellestaroturuguay.netlify.app/" />
+
+    <!-- Open Graph / Facebook, WhatsApp, iMessage, Slack, etc. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://marsellestaroturuguay.netlify.app/" />
+    <meta property="og:title" content="Marselles Tarot" />
+    <meta property="og:description" content="Lecturas de tarot personalizadas" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Marselles Tarot" />
+    <meta name="twitter:description" content="Lecturas de tarot personalizadas" />
+
+    <!-- Imagen para compartir -->
+    <meta property="og:image" content="https://marsellestarot.github.io/Cartas/edited-photo.jpg" />
+    <meta name="twitter:image" content="https://marsellestarot.github.io/Cartas/edited-photo.jpg" />
+    <!--
+      Nota: esta imagen es de 160x160px (cuadrada). Lo recomendado por Open Graph
+      es 1200x630px (horizontal); con el tamaño actual, algunas plataformas pueden
+      mostrarla chica o recortada. Cuando tengas una versión de 1200x630px, reemplazá
+      la URL de arriba por esa.
+    -->
+
     <style>
         * {
             margin: 0;
@@ -23,7 +62,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
+            padding: 20px 20px;
             color: #2E241A;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -34,7 +73,7 @@
             width: 100%;
             background: #F5EFDE;
             border-radius: 24px;
-            padding: 44px 32px 36px;
+            padding: 26px 32px 24px;
             border: 1px solid rgba(46, 36, 26, 0.07);
             box-shadow:
                 0 1px 2px rgba(46, 36, 26, 0.04),
@@ -61,24 +100,77 @@
             font-size: 1.6rem;
             font-weight: 800;
             color: #2E241A;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             letter-spacing: -0.6px;
-            line-height: 1.2;
+            line-height: 1.15;
         }
 
         .professional-name {
             font-size: 0.92rem;
             font-weight: 600;
             color: #6B551C;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
+        }
+
+        /* Header con foto de perfil */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .avatar-img {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #FFFFFF;
+            box-shadow: 0 1px 4px rgba(46, 36, 26, 0.18);
+            flex-shrink: 0;
+        }
+
+        .header-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #2E241A;
+            line-height: 1.25;
+        }
+
+        .header-brand {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #B8860B;
+            line-height: 1.25;
+        }
+
+        .availability {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 8px;
+        }
+
+        .dot-green {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #4CA771;
+            flex-shrink: 0;
+        }
+
+        .availability-text {
+            font-size: 0.64rem;
+            font-weight: 600;
+            color: #6B6350;
         }
 
         .service-tagline {
             font-size: 0.88rem;
             color: #4A3B12;
             font-weight: 400;
-            margin-bottom: 22px;
-            line-height: 1.5;
+            margin-bottom: 14px;
+            line-height: 1.45;
         }
 
         .service-tagline strong {
@@ -92,8 +184,8 @@
             font-size: 0.86rem;
             color: #5B4B12;
             opacity: 0.85;
-            margin-bottom: 14px;
-            line-height: 1.45;
+            margin-bottom: 10px;
+            line-height: 1.4;
         }
 
         .whatsapp-link {
@@ -114,8 +206,8 @@
         .buttons {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 10px;
+            margin-bottom: 16px;
         }
 
         .btn-wrapper {
@@ -127,7 +219,7 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            padding: 18px 20px;
+            padding: 14px 20px;
             border: none;
             border-radius: 16px;
             text-decoration: none;
@@ -146,6 +238,8 @@
             align-items: flex-start;
             gap: 3px;
             text-align: left;
+            min-width: 0;
+            flex: 1 1 auto;
         }
 
         .btn-main {
@@ -169,6 +263,32 @@
             color: #2E241A;
             white-space: nowrap;
             margin-left: 12px;
+        }
+
+        .right-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+            margin-left: 8px;
+            flex-shrink: 0;
+        }
+
+        .right-col .price-tag {
+            margin-left: 0;
+        }
+
+        .installments-tag {
+            font-size: 0.54rem;
+            font-weight: 600;
+            color: #6B551C;
+            background: #FFF8E8;
+            border: 1px solid rgba(46, 36, 26, 0.12);
+            border-radius: 10px;
+            padding: 3px 6px;
+            text-align: center;
+            line-height: 1.2;
+            max-width: 58px;
         }
 
         .btn-pay:hover {
@@ -227,6 +347,12 @@
             color: #6B6350;
         }
 
+        .featured-border .btn-pay.featured .btn-main {
+            font-size: 0.7rem;
+            letter-spacing: -0.2px;
+            white-space: nowrap;
+        }
+
         .featured-border .btn-pay.featured:hover {
             transform: none;
             box-shadow: none;
@@ -279,8 +405,8 @@
         .benefits-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-bottom: 24px;
+            gap: 8px;
+            margin-bottom: 16px;
         }
 
         .benefit {
@@ -312,14 +438,14 @@
         .divider {
             height: 1px;
             background: rgba(46, 36, 26, 0.10);
-            margin-bottom: 20px;
+            margin-bottom: 14px;
         }
 
         .payment-info {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
         }
 
         .payment-info .label {
@@ -359,11 +485,32 @@
             line-height: 1.4;
         }
 
+        .countdown-banner {
+            display: none;
+            width: 100%;
+            text-align: center;
+            font-size: 0.66rem;
+            font-weight: 600;
+            color: #8A5C74;
+            background: #F5E9EF;
+            border: 1px solid rgba(138, 92, 116, 0.15);
+            border-radius: 10px;
+            padding: 7px 14px;
+            line-height: 1.35;
+            margin-bottom: 16px;
+            animation: softBlink 1.8s ease-in-out infinite;
+        }
+
+        @keyframes softBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
         @media (max-width: 440px) {
-            body { padding: 20px 16px; }
-            .card { padding: 34px 22px 28px; border-radius: 20px; }
+            body { padding: 14px 14px; }
+            .card { padding: 20px 20px 18px; border-radius: 20px; }
             h1 { font-size: 1.42rem; }
-            .btn-pay { padding: 16px 16px; }
+            .btn-pay { padding: 12px 16px; }
             .btn-main { font-size: 0.92rem; }
         }
     </style>
@@ -371,39 +518,59 @@
 <body>
     <div class="card">
 
+        <div class="profile-header">
+            <img src="https://marsellestarot.github.io/Cartas/edited-photo.jpg" alt="Lic. Dra Mariana G." class="avatar-img" />
+            <div>
+                <div class="header-name">Lic. Dra Mariana G.</div>
+                <div class="header-brand">Marselles Tarot</div>
+            </div>
+        </div>
+
+        <div class="availability">
+            <span class="dot-green"></span>
+            <span class="availability-text">Disponible</span>
+        </div>
+
         <h1>Lecturas de tarot por chat</h1>
         <div class="professional-name">Lic. Dra. Mariana G.</div>
         <div class="whisper-line">Cuando la cabeza no para de dar vueltas con la misma persona, a veces lo que falta es otra mirada.</div>
         <div class="service-tagline">Elegí tu lectura. Al pagar, <a href="https://wa.me/59896620355" target="_blank" rel="noopener noreferrer" class="whatsapp-link">decime acá</a> tu nombre y apellido.</div>
 
+        <div class="countdown-banner" id="countdownBanner">
+            Reserve antes de los próximos <span id="countdownValue">7:00</span> para ser atendido a la brevedad
+        </div>
+
         <div class="buttons">
-            <div class="btn-wrapper">
-                <a href="https://mpago.la/2boWgkM" target="_blank" rel="noopener noreferrer" class="btn-pay">
-                    <span class="left">
-                        <span class="btn-main">Express</span>
-                        <span class="btn-sub">Duda concreta · respuesta breve</span>
-                    </span>
-                    <span class="price-tag">$200</span>
-                </a>
-            </div>
             <div class="btn-wrapper">
                 <a href="https://mpago.la/2kyhjnY" target="_blank" rel="noopener noreferrer" class="btn-pay">
                     <span class="left">
                         <span class="btn-main">Cruz Celta</span>
-                        <span class="btn-sub">Amor, trabajo o decisión importante</span>
+                        <span class="btn-sub">Dinero, trabajo o decisión importante</span>
                     </span>
                     <span class="price-tag">$350</span>
+                </a>
+            </div>
+            <div class="btn-wrapper">
+                <a href="https://mpago.la/2UKfSMn" target="_blank" rel="noopener noreferrer" class="btn-pay">
+                    <span class="left">
+                        <span class="btn-main">Rueda Anual</span>
+                        <span class="btn-sub">Los aspectos que marcarán tu año (completa)</span>
+                    </span>
+                    <span class="price-tag">$500</span>
                 </a>
             </div>
             <div class="btn-wrapper has-badge">
                 <span class="featured-badge">Más elegida</span>
                 <div class="featured-border">
-                    <a href="https://mpago.la/2UKfSMn" target="_blank" rel="noopener noreferrer" class="btn-pay featured" id="middleBtn">
+                    <a href="https://mpago.la/33TrtsY" target="_blank" rel="noopener noreferrer" class="btn-pay featured" id="middleBtn">
                         <span class="left">
-                            <span class="btn-main">Rueda Anual</span>
-                            <span class="btn-sub">Los aspectos clave de tu año</span>
+                            <span class="btn-main">Lectura de vínculo amoroso (exclusivo)</span>
+                            <span class="btn-sub">Una mirada profunda a lo que los une, lo que sienten y hacia dónde puede ir el vínculo. (completa + profunda)</span>
                         </span>
-                        <span class="price-tag">$500</span>
+                        <span class="right-col">
+                            <span class="price-tag">$1000</span>
+                            <span class="installments-tag">Hasta 12 cuotas sin interés</span>
+                        </span>
                     </a>
                 </div>
             </div>
@@ -438,6 +605,27 @@
             }
         }, 100);
 
+        setTimeout(function() {
+            var banner = document.getElementById('countdownBanner');
+            var valueEl = document.getElementById('countdownValue');
+            if (!banner || !valueEl) return;
+
+            banner.style.display = 'block';
+            var remaining = 7 * 60;
+
+            var countdownInterval = setInterval(function() {
+                remaining--;
+                if (remaining <= 0) {
+                    clearInterval(countdownInterval);
+                    banner.style.display = 'none';
+                    return;
+                }
+                var m = Math.floor(remaining / 60);
+                var s = remaining % 60;
+                valueEl.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+            }, 1000);
+        }, 40000);
+
         document.querySelectorAll('.btn-pay').forEach(function(btn) {
             btn.addEventListener('mousedown', function(e) {
                 var rect = this.getBoundingClientRect();
@@ -458,5 +646,33 @@
             });
         });
     </script>
+
+    <script>
+        // Meta Pixel - Purchase al clic (MercadoPago)
+        (function () {
+            function trackPurchase(value) {
+                if (typeof fbq === 'function') {
+                    fbq('track', 'Purchase', {
+                        value: value,
+                        currency: 'UYU'
+                    });
+                }
+            }
+
+            // Cruz Celta - $350
+            document.querySelectorAll('a[href*="2kyhjnY"]').forEach(function (el) {
+                el.addEventListener('click', function () { trackPurchase(350); });
+            });
+            // Rueda Anual - $500
+            document.querySelectorAll('a[href*="2UKfSMn"]').forEach(function (el) {
+                el.addEventListener('click', function () { trackPurchase(500); });
+            });
+            // Lectura de vínculo amoroso - $1000
+            document.querySelectorAll('a[href*="33TrtsY"]').forEach(function (el) {
+                el.addEventListener('click', function () { trackPurchase(1000); });
+            });
+        })();
+    </script>
+
 </body>
 </html>
