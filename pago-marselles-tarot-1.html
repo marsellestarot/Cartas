@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Elegí tu lectura · Marselles Tarot</title>
+    <meta name="description" content="Elegí tu lectura de tarot personalizada y recibila por escrito, con fotografías de tus cartas. Atención confidencial por chat." />
+
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '2314240265989427');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=2314240265989427&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #F6F8FA;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 12px 20px;
+            color: #2E241A;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .card {
+            max-width: 420px;
+            width: 100%;
+            background: #F5EFDE;
+            border-radius: 24px;
+            padding: 20px 18px 22px;
+            border: 1px solid rgba(46, 36, 26, 0.07);
+            box-shadow:
+                0 1px 2px rgba(46, 36, 26, 0.04),
+                0 8px 24px rgba(46, 36, 26, 0.06),
+                0 24px 48px rgba(46, 36, 26, 0.05);
+        }
+
+        .tarotista {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 10px;
+        }
+
+        .tarotista-photo {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #FFFFFF;
+            box-shadow: 0 0 0 1.5px rgba(46, 36, 26, 0.12), 0 2px 6px rgba(46, 36, 26, 0.08);
+        }
+
+        .tarotista-name {
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: #2E241A;
+            line-height: 1.3;
+        }
+
+        .tarotista-name span {
+            display: block;
+            font-size: 0.68rem;
+            font-weight: 500;
+            color: #6B551C;
+        }
+
+        h1 {
+            font-size: 1.38rem;
+            font-weight: 800;
+            color: #2E241A;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .encourage {
+            font-style: italic;
+            font-size: 0.82rem;
+            color: #5B4B12;
+            opacity: 0.92;
+            line-height: 1.4;
+            margin-bottom: 5px;
+        }
+
+        .invite {
+            font-size: 0.81rem;
+            color: #4A3B12;
+            line-height: 1.4;
+            margin-bottom: 7px;
+        }
+
+        .service-promise {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 0.74rem;
+            color: #6B6350;
+            line-height: 1.35;
+            margin-bottom: 7px;
+        }
+
+        .service-promise .promise-icon {
+            color: #0E9F6E;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .invite strong {
+            color: #2E241A;
+            font-weight: 600;
+        }
+
+        .service-tagline {
+            font-size: 0.78rem;
+            color: #4A3B12;
+            margin-bottom: 7px;
+            line-height: 1.35;
+        }
+
+        .service-tagline a {
+            color: #2E241A;
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1.5px solid rgba(46, 36, 26, 0.35);
+        }
+
+        .service-tagline a:hover {
+            border-bottom-color: #2E241A;
+        }
+
+        .whatsapp-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: #4A3B12;
+            background: #FFFFFF;
+            border: 1px solid rgba(46, 36, 26, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .whatsapp-chip:hover {
+            border-color: rgba(46, 36, 26, 0.25);
+            box-shadow: 0 2px 8px rgba(46, 36, 26, 0.08);
+        }
+
+        .whatsapp-chip svg {
+            width: 12px;
+            height: 12px;
+            flex-shrink: 0;
+        }
+
+        .countries {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            gap: 5px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            margin-bottom: 3px;
+        }
+
+        .countries::-webkit-scrollbar { display: none; }
+
+        .country {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.62rem;
+            font-weight: 500;
+            color: #6B6350;
+            background: #FFFFFF;
+            border: 1px solid rgba(46, 36, 26, 0.1);
+            padding: 4px 8px;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .country .flag {
+            filter: grayscale(100%);
+            font-size: 0.85rem;
+            line-height: 1;
+        }
+
+        .country:hover { border-color: rgba(46, 36, 26, 0.2); }
+
+        .country.active {
+            background: rgba(46, 36, 26, 0.08);
+            border-color: rgba(46, 36, 26, 0.35);
+            color: #2E241A;
+        }
+
+        .country.active .flag { filter: none; }
+
+        .conversion-note {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #8A7A5A;
+            margin-bottom: 8px;
+            line-height: 1.35;
+            min-height: 1.2em;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .btn-wrapper { position: relative; }
+
+        .product-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .product-info {
+            text-align: left;
+        }
+
+        .btn-main {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #2E241A;
+            letter-spacing: -0.1px;
+            line-height: 1.3;
+        }
+
+        .btn-sub {
+            font-weight: 400;
+            font-size: 0.78rem;
+            color: #6B6350;
+            line-height: 1.3;
+            margin-top: 2px;
+        }
+
+        .delivery-time {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            margin-top: 6px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            line-height: 1.3;
+        }
+
+        .delivery-time.fast {
+            background: #E9F9F1;
+            color: #0E9F6E;
+        }
+
+        .delivery-time.soft-green {
+            background: #E8F5E9;
+            color: #3D8B5F;
+        }
+
+        .delivery-time.orange {
+            background: #FFF0E6;
+            color: #C47A3A;
+        }
+
+        .choice-note {
+            font-size: 0.72rem;
+            color: #8A7A5A;
+            line-height: 1.4;
+            margin-top: 5px;
+        }
+
+        .delivery-time.medium {
+            background: #FFF8E7;
+            color: #8A6D1A;
+        }
+
+        .delivery-time.standard {
+            background: #F0EEE9;
+            color: #6B6350;
+        }
+
+        .price-block { text-align: right; }
+
+        .price-tag {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #2E241A;
+            white-space: nowrap;
+        }
+
+        .price-converted {
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: #8A7A5A;
+            margin-top: 2px;
+            min-height: 14px;
+        }
+
+        .product-card {
+            background: #FFFFFF;
+            border: 1.5px solid rgba(46, 36, 26, 0.06);
+            border-radius: 16px;
+            padding: 12px 13px 11px;
+            box-shadow: 0 2px 6px rgba(46, 36, 26, 0.05);
+        }
+
+        .product-card.featured {
+            border: none;
+            padding: 0;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .featured-border {
+            position: relative;
+            border-radius: 18px;
+            padding: 2.5px;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .featured-border::before {
+            content: '';
+            position: absolute;
+            inset: -60%;
+            background: conic-gradient(from 0deg, #2E241A, #E8B923, #FFFDF7, #E8B923, #2E241A);
+            animation: spinBorder 6s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes spinBorder {
+            to { transform: rotate(360deg); }
+        }
+
+        .featured-inner {
+            position: relative;
+            z-index: 1;
+            background: #FFFFFF;
+            border-radius: 15.5px;
+            padding: 12px 13px 11px;
+        }
+
+        .btn-wrapper.has-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        .btn-wrapper.has-badge .featured-border { width: 100%; }
+
+        .featured-badge {
+            background: #2E241A;
+            color: #FFFFFF;
+            font-size: 0.64rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 999px;
+            margin-left: 4px;
+        }
+
+        .pay-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .pp-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: #2E241A;
+            color: #FFFFFF;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            height: 2.5rem;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 8px rgba(46, 36, 26, 0.2);
+        }
+
+        .pp-btn:hover {
+            background: #1a150f;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(46, 36, 26, 0.28);
+        }
+
+        .pp-btn:active { transform: translateY(0); }
+
+        .payoneer-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: #FFFFFF;
+            color: #2E241A;
+            font-family: inherit;
+            font-size: 0.84rem;
+            font-weight: 600;
+            height: 2.35rem;
+            border-radius: 12px;
+            border: 1.5px solid rgba(46, 36, 26, 0.18);
+            text-decoration: none;
+            line-height: 2.35rem;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .payoneer-btn:hover {
+            border-color: rgba(46, 36, 26, 0.35);
+            background: #FAF8F2;
+        }
+
+        .paypal-logos {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.7rem;
+            color: #6B6350;
+            margin-top: 4px;
+        }
+
+        .paypal-logos img {
+            height: 0.8rem;
+            vertical-align: middle;
+        }
+
+        .no-account-note {
+            text-align: center;
+            font-size: 0.74rem;
+            color: #6B6350;
+            line-height: 1.5;
+            margin: 6px 0 16px;
+        }
+
+        .no-account-note strong {
+            color: #2E241A;
+            font-weight: 600;
+        }
+
+        .alt-pay-note {
+            text-align: center;
+            font-size: 0.72rem;
+            color: #8A7A5A;
+            line-height: 1.45;
+            margin-bottom: 18px;
+        }
+
+        .benefits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .benefit .check {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #E9F9F1;
+            color: #0E9F6E;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 800;
+        }
+
+        .benefit span:last-child {
+            font-size: 0.84rem;
+            color: #4A3B12;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #FFFFFF;
+            border-radius: 14px;
+        }
+
+        .trust-badge .icon { font-size: 0.95rem; line-height: 1; }
+
+        .trust-badge .text {
+            font-size: 0.8rem;
+            color: #4A3B12;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .site-footer {
+            margin-top: 28px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(46, 36, 26, 0.1);
+            text-align: center;
+        }
+
+        .site-footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px 14px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .site-footer-links a {
+            color: #6B551C;
+            text-decoration: none;
+        }
+
+        .site-footer-links a:hover { color: #2E241A; }
+
+        .site-footer-legal {
+            font-size: 0.66rem;
+            color: #8A7A5A;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 440px) {
+            body { padding: 20px 16px; }
+            .card { padding: 18px 16px 22px; border-radius: 20px; }
+            h1 { font-size: 1.28rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="tarotista">
+            <img class="tarotista-photo" src="https://marsellestarot.github.io/Cartas/edited-photo.jpg" alt="Lic. Dra Mariana G.">
+            <div class="tarotista-name">Lic. Dra Mariana G.<span>Marselles Tarot</span></div>
+        </div>
+
+        <h1>Elegí la lectura que necesitás hoy</h1>
+        <p class="encourage">Llegar hasta acá no es casualidad. Estás buscando una respuesta con honestidad, y eso ya es un acto de valentía.</p>
+        <p class="invite">Elegí tu lectura con calma, una vez confirmado el pago, <a href="https://wa.me/59896620355" target="_blank" rel="noopener noreferrer">tocá aquí</a> y escribí tu nombre y apellido. Te atenderé en el tiempo indicado en tu tirada.</p>
+
+        <a href="https://wa.me/59896620355" class="whatsapp-chip" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.014 2C6.486 2 2 6.486 2 12.014c0 2.11.652 4.067 1.766 5.68L2.5 22l4.417-1.213A9.94 9.94 0 0 0 12.014 22c5.528 0 10.014-4.486 10.014-9.986C22.028 6.486 17.542 2 12.014 2zm0 18.13a8.08 8.08 0 0 1-4.362-1.28l-.313-.187-3.246.892.87-3.183-.204-.327a8.089 8.089 0 0 1-1.257-4.32c0-4.482 3.65-8.13 8.152-8.13 4.483 0 8.13 3.648 8.13 8.13 0 4.483-3.647 8.405-7.77 8.405z"/></svg>
+            ¿Dudas sobre cómo reservar? Escribime
+        </a>
+
+        <div class="countries" id="countryChips" style="display:none;">
+            <span class="country" data-currency="USD" data-country="US"><span class="flag">🇺🇸</span>USA</span>
+            <span class="country" data-currency="USD" data-country="PA"><span class="flag">🇵🇦</span>PA</span>
+            <span class="country" data-currency="CLP" data-country="CL"><span class="flag">🇨🇱</span>CL</span>
+            <span class="country" data-currency="MXN" data-country="MX"><span class="flag">🇲🇽</span>MX</span>
+            <span class="country" data-currency="COP" data-country="CO"><span class="flag">🇨🇴</span>CO</span>
+            <span class="country" data-currency="EUR" data-country="ES"><span class="flag">🇪🇸</span>ES</span>
+        </div>
+        <p class="conversion-note" id="conversionNote" style="display:none;"></p>
+
+        <div class="buttons">
+            <!-- Cruz Celta -->
+            <div class="btn-wrapper has-badge">
+                <span class="featured-badge">Más elegida</span>
+                <div class="featured-border">
+                    <div class="featured-inner">
+                        <div class="product-row">
+                            <div class="product-info">
+                                <div class="btn-main">Cruz Celta</div>
+                                <div class="btn-sub">Para entender qué pasó, qué sentís hoy y qué viene</div>
+                                <div class="delivery-time fast">Disponible ahora · respuesta prioritaria</div>
+                            </div>
+                            <div class="price-block">
+                                <span class="price-tag" data-usd="38">38 USD</span>
+                                <div class="price-converted"></div>
+                            </div>
+                        </div>
+                        <div class="pay-actions">
+                            <form action="https://www.paypal.com/ncp/payment/82F5WPVYL7DTN" method="post" target="_blank">
+                                <input class="pp-btn" type="submit" value="Pagar con PayPal" />
+                            </form>
+                            <a class="payoneer-btn" href="https://link.payoneer.com/Token?t=F8B9B938961D4CD2AE0F63F8F95F6EDE&src=pl" target="_blank" rel="noopener noreferrer">Pagar con Payoneer</a>
+                            <div class="paypal-logos">
+                                <img src="https://www.paypalobjects.com/images/Debit_Credit.svg" alt="cards" />
+                                <span>Con la tecnología de <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" /></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rueda Anual -->
+            <div class="btn-wrapper">
+                <div class="product-card">
+                    <div class="product-row">
+                        <div class="product-info">
+                            <div class="btn-main">Rueda Anual</div>
+                            <div class="btn-sub">El siguiente paso, para planificar con calma lo que viene</div>
+                            <div class="delivery-time soft-green">Disponible ahora · máxima prioridad de respuesta</div>
+                        </div>
+                        <div class="price-block">
+                            <span class="price-tag" data-usd="50">50 USD</span>
+                            <div class="price-converted"></div>
+                        </div>
+                    </div>
+                    <div class="pay-actions">
+                        <form action="https://www.paypal.com/ncp/payment/W48X7JMAKAWCQ" method="post" target="_blank">
+                            <input class="pp-btn" type="submit" value="Pagar con PayPal" />
+                        </form>
+                        <a class="payoneer-btn" href="https://link.payoneer.com/Token?t=406021B88822495F9174131AEB2697AF&src=mobile" target="_blank" rel="noopener noreferrer">Pagar con Payoneer</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lectura Express -->
+            <div class="btn-wrapper">
+                <div class="product-card">
+                    <div class="product-row">
+                        <div class="product-info">
+                            <div class="btn-main">Lectura Express</div>
+                            <div class="btn-sub">Para una duda puntual, no para una historia completa</div>
+                            <div class="delivery-time orange">Te respondo en hasta 2 horas</div>
+                        </div>
+                        <div class="price-block">
+                            <span class="price-tag" data-usd="25">25 USD</span>
+                            <div class="price-converted"></div>
+                        </div>
+                    </div>
+                    <div class="pay-actions">
+                        <form action="https://www.paypal.com/ncp/payment/QMJ52Y42WG7CS" method="post" target="_blank">
+                            <input class="pp-btn" type="submit" value="Pagar con PayPal" />
+                        </form>
+                        <a class="payoneer-btn" href="https://link.payoneer.com/Token?t=857568193BDE488BA1E3EC6E936B5FE3&src=tpl" target="_blank" rel="noopener noreferrer">Pagar con Payoneer</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="no-account-note">¿No tenés cuenta de PayPal? Al tocar «Pagar con PayPal» elegí <strong>«Pagar con tarjeta de débito o crédito»</strong> sin iniciar sesión.</p>
+        <p class="alt-pay-note">Podés pagar con PayPal o Payoneer. Si PayPal te rechaza el pago, usá el botón de Payoneer de la misma tirada.</p>
+
+        <div class="benefits-list">
+            <div class="benefit"><span class="check">✓</span><span>Lectura escrita 100% personalizada</span></div>
+            <div class="benefit"><span class="check">✓</span><span>Consulta confidencial</span></div>
+            <div class="benefit"><span class="check">✓</span><span>Solo chat, sin llamadas ni video</span></div>
+        </div>
+
+        <div class="trust-badge">
+            <span class="icon">🔒</span>
+            <span class="text">Pago procesado por PayPal o Payoneer</span>
+        </div>
+
+        <div class="site-footer">
+            <div class="site-footer-links">
+                <a href="contacto.html">Contacto</a>
+                <a href="terminos.html">Términos y Condiciones</a>
+                <a href="https://instagram.com/marselles.tarot" target="_blank" rel="noopener">Instagram</a>
+            </div>
+            <p class="site-footer-legal">
+                Sitio administrado por C.A.R.N.<br>
+                lumieretarot7@gmail.com · +598 96 620 355
+            </p>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var CACHE_KEY = 'mt_fx_rates';
+            var CACHE_HOURS = 12;
+
+            function getCachedRates() {
+                try {
+                    var raw = localStorage.getItem(CACHE_KEY);
+                    if (!raw) return null;
+                    var data = JSON.parse(raw);
+                    if ((Date.now() - data.ts) / 36e5 > CACHE_HOURS) return null;
+                    return data.rates;
+                } catch (e) { return null; }
+            }
+
+            function setCachedRates(rates) {
+                try {
+                    localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), rates: rates }));
+                } catch (e) {}
+            }
+
+            function fetchRates() {
+                var cached = getCachedRates();
+                if (cached) return Promise.resolve(cached);
+                return fetch('https://open.er-api.com/v6/latest/USD')
+                    .then(function (r) { return r.json(); })
+                    .then(function (data) {
+                        if (data && data.rates) {
+                            setCachedRates(data.rates);
+                            return data.rates;
+                        }
+                        throw new Error('sin tasas');
+                    });
+            }
+
+            function formatAmount(amount, currency) {
+                try {
+                    return new Intl.NumberFormat('es', {
+                        style: 'currency',
+                        currency: currency,
+                        maximumFractionDigits: (currency === 'USD' || currency === 'EUR') ? 2 : 0
+                    }).format(amount);
+                } catch (e) {
+                    return amount.toFixed(2) + ' ' + currency;
+                }
+            }
+
+            var chips = document.querySelectorAll('#countryChips .country');
+            var note = document.getElementById('conversionNote');
+            var rates = null;
+
+            function applyCurrency(currency) {
+                var convertedEls = document.querySelectorAll('.price-converted');
+                if (currency === 'USD') {
+                    convertedEls.forEach(function (el) { el.textContent = ''; });
+                    note.textContent = '';
+                    return;
+                }
+                if (!rates) {
+                    note.textContent = 'Calculando conversión…';
+                    return;
+                }
+                var rate = rates[currency];
+                if (!rate) return;
+                document.querySelectorAll('.price-tag[data-usd]').forEach(function (priceEl) {
+                    var usd = parseFloat(priceEl.getAttribute('data-usd'));
+                    var target = priceEl.parentElement.querySelector('.price-converted');
+                    target.textContent = '≈ ' + formatAmount(usd * rate, currency);
+                });
+                note.textContent = 'Monto en tu moneda estimado. El cobro final se procesa en USD.';
+            }
+
+            chips.forEach(function (chip) {
+                chip.addEventListener('click', function () {
+                    chips.forEach(function (c) { c.classList.remove('active'); });
+                    chip.classList.add('active');
+                    applyCurrency(chip.getAttribute('data-currency'));
+                });
+            });
+
+            var params = new URLSearchParams(window.location.search);
+            var fromCountry = (params.get('from') || '').toUpperCase();
+            if (fromCountry) {
+                var match = document.querySelector('#countryChips .country[data-country="' + fromCountry + '"]');
+                if (match) {
+                    chips.forEach(function (c) { c.classList.remove('active'); });
+                    match.classList.add('active');
+                }
+            }
+
+            fetchRates().then(function (r) {
+                rates = r;
+                var activeChip = document.querySelector('#countryChips .country.active');
+                if (activeChip) applyCurrency(activeChip.getAttribute('data-currency'));
+            }).catch(function () {
+                note.textContent = 'No se pudo calcular la conversión estimada en este momento.';
+            });
+        })();
+
+        // Meta Pixel - Purchase al clic
+        (function () {
+            function trackPurchase(value) {
+                if (typeof fbq === 'function') {
+                    fbq('track', 'Purchase', {
+                        value: value,
+                        currency: 'USD'
+                    });
+                }
+            }
+
+            // Cruz Celta - 38 USD
+            var formCruz = document.querySelector('form[action*="82F5WPVYL7DTN"]');
+            if (formCruz) {
+                formCruz.addEventListener('submit', function () {
+                    trackPurchase(38);
+                });
+            }
+            var linkCruz = document.querySelector('a[href*="F8B9B938961D4CD2AE0F63F8F95F6EDE"]');
+            if (linkCruz) {
+                linkCruz.addEventListener('click', function () {
+                    trackPurchase(38);
+                });
+            }
+
+            // Rueda Anual - 50 USD
+            var formRueda = document.querySelector('form[action*="W48X7JMAKAWCQ"]');
+            if (formRueda) {
+                formRueda.addEventListener('submit', function () {
+                    trackPurchase(50);
+                });
+            }
+            var linkRueda = document.querySelector('a[href*="406021B88822495F9174131AEB2697AF"]');
+            if (linkRueda) {
+                linkRueda.addEventListener('click', function () {
+                    trackPurchase(50);
+                });
+            }
+
+            // Lectura Express - 25 USD
+            var formUna = document.querySelector('form[action*="QMJ52Y42WG7CS"]');
+            if (formUna) {
+                formUna.addEventListener('submit', function () {
+                    trackPurchase(25);
+                });
+            }
+            var linkUna = document.querySelector('a[href*="857568193BDE488BA1E3EC6E936B5FE3"]');
+            if (linkUna) {
+                linkUna.addEventListener('click', function () {
+                    trackPurchase(25);
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
