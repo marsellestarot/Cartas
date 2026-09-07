@@ -54,16 +54,23 @@
             box-sizing: border-box;
         }
 
-        /* Boutique premium: fondo dorado cálido, carbón, acentos crema */
+        /* Nueva paleta:
+           fondo base #2a1a29
+           fondo tarjetas #6a465a
+           texto principal #e5cfdc
+           texto secundario #ad91a1
+           badge más elegida + botones: fondo #e5cfdc / texto #2a1a29
+           badge cuotas #8b6675
+        */
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #F6F8FA;
+            background: #2a1a29;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px 20px;
-            color: #2E241A;
+            color: #e5cfdc;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
@@ -71,22 +78,22 @@
         .card {
             max-width: 420px;
             width: 100%;
-            background: #F5EFDE;
+            background: #6a465a;
             border-radius: 24px;
             padding: 26px 32px 24px;
-            border: 1px solid rgba(46, 36, 26, 0.07);
+            border: 1px solid rgba(229, 207, 220, 0.12);
             box-shadow:
-                0 1px 2px rgba(46, 36, 26, 0.04),
-                0 8px 24px rgba(46, 36, 26, 0.06),
-                0 24px 48px rgba(46, 36, 26, 0.05);
+                0 1px 2px rgba(0, 0, 0, 0.15),
+                0 8px 24px rgba(0, 0, 0, 0.25),
+                0 24px 48px rgba(0, 0, 0, 0.20);
         }
 
         .eyebrow {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: #FFF1EC;
-            color: #E8471E;
+            background: #8b6675;
+            color: #e5cfdc;
             font-size: 0.72rem;
             font-weight: 700;
             letter-spacing: 0.4px;
@@ -99,7 +106,7 @@
         h1 {
             font-size: 1.6rem;
             font-weight: 800;
-            color: #2E241A;
+            color: #e5cfdc;
             margin-bottom: 4px;
             letter-spacing: -0.6px;
             line-height: 1.15;
@@ -108,7 +115,7 @@
         .professional-name {
             font-size: 0.92rem;
             font-weight: 600;
-            color: #6B551C;
+            color: #ad91a1;
             margin-bottom: 4px;
         }
 
@@ -125,22 +132,22 @@
             height: 46px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #FFFFFF;
-            box-shadow: 0 1px 4px rgba(46, 36, 26, 0.18);
+            border: 2px solid #e5cfdc;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.30);
             flex-shrink: 0;
         }
 
         .header-name {
             font-size: 0.95rem;
             font-weight: 700;
-            color: #2E241A;
+            color: #e5cfdc;
             line-height: 1.25;
         }
 
         .header-brand {
             font-size: 0.76rem;
             font-weight: 700;
-            color: #B8860B;
+            color: #ad91a1;
             line-height: 1.25;
         }
 
@@ -155,26 +162,26 @@
             width: 5px;
             height: 5px;
             border-radius: 50%;
-            background: #4CA771;
+            background: #e5cfdc;
             flex-shrink: 0;
         }
 
         .availability-text {
             font-size: 0.64rem;
             font-weight: 600;
-            color: #6B6350;
+            color: #ad91a1;
         }
 
         .service-tagline {
             font-size: 0.88rem;
-            color: #4A3B12;
+            color: #ad91a1;
             font-weight: 400;
             margin-bottom: 14px;
             line-height: 1.45;
         }
 
         .service-tagline strong {
-            color: #2E241A;
+            color: #e5cfdc;
             font-weight: 600;
         }
 
@@ -182,25 +189,26 @@
             font-style: italic;
             font-weight: 400;
             font-size: 0.86rem;
-            color: #5B4B12;
-            opacity: 0.85;
+            color: #ad91a1;
+            opacity: 0.95;
             margin-bottom: 10px;
             line-height: 1.4;
         }
 
         .whatsapp-link {
-            color: #2E241A;
+            color: #e5cfdc;
             font-weight: 600;
             text-decoration: none;
-            border-bottom: 1.5px solid rgba(46, 36, 26, 0.35);
+            border-bottom: 1.5px solid rgba(229, 207, 220, 0.45);
         }
 
         .whatsapp-link:hover {
-            border-bottom-color: #2E241A;
+            border-bottom-color: #e5cfdc;
+            color: #ffffff;
         }
 
         /* ──────────────────────────────────────────────────────
-           BOTONES: coral sólido, sin pasos intermedios
+           BOTONES
            ────────────────────────────────────────────────────── */
 
         .buttons {
@@ -223,9 +231,9 @@
             border: none;
             border-radius: 16px;
             text-decoration: none;
-            background: #FFFFFF;
-            border: 1.5px solid rgba(46, 36, 26, 0.06);
-            box-shadow: 0 2px 6px rgba(46, 36, 26, 0.06);
+            background: #e5cfdc;
+            border: 1.5px solid rgba(42, 26, 41, 0.08);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
             transition: all 0.18s ease;
             cursor: pointer;
             position: relative;
@@ -245,7 +253,7 @@
         .btn-main {
             font-weight: 700;
             font-size: 0.98rem;
-            color: #2E241A;
+            color: #2a1a29;
             letter-spacing: -0.1px;
             line-height: 1.3;
         }
@@ -253,14 +261,14 @@
         .btn-sub {
             font-weight: 400;
             font-size: 0.78rem;
-            color: #6B6350;
+            color: #6a465a;
             line-height: 1.3;
         }
 
         .btn-pay .price-tag {
             font-size: 1.05rem;
             font-weight: 800;
-            color: #2E241A;
+            color: #2a1a29;
             white-space: nowrap;
             margin-left: 12px;
         }
@@ -281,9 +289,9 @@
         .installments-tag {
             font-size: 0.54rem;
             font-weight: 600;
-            color: #6B551C;
-            background: #FFF8E8;
-            border: 1px solid rgba(46, 36, 26, 0.12);
+            color: #e5cfdc;
+            background: #8b6675;
+            border: 1px solid rgba(42, 26, 41, 0.15);
             border-radius: 10px;
             padding: 3px 6px;
             text-align: center;
@@ -292,16 +300,17 @@
         }
 
         .btn-pay:hover {
-            border-color: rgba(46, 36, 26, 0.16);
+            border-color: rgba(42, 26, 41, 0.20);
             transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(46, 36, 26, 0.12);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+            background: #f0e0ea;
         }
 
         .btn-pay:active {
             transform: translateY(0) scale(0.99);
         }
 
-        /* Botón destacado (recomendado): borde giratorio multicolor */
+        /* Botón destacado (recomendado): borde giratorio */
         .featured-border {
             position: relative;
             border-radius: 18px;
@@ -316,11 +325,11 @@
             inset: -60%;
             background: conic-gradient(
                 from 0deg,
-                #2E241A,
-                #E8B923,
-                #FFFDF7,
-                #E8B923,
-                #2E241A
+                #2a1a29,
+                #e5cfdc,
+                #8b6675,
+                #e5cfdc,
+                #2a1a29
             );
             animation: spinBorder 6s linear infinite;
             z-index: 0;
@@ -333,18 +342,18 @@
         .featured-border .btn-pay.featured {
             position: relative;
             z-index: 1;
-            background: #FFFFFF;
+            background: #e5cfdc;
             border: none;
             border-radius: 15.5px;
         }
 
         .featured-border .btn-pay.featured .btn-main,
         .featured-border .btn-pay.featured .price-tag {
-            color: #2E241A;
+            color: #2a1a29;
         }
 
         .featured-border .btn-pay.featured .btn-sub {
-            color: #6B6350;
+            color: #6a465a;
         }
 
         .featured-border .btn-pay.featured .btn-main {
@@ -370,8 +379,8 @@
         }
 
         .featured-badge {
-            background: #2E241A;
-            color: #FFFFFF;
+            background: #e5cfdc;
+            color: #2a1a29;
             font-size: 0.64rem;
             font-weight: 700;
             letter-spacing: 0.3px;
@@ -385,7 +394,7 @@
         .btn-pay .ripple {
             position: absolute;
             border-radius: 50%;
-            background: rgba(46, 36, 26, 0.10);
+            background: rgba(42, 26, 41, 0.15);
             transform: scale(0);
             animation: rippleAnim 0.55s ease-out forwards;
             pointer-events: none;
@@ -399,7 +408,7 @@
         }
 
         /* ──────────────────────────────────────────────────────
-           BENEFICIOS: fila compacta con check circular
+           BENEFICIOS
            ────────────────────────────────────────────────────── */
 
         .benefits-list {
@@ -420,8 +429,8 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
-            background: #E9F9F1;
-            color: #0E9F6E;
+            background: #8b6675;
+            color: #e5cfdc;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -431,13 +440,13 @@
 
         .benefit span:last-child {
             font-size: 0.84rem;
-            color: #4A3B12;
+            color: #ad91a1;
             font-weight: 400;
         }
 
         .divider {
             height: 1px;
-            background: rgba(46, 36, 26, 0.10);
+            background: rgba(229, 207, 220, 0.18);
             margin-bottom: 14px;
         }
 
@@ -451,14 +460,14 @@
         .payment-info .label {
             font-weight: 600;
             font-size: 0.72rem;
-            color: #6B551C;
+            color: #ad91a1;
             letter-spacing: 0.3px;
             text-transform: uppercase;
         }
 
         .payment-info .methods {
             font-size: 0.76rem;
-            color: #4A3B12;
+            color: #e5cfdc;
             font-weight: 600;
             text-align: right;
         }
@@ -469,8 +478,9 @@
             justify-content: center;
             gap: 8px;
             padding: 12px 16px;
-            background: #FFFFFF;
+            background: rgba(42, 26, 41, 0.35);
             border-radius: 14px;
+            border: 1px solid rgba(229, 207, 220, 0.12);
         }
 
         .trust-badge .icon {
@@ -480,7 +490,7 @@
 
         .trust-badge .text {
             font-size: 0.8rem;
-            color: #4A3B12;
+            color: #ad91a1;
             font-weight: 500;
             line-height: 1.4;
         }
@@ -491,9 +501,9 @@
             text-align: center;
             font-size: 0.66rem;
             font-weight: 600;
-            color: #8A5C74;
-            background: #F5E9EF;
-            border: 1px solid rgba(138, 92, 116, 0.15);
+            color: #e5cfdc;
+            background: #8b6675;
+            border: 1px solid rgba(42, 26, 41, 0.25);
             border-radius: 10px;
             padding: 7px 14px;
             line-height: 1.35;
@@ -503,7 +513,7 @@
 
         @keyframes softBlink {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.55; }
         }
 
         @media (max-width: 440px) {
