@@ -245,7 +245,21 @@
             font-weight: 500;
             color: #7B6B94;
             text-align: center;
-            margin-bottom: 7px;
+            margin-bottom: 2px;
+        }
+
+        .local-price {
+            display: none;
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: #5E4B7A;
+            text-align: center;
+            margin-bottom: 6px;
+            line-height: 1.25;
+        }
+
+        .local-price.visible {
+            display: block;
         }
 
         .product-desc {
@@ -540,6 +554,7 @@
                         <h2 class="product-title">Express</h2>
                         <div class="price">25 USD</div>
                         <span class="price-note">respuesta breve</span>
+                        <div class="local-price" data-usd="25"></div>
                         <p class="product-desc">Cuando tenés una duda concreta y necesitás una respuesta clara y breve.</p>
                         <ul class="card-features">
                             <li>1 pregunta concreta</li>
@@ -561,6 +576,7 @@
                         <h2 class="product-title">Cruz Celta</h2>
                         <div class="price">38 USD</div>
                         <span class="price-note">lectura completa · prioridad alta</span>
+                        <div class="local-price" data-usd="38"></div>
                         <p class="product-desc">Cuando querés entender qué está pasando realmente y qué movimiento tiene más sentido hacer.</p>
                         <ul class="card-features">
                             <li>Lectura profunda de la situación</li>
@@ -583,6 +599,7 @@
                         <h2 class="product-title">Rueda Anual</h2>
                         <div class="price">50 USD</div>
                         <span class="price-note">visión del año · máxima prioridad</span>
+                        <div class="local-price" data-usd="50"></div>
                         <p class="product-desc">Cuando necesitás una visión de todo el año y saber dónde conviene poner tu energía.</p>
                         <ul class="card-features">
                             <li>Varias situaciones + proyección</li>
@@ -717,6 +734,49 @@
             if (formUna) formUna.addEventListener('submit', function () { trackPurchase(25); });
             var linkUna = document.querySelector('a[href*="F07827F68163458E883B34FAB7596617"]');
             if (linkUna) linkUna.addEventListener('click', function () { trackPurchase(25); });
+        })();
+
+        /* Equivalencia en moneda local según país seleccionado (?from=XX) */
+        (function () {
+            var params = new URLSearchParams(window.location.search);
+            var country = (params.get('from') || '').toUpperCase();
+
+            // Tasas aproximadas (septiembre 2026). Solo referencia; el cobro es en USD.
+            var rates = {
+                CL: { rate: 942,   code: 'CLP', symbol: '$',   decimals: 0, locale: 'es-CL' },
+                MX: { rate: 17.0,  code: 'MXN', symbol: '$',   decimals: 0, locale: 'es-MX' },
+                CO: { rate: 3100,  code: 'COP', symbol: '$',   decimals: 0, locale: 'es-CO' },
+                ES: { rate: 0.86,  code: 'EUR', symbol: '€',   decimals: 2, locale: 'es-ES' },
+                US: null,  // mismo USD
+                PA: null   // Panamá usa USD
+            };
+
+            var cfg = rates[country];
+            if (!cfg) return; // US, PA o desconocido → no mostrar equivalencia
+
+            function formatLocal(usd) {
+                var amount = usd * cfg.rate;
+                if (cfg.decimals === 0) {
+                    amount = Math.round(amount);
+                } else {
+                    amount = Math.round(amount * 100) / 100;
+                }
+                try {
+                    return amount.toLocaleString(cfg.locale, {
+                        minimumFractionDigits: cfg.decimals,
+                        maximumFractionDigits: cfg.decimals
+                    }) + ' ' + cfg.code;
+                } catch (e) {
+                    return amount + ' ' + cfg.code;
+                }
+            }
+
+            document.querySelectorAll('.local-price').forEach(function (el) {
+                var usd = parseFloat(el.getAttribute('data-usd'), 10);
+                if (!usd) return;
+                el.textContent = '≈ ' + formatLocal(usd);
+                el.classList.add('visible');
+            });
         })();
     </script>
 </body>
