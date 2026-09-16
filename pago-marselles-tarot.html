@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
     
     <title>Lecturas de Tarot Online · Lic. Dra. Mariana Gautemberg | Marselles Tarot</title>
     <meta name="description" content="Lecturas de tarot personalizadas por escrito con la Lic. Dra. Mariana Gautemberg. Cruz Celta (38 USD), Rueda Anual (50 USD) y Lectura Express (25 USD). Respuesta prioritaria y confidencial por chat. Disponible para Uruguay, México, Chile, España, USA y más." />
@@ -45,6 +45,73 @@
     /></noscript>
 
     <style>
+
+        /* FIX IN-APP BROWSER INSTAGRAM/FACEBOOK - ANTI SCROLL HORIZONTAL */
+        html{
+            width:100%;
+            max-width:100%;
+            overflow-x:hidden !important;
+            background:#EDE8F5;
+            -webkit-text-size-adjust:100%;
+        }
+        body{
+            width:100%;
+            max-width:100%;
+            overflow-x:hidden !important;
+            background:#EDE8F5;
+            position:relative;
+        }
+        /* wrapper que aisla padding */
+        .page-wrap{
+            width:100%;
+            max-width:100%;
+            min-height:100vh;
+            min-height:100dvh;
+            min-height:100svh;
+            display:flex;
+            justify-content:center;
+            align-items:flex-start;
+            padding:16px 12px;
+            padding-left:max(12px, env(safe-area-inset-left));
+            padding-right:max(12px, env(safe-area-inset-right));
+            padding-top:max(12px, env(safe-area-inset-top));
+            padding-bottom:calc(20px + env(safe-area-inset-bottom, 0px));
+            box-sizing:border-box;
+            overflow-x:hidden;
+        }
+        .card, main.card{
+            width:100% !important;
+            max-width:440px !important;
+            min-width:0 !important;
+            flex-shrink:0;
+            box-sizing:border-box;
+        }
+        /* evita que cualquier hijo empuje ancho */
+        .card *, .content *, .card-body *{
+            max-width:100%;
+            box-sizing:border-box;
+            min-width:0;
+        }
+        /* carousel no debe generar scroll de pagina */
+        .pricing-carousel, .carousel{
+            max-width:100%;
+            overflow-x:auto;
+            overflow-y:hidden;
+            -webkit-overflow-scrolling:touch;
+            scrollbar-width:none;
+        }
+        .pricing-carousel::-webkit-scrollbar, .carousel::-webkit-scrollbar{display:none}
+        /* footer email largo */
+        .footer-legal, .site-footer-legal{
+            word-break:break-word;
+            overflow-wrap:anywhere;
+        }
+        @media (max-width:360px){
+            .page-wrap{padding:10px 8px;padding-left:max(8px, env(safe-area-inset-left));padding-right:max(8px, env(safe-area-inset-right));}
+            .card, main.card{border-radius:18px !important;}
+        }
+
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -528,7 +595,8 @@
     </style>
 </head>
 <body>
-    <script>
+<div class="page-wrap">
+<script>
         // Detecta el navegador in-app de Instagram y marca el body
         // para aplicar únicamente ahí el ajuste de ancho de las cards.
         (function () {
@@ -796,5 +864,6 @@
             });
         })();
     </script>
+</div>
 </body>
 </html>
