@@ -147,6 +147,12 @@
 
         .pricing::-webkit-scrollbar { display: none; }
 
+        /* Solo dentro del navegador in-app de Instagram: las cards
+           ocupan casi toda la pantalla, en vez de mostrar tanto
+           "peek" de las vecinas a los costados. */
+        html.ig-browser .pricing { padding-left: 12px; padding-right: 12px; }
+        html.ig-browser .product-card { flex: 0 0 88%; max-width: 340px; }
+
         .product-card {
             flex: 0 0 66%;
             max-width: 235px;
@@ -517,10 +523,21 @@
             h1 { font-size: 1.48rem; }
             .product-card { flex: 0 0 72%; max-width: 220px; }
             .price { font-size: 1.3rem; }
+            html.ig-browser .product-card { flex: 0 0 90%; max-width: 300px; }
         }
     </style>
 </head>
 <body>
+    <script>
+        // Detecta el navegador in-app de Instagram y marca el body
+        // para aplicar únicamente ahí el ajuste de ancho de las cards.
+        (function () {
+            var ua = navigator.userAgent || '';
+            if (/Instagram/i.test(ua)) {
+                document.documentElement.classList.add('ig-browser');
+            }
+        })();
+    </script>
     <main class="card" itemscope itemtype="https://schema.org/WebPage">
         <div class="hero">
             <img 
