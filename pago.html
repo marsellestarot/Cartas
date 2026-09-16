@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
     <title>Marselles Tarot · Elegí tu país</title>
     <!-- Meta Pixel Code -->
     <script>
@@ -21,39 +21,62 @@
       src="https://www.facebook.com/tr?id=2314240265989427&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Meta Pixel Code -->
-    <style>
+        <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        *::before, *::after { box-sizing: border-box; }
 
-        html, body {
+        /* FIX DEFINITIVO IN-APP BROWSER */
+        html {
             width: 100%;
-            max-width: 100vw;
+            max-width: 100%; /* Nunca 100vw en webview */
+            overflow-x: clip; /* clip es más fuerte que hidden */
             overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: #F4F0FB;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
             min-height: 100vh;
             min-height: 100dvh;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding: 24px 16px calc(40px + env(safe-area-inset-bottom));
+            min-height: 100svh;
+            /* Grid centra mejor que flex en webviews angostos */
+            display: grid;
+            place-items: start center;
+            /* safe-area en los 4 lados + fallback */
+            padding: 
+                max(16px, env(safe-area-inset-top)) 
+                max(16px, env(safe-area-inset-right)) 
+                max(24px, env(safe-area-inset-bottom)) 
+                max(16px, env(safe-area-inset-left));
+            padding-top: 24px;
+            padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
             color: #1E1B4B;
             -webkit-font-smoothing: antialiased;
             overscroll-behavior-y: contain;
+            overscroll-behavior-x: none;
             -webkit-tap-highlight-color: transparent;
+            position: relative;
+            overflow-x: clip;
+            overflow-x: hidden;
         }
 
         .card {
-            max-width: min(400px, 100%);
             width: 100%;
+            max-width: 400px;
+            min-width: 0; /* crítico para flex/grid */
+            flex-shrink: 0;
             background: #FFFFFF;
             border-radius: 28px;
+            overflow: clip;
             overflow: hidden;
             box-shadow:
                 0 4px 6px rgba(30, 27, 75, 0.02),
                 0 12px 32px rgba(30, 27, 75, 0.06);
+            margin-inline: auto;
         }
 
         /* Hero photo */
@@ -85,6 +108,9 @@
         .content {
             padding: 8px 28px 32px;
             text-align: center;
+            min-width: 0;
+            width: 100%;
+            max-width: 100%;
         }
 
         .name {
@@ -164,6 +190,9 @@
         .selector-wrap {
             display: none;
             text-align: left;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
         }
 
         .selector-wrap.visible {
@@ -181,11 +210,16 @@
         .country-list {
             max-height: 220px;
             overflow-y: auto;
+            overflow-x: hidden;
             border: 1.5px solid #EDE9F7;
             border-radius: 16px;
             background: #FAFAFC;
             margin-bottom: 18px;
             -webkit-overflow-scrolling: touch;
+            width: 100%;
+            max-width: 100%;
+            /* evita que el scroll vertical genere scroll horizontal */
+            scrollbar-gutter: stable;
         }
 
         .country-list::-webkit-scrollbar {
@@ -207,15 +241,17 @@
             user-select: none;
             -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
         }
 
         .country-option:last-child {
             border-bottom: none;
         }
 
-        .country-option:hover,
-        .country-option.selected {
-            background: #F0ECFA;
+        .country-option:hover {
+            background: #F3F0FA;
         }
 
         .country-option.selected {
@@ -228,133 +264,162 @@
             border-radius: 50%;
             object-fit: cover;
             flex-shrink: 0;
-            box-shadow: 0 0 0 1px rgba(0,0,0,0.06);
+            display: block;
         }
 
         .country-option span {
-            font-size: 0.95rem;
-            font-weight: 600;
+            font-size: 0.92rem;
+            font-weight: 500;
             color: #1E1B4B;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .country-option input {
             display: none;
         }
 
-        /* Button */
         .btn-enter {
-            display: block;
             width: 100%;
-            padding: 16px 20px;
+            max-width: 100%;
+            padding: 14px 20px;
             background: #7C6BC4;
             color: #FFFFFF;
-            font-size: 1.05rem;
-            font-weight: 700;
             border: none;
             border-radius: 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
-            letter-spacing: -0.2px;
-            touch-action: manipulation;
+            transition: background 0.2s ease, opacity 0.2s ease, transform 0.05s ease;
             -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
         }
 
         .btn-enter:hover:not(:disabled) {
             background: #6B5BB0;
-            transform: translateY(-1px);
+        }
+        .btn-enter:active:not(:disabled) {
+            transform: scale(0.98);
         }
 
         .btn-enter:disabled {
-            background: #C4B5E0;
+            background: #E5E7EB;
+            color: #9CA3AF;
             cursor: not-allowed;
-            opacity: 0.7;
         }
 
         .whatsapp-chip {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
-            font-size: 0.78rem;
-            font-weight: 500;
-            color: #5B4B8A;
-            background: #F8F5FF;
-            border: 1px solid #E8E0F5;
-            padding: 8px 14px;
-            border-radius: 20px;
-            text-decoration: none;
             margin-top: 20px;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            font-size: 0.8rem;
+            color: #6B7280;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: #F9FAFB;
+            border: 1px solid #F3F4F6;
+            transition: background 0.15s ease;
+            max-width: 100%;
         }
 
         .whatsapp-chip:hover {
-            border-color: #C4B5E0;
-            box-shadow: 0 2px 8px rgba(124, 107, 196, 0.12);
-        }
-
-        .whatsapp-chip svg {
-            width: 14px;
-            height: 14px;
-            flex-shrink: 0;
+            background: #F3F4F6;
         }
 
         .site-footer {
             margin-top: 28px;
             padding-top: 18px;
-            border-top: 1px solid #EDE9F7;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
+            border-top: 1px solid #F3F0FA;
+            text-align: center;
         }
 
         .footer-note {
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             color: #9CA3AF;
-            line-height: 1.5;
+            margin-bottom: 10px;
         }
 
         .site-footer-links {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 6px 14px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            gap: 14px;
+            margin-bottom: 12px;
         }
 
         .site-footer-links a {
+            font-size: 0.78rem;
             color: #7C6BC4;
             text-decoration: none;
         }
 
         .site-footer-links a:hover {
-            color: #1E1B4B;
+            text-decoration: underline;
         }
 
         .site-footer-legal {
-            font-size: 0.68rem;
+            font-size: 0.72rem;
             color: #9CA3AF;
-            text-align: center;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
+        /* BREAKPOINTS IN-APP */
         @media (max-width: 440px) {
-            body { padding: 16px 12px calc(32px + env(safe-area-inset-bottom)); }
-            .content { padding: 6px 22px 28px; }
-            .hero { height: 280px; }
-            .title { font-size: 1.4rem; }
+            body {
+                padding: 16px max(12px, env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left));
+            }
+            .card {
+                border-radius: 22px;
+            }
+            .hero {
+                height: 280px;
+            }
+            .content {
+                padding: 8px 20px 24px;
+            }
         }
 
         @media (max-width: 360px) {
-            body { padding: 12px 8px calc(28px + env(safe-area-inset-bottom)); }
-            .content { padding: 6px 16px 24px; }
-            .hero { height: 240px; }
-            .name { font-size: 1.2rem; }
-            .title { font-size: 1.25rem; }
-            .subtitle { font-size: 0.88rem; }
-            .country-option { padding: 10px 12px; }
-            .btn-enter { padding: 14px 16px; font-size: 1rem; }
+            body {
+                padding: 12px max(10px, env(safe-area-inset-right)) calc(24px + env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left));
+            }
+            .card {
+                max-width: 100%;
+                border-radius: 18px;
+            }
+            .hero {
+                height: 240px;
+            }
+            .content {
+                padding: 8px 16px 20px;
+            }
+            .title {
+                font-size: 1.35rem;
+            }
+            .name {
+                font-size: 1.2rem;
+            }
+            .country-option {
+                padding: 10px 12px;
+                gap: 10px;
+            }
+            .btn-enter {
+                padding: 12px 16px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Fix para webviews que fuerzan scrollbar horizontal */
+        @supports not (overflow: clip) {
+            html, body {
+                overflow-x: hidden;
+            }
         }
     </style>
 </head>
