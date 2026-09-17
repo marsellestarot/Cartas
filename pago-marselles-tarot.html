@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
     
     <title>Lecturas de Tarot Online · Lic. Dra. Mariana Gautemberg | Marselles Tarot</title>
     <meta name="description" content="Lecturas de tarot personalizadas por escrito con la Lic. Dra. Mariana Gautemberg. Cruz Celta (38 USD), Rueda Anual (50 USD) y Lectura Express (25 USD). Respuesta prioritaria y confidencial por chat. Disponible para Uruguay, México, Chile, España, USA y más." />
@@ -46,89 +46,72 @@
 
     <style>
 
-        /* FIX IN-APP BROWSER INSTAGRAM/FACEBOOK - ANTI SCROLL HORIZONTAL */
-        html{
-            width:100%;
-            max-width:100%;
-            overflow-x:hidden !important;
-            background:#EDE8F5;
-            -webkit-text-size-adjust:100%;
-        }
-        body{
-            width:100%;
-            max-width:100%;
-            overflow-x:hidden !important;
-            background:#EDE8F5;
-            position:relative;
-        }
-        /* wrapper que aisla padding */
-        .page-wrap{
-            width:100%;
-            max-width:100%;
-            min-height:100vh;
-            min-height:100dvh;
-            min-height:100svh;
-            display:flex;
-            justify-content:center;
-            align-items:flex-start;
-            padding:16px 12px;
-            padding-left:max(12px, env(safe-area-inset-left));
-            padding-right:max(12px, env(safe-area-inset-right));
-            padding-top:max(12px, env(safe-area-inset-top));
-            padding-bottom:calc(20px + env(safe-area-inset-bottom, 0px));
-            box-sizing:border-box;
-            overflow-x:hidden;
-        }
-        .card, main.card{
-            width:100% !important;
-            max-width:440px !important;
-            min-width:0 !important;
-            flex-shrink:0;
-            box-sizing:border-box;
-        }
-        /* evita que cualquier hijo empuje ancho */
-        .card *, .content *, .card-body *{
-            max-width:100%;
-            box-sizing:border-box;
-            min-width:0;
-        }
-        /* carousel no debe generar scroll de pagina */
-        .pricing-carousel, .carousel{
-            max-width:100%;
-            overflow-x:auto;
-            overflow-y:hidden;
-            -webkit-overflow-scrolling:touch;
-            scrollbar-width:none;
-        }
-        .pricing-carousel::-webkit-scrollbar, .carousel::-webkit-scrollbar{display:none}
-        /* footer email largo */
-        .footer-legal, .site-footer-legal{
-            word-break:break-word;
-            overflow-wrap:anywhere;
-        }
-        @media (max-width:360px){
-            .page-wrap{padding:10px 8px;padding-left:max(8px, env(safe-area-inset-left));padding-right:max(8px, env(safe-area-inset-right));}
-            .card, main.card{border-radius:18px !important;}
-        }
-
+        /* ═══════════════════════════════════════════════════════════
+           ANDROID / MOBILE VIEWPORT FIXES
+           - Sin scroll horizontal de página
+           - Carrusel horizontal intacto
+           - Scroll vertical de página OK
+           - Safe-area + dvh/svh
+           ═══════════════════════════════════════════════════════════ */
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: "Segoe UI", "Helvetica Neue", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+        html {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden !important;
+            overflow-y: auto;
             background: #EDE8F5;
-            min-height: 100vh;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding: 16px 0 32px;
-            color: #2A1F3D;
-            -webkit-font-smoothing: antialiased;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .card {
-            max-width: 440px;
+        body {
             width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow-x: hidden !important;
+            overflow-y: visible;
+            background: #EDE8F5;
+            position: relative;
+            font-family: "Segoe UI", "Helvetica Neue", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+            color: #2A1F3D;
+            -webkit-font-smoothing: antialiased;
+            overscroll-behavior-x: none;
+            overscroll-behavior-y: auto;
+            /* layout lo maneja .page-wrap */
+            margin: 0;
+            padding: 0 !important;
+            min-height: 100vh;
+            min-height: 100dvh;
+            min-height: 100svh;
+        }
+
+        .page-wrap {
+            width: 100%;
+            max-width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            min-height: 100svh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 12px 10px;
+            padding-left: max(10px, env(safe-area-inset-left, 0px));
+            padding-right: max(10px, env(safe-area-inset-right, 0px));
+            padding-top: max(12px, env(safe-area-inset-top, 0px));
+            padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        .card, main.card {
+            width: 100% !important;
+            max-width: 440px !important;
+            min-width: 0 !important;
+            flex-shrink: 1;
+            box-sizing: border-box;
             background: #F7F4FC;
             border-radius: 24px;
             overflow: hidden;
@@ -136,10 +119,26 @@
             box-shadow: 0 2px 4px rgba(42, 31, 61, 0.04), 0 12px 36px rgba(75, 40, 120, 0.1);
         }
 
+        /* Evitar overflow en texto/imágenes, SIN forzar max-width en product-card del carrusel */
+        .content-inner *,
+        .hero *,
+        .benefits *,
+        .footer *,
+        .payment-logos * {
+            max-width: 100%;
+            box-sizing: border-box;
+            min-width: 0;
+        }
+
+        img, svg {
+            max-width: 100%;
+            height: auto;
+        }
+
         .hero {
             position: relative;
             width: 100%;
-            aspect-ratio: 4/3.2;
+            aspect-ratio: 4 / 3.2;
             overflow: hidden;
             background: #1E1B4B;
         }
@@ -150,6 +149,8 @@
             object-fit: cover;
             object-position: center 18%;
             display: block;
+            max-width: none;
+            height: 100%;
         }
 
         .hero-overlay {
@@ -161,9 +162,9 @@
         }
 
         .content { padding: 4px 0 22px; }
-        .content-inner { padding: 0 20px; }
+        .content-inner { padding: 0 18px; }
 
-        .brand { margin-bottom: 14px; text-align: center; }
+        .brand { margin-bottom: 12px; text-align: center; }
 
         .brand-name {
             font-size: 0.9rem;
@@ -182,13 +183,14 @@
 
         h1 {
             font-family: Georgia, "Times New Roman", "Palatino Linotype", serif;
-            font-size: 1.65rem;
+            font-size: 1.55rem;
             font-weight: 600;
             color: #1E1B4B;
             letter-spacing: -0.3px;
             line-height: 1.25;
             margin-bottom: 6px;
             text-align: center;
+            word-wrap: break-word;
         }
 
         .subtitle {
@@ -196,45 +198,56 @@
             font-size: 0.84rem;
             color: #5E4B7A;
             line-height: 1.45;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
+            word-wrap: break-word;
         }
 
-        .carousel-wrapper { position: relative; margin-bottom: 6px; }
+        /* ── Carrusel: único lugar con scroll horizontal ── */
+        .carousel-wrapper {
+            position: relative;
+            margin-bottom: 6px;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden; /* no deja que el pricing “salga” de la card */
+        }
 
         .pricing {
             display: flex;
-            gap: 14px;
+            gap: 12px;
             overflow-x: auto;
+            overflow-y: hidden;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
+            overscroll-behavior-x: contain;
             scrollbar-width: none;
-            padding: 10px 20px 18px;
+            padding: 10px 16px 16px;
             scroll-behavior: smooth;
+            touch-action: pan-x;
+            width: 100%;
+            max-width: 100%;
         }
 
         .pricing::-webkit-scrollbar { display: none; }
 
-        /* Solo dentro del navegador in-app de Instagram: las cards
-           ocupan casi toda la pantalla, en vez de mostrar tanto
-           "peek" de las vecinas a los costados. */
         html.ig-browser .pricing { padding-left: 12px; padding-right: 12px; }
-        html.ig-browser .product-card { flex: 0 0 88%; max-width: 340px; }
+        html.ig-browser .product-card { flex: 0 0 88%; max-width: 320px; }
 
         .product-card {
-            flex: 0 0 66%;
+            flex: 0 0 68%;
             max-width: 235px;
+            min-width: 0;
             scroll-snap-align: center;
             background: #FFFFFF;
             border-radius: 16px;
-            padding: 12px 12px 11px;
+            padding: 12px 11px 11px;
             box-shadow: 0 3px 14px rgba(61, 42, 92, 0.07);
             position: relative;
             border: 2px solid transparent;
             background-clip: padding-box;
             transition: transform 0.25s ease, box-shadow 0.25s ease;
+            box-sizing: border-box;
         }
 
-        /* Soft gradient border effect (like reference) */
         .product-card::before {
             content: "";
             position: absolute;
@@ -300,10 +313,11 @@
             color: #2A1F3D;
             text-align: center;
             margin-bottom: 2px;
+            word-wrap: break-word;
         }
 
         .price {
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-weight: 700;
             letter-spacing: -0.4px;
             color: #1E1B4B;
@@ -341,6 +355,7 @@
             color: #5E4B7A;
             margin-bottom: 7px;
             text-align: center;
+            word-wrap: break-word;
         }
 
         .card-features {
@@ -386,22 +401,30 @@
             flex-direction: column;
             gap: 6px;
             align-items: center;
+            width: 100%;
+        }
+
+        .pay-actions form {
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         .wa-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: calc(100% - 40px);
+            width: calc(100% - 36px);
             max-width: 320px;
-            min-width: 200px;
-            padding: 15px 18px;
-            margin: 16px auto 8px;
+            min-width: 0;
+            min-height: 48px;
+            padding: 14px 16px;
+            margin: 14px auto 8px;
             text-align: center;
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             color: #FFFFFF;
             font-family: inherit;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             line-height: 1.35;
             border-radius: 14px;
@@ -410,11 +433,13 @@
             cursor: pointer;
             box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
             transition: transform 0.15s ease, box-shadow 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            word-wrap: break-word;
         }
 
-        .wa-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 26px rgba(37, 211, 102, 0.55);
+        .wa-btn:active {
+            transform: scale(0.99);
         }
 
         .pp-btn {
@@ -424,6 +449,7 @@
             gap: 5px;
             width: 100%;
             max-width: 180px;
+            min-height: 36px;
             padding: 0 12px;
             text-align: center;
             background: #1E1B4B;
@@ -437,6 +463,8 @@
             cursor: pointer;
             transition: transform 0.15s ease, filter 0.15s ease;
             box-shadow: 0 2px 6px rgba(30, 27, 75, 0.18);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .product-card[data-index="0"] .pp-btn {
@@ -451,12 +479,14 @@
             background: linear-gradient(135deg, #A78BFA, #8B5CF6);
         }
 
-        .pp-btn:hover { transform: translateY(-1px); filter: brightness(1.06); }
+        .pp-btn:active { filter: brightness(1.06); }
 
         .pp-btn .lock { font-size: 0.7rem; opacity: 0.9; }
 
         .payoneer-btn {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
             max-width: 180px;
             text-align: center;
@@ -465,15 +495,18 @@
             font-family: inherit;
             font-size: 0.7rem;
             font-weight: 600;
+            min-height: 32px;
             height: 1.85rem;
             border-radius: 999px;
             border: 1.5px solid rgba(61, 42, 92, 0.18);
             text-decoration: none;
-            line-height: 1.85rem;
+            line-height: 1.2;
             transition: background 0.2s ease, border-color 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
-        .payoneer-btn:hover {
+        .payoneer-btn:active {
             background: #F3F0FA;
             border-color: rgba(61, 42, 92, 0.3);
         }
@@ -492,6 +525,7 @@
             background: rgba(61, 42, 92, 0.2);
             transition: all 0.25s ease;
             cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .dot.active {
@@ -513,6 +547,7 @@
             color: #6B5B85;
             margin: 2px 0 14px;
             line-height: 1.4;
+            word-wrap: break-word;
         }
 
         .trust-line strong { color: #2A1F3D; font-weight: 600; }
@@ -555,9 +590,16 @@
             margin-bottom: 16px;
             font-size: 0.7rem;
             color: #7B6B94;
+            text-align: center;
+            word-wrap: break-word;
         }
 
-        .payment-logos img { height: 0.85rem; vertical-align: middle; }
+        .payment-logos img {
+            height: 0.85rem;
+            width: auto;
+            vertical-align: middle;
+            max-width: 100%;
+        }
 
         .footer {
             border-top: 1px solid rgba(61, 42, 92, 0.12);
@@ -575,23 +617,86 @@
             margin-bottom: 8px;
         }
 
-        .footer-links a { color: #6B4C9A; text-decoration: none; }
+        .footer-links a {
+            color: #6B4C9A;
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         .footer-links a:hover { color: #1E1B4B; }
 
         .footer-legal {
             font-size: 0.65rem;
             color: #7B6B94;
             line-height: 1.5;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
+        /* ── ≤420px ── */
         @media (max-width: 420px) {
-            body { padding: 10px 0 24px; }
-            .content-inner { padding: 0 16px; }
-            h1 { font-size: 1.48rem; }
-            .product-card { flex: 0 0 72%; max-width: 220px; }
-            .price { font-size: 1.3rem; }
+            .page-wrap {
+                padding: 10px 8px;
+                padding-left: max(8px, env(safe-area-inset-left, 0px));
+                padding-right: max(8px, env(safe-area-inset-right, 0px));
+                padding-top: max(10px, env(safe-area-inset-top, 0px));
+                padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+            }
+            .card, main.card { border-radius: 20px; }
+            .content-inner { padding: 0 14px; }
+            h1 { font-size: 1.4rem; }
+            .product-card { flex: 0 0 72%; max-width: 210px; }
+            .price { font-size: 1.25rem; }
+            .pricing { padding: 10px 12px 14px; gap: 10px; }
+            .wa-btn {
+                width: calc(100% - 28px);
+                font-size: 0.88rem;
+                padding: 13px 12px;
+            }
             html.ig-browser .product-card { flex: 0 0 90%; max-width: 300px; }
         }
+
+        /* ── ≤360px ── */
+        @media (max-width: 360px) {
+            .page-wrap {
+                padding: 8px 6px;
+                padding-left: max(6px, env(safe-area-inset-left, 0px));
+                padding-right: max(6px, env(safe-area-inset-right, 0px));
+            }
+            .card, main.card { border-radius: 16px !important; }
+            .content-inner { padding: 0 12px; }
+            h1 { font-size: 1.28rem; }
+            .subtitle { font-size: 0.78rem; }
+            .product-card {
+                flex: 0 0 78%;
+                max-width: 200px;
+                padding: 10px 9px 10px;
+            }
+            .product-title { font-size: 0.88rem; }
+            .product-desc { font-size: 0.68rem; }
+            .pp-btn { font-size: 0.72rem; max-width: 160px; }
+            .payoneer-btn { font-size: 0.65rem; max-width: 160px; }
+            .wa-btn { font-size: 0.82rem; }
+        }
+
+        /* ── ≤320px ── */
+        @media (max-width: 320px) {
+            .page-wrap { padding: 6px 4px; }
+            .content-inner { padding: 0 10px; }
+            h1 { font-size: 1.18rem; }
+            .product-card { flex: 0 0 82%; max-width: 185px; }
+            .wa-btn { font-size: 0.76rem; padding: 12px 10px; }
+        }
+
+        @media (max-height: 500px) and (orientation: landscape) {
+            .hero { aspect-ratio: 16 / 7; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .pricing { scroll-behavior: auto; }
+            .product-card { transition: none; }
+        }
+
     </style>
 </head>
 <body>
