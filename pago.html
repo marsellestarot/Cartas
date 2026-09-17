@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
     <title>Marselles Tarot · Elegí tu país</title>
     <!-- Meta Pixel Code -->
     <script>
@@ -22,16 +22,27 @@
     /></noscript>
     <!-- End Meta Pixel Code -->
         <style>
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         *::before, *::after { box-sizing: border-box; }
 
-        /* FIX DEFINITIVO IN-APP BROWSER */
+        /* ═══════════════════════════════════════════════════════════
+           ANDROID / MOBILE VIEWPORT FIXES
+           - Sin scroll horizontal en ningún ancho
+           - Safe-area (notch, gesture nav)
+           - dvh/svh para barra de Chrome Android
+           - Scroll vertical de página + lista de países OK
+           ═══════════════════════════════════════════════════════════ */
+
         html {
             width: 100%;
-            max-width: 100%; /* Nunca 100vw en webview */
-            overflow-x: clip; /* clip es más fuerte que hidden */
-            overflow-x: hidden;
+            max-width: 100%;
+            height: 100%;
+            overflow-x: hidden !important;
+            overflow-y: auto;
             -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -40,38 +51,34 @@
             width: 100%;
             max-width: 100%;
             min-width: 0;
+            min-height: 100%;
             min-height: 100vh;
             min-height: 100dvh;
             min-height: 100svh;
-            /* Grid centra mejor que flex en webviews angostos */
+            /* Grid centra; el scroll lo hace el documento (html/body), no un overflow hidden */
             display: grid;
             place-items: start center;
-            /* safe-area en los 4 lados + fallback */
-            padding: 
-                max(16px, env(safe-area-inset-top)) 
-                max(16px, env(safe-area-inset-right)) 
-                max(24px, env(safe-area-inset-bottom)) 
-                max(16px, env(safe-area-inset-left));
-            padding-top: 24px;
-            padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+            padding:
+                max(16px, env(safe-area-inset-top, 0px))
+                max(12px, env(safe-area-inset-right, 0px))
+                calc(28px + env(safe-area-inset-bottom, 0px))
+                max(12px, env(safe-area-inset-left, 0px));
             color: #1E1B4B;
             -webkit-font-smoothing: antialiased;
-            overscroll-behavior-y: contain;
+            overscroll-behavior-y: auto; /* permite scroll normal de la página */
             overscroll-behavior-x: none;
             -webkit-tap-highlight-color: transparent;
             position: relative;
-            overflow-x: clip;
-            overflow-x: hidden;
+            overflow-x: hidden !important;
+            overflow-y: visible; /* no bloquear scroll vertical */
         }
 
         .card {
             width: 100%;
             max-width: 400px;
-            min-width: 0; /* crítico para flex/grid */
-            flex-shrink: 0;
+            min-width: 0;
             background: #FFFFFF;
             border-radius: 28px;
-            overflow: clip;
             overflow: hidden;
             box-shadow:
                 0 4px 6px rgba(30, 27, 75, 0.02),
@@ -79,12 +86,27 @@
             margin-inline: auto;
         }
 
+        /* Evita que hijos empujen el ancho */
+        .card *,
+        .content * {
+            max-width: 100%;
+            box-sizing: border-box;
+            min-width: 0;
+        }
+
+        img, svg {
+            max-width: 100%;
+            height: auto;
+        }
+
         /* Hero photo */
         .hero {
             position: relative;
             width: 100%;
-            height: 320px;
+            height: 300px;
+            max-height: 42vh;
             overflow: hidden;
+            background: #1E1B4B;
         }
 
         .hero img {
@@ -93,6 +115,8 @@
             object-fit: cover;
             object-position: center top;
             display: block;
+            max-width: none; /* override global img max so object-fit works */
+            height: 100%;
         }
 
         .hero-fade {
@@ -106,7 +130,7 @@
         }
 
         .content {
-            padding: 8px 28px 32px;
+            padding: 8px 22px 28px;
             text-align: center;
             min-width: 0;
             width: 100%;
@@ -114,28 +138,29 @@
         }
 
         .name {
-            font-size: 1.35rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: #1E1B4B;
             letter-spacing: -0.3px;
             margin-bottom: 2px;
+            word-wrap: break-word;
         }
 
         .brand {
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             font-weight: 600;
             color: #7C6BC4;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .available {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 600;
             color: #16A34A;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
         .available .dot {
@@ -144,25 +169,28 @@
             background: #22C55E;
             border-radius: 50%;
             box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+            flex-shrink: 0;
         }
 
         .title {
-            font-size: 1.55rem;
+            font-size: 1.45rem;
             font-weight: 700;
             color: #1E1B4B;
             letter-spacing: -0.4px;
             margin-bottom: 8px;
             line-height: 1.25;
+            word-wrap: break-word;
         }
 
         .subtitle {
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             color: #6B7280;
             line-height: 1.5;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
             max-width: 300px;
             margin-left: auto;
             margin-right: auto;
+            word-wrap: break-word;
         }
 
         /* Loading / detecting */
@@ -207,23 +235,24 @@
             text-align: center;
         }
 
+        /* Lista con scroll interno — no debe romper el scroll de la página */
         .country-list {
-            max-height: 220px;
+            max-height: min(220px, 40vh);
             overflow-y: auto;
             overflow-x: hidden;
             border: 1.5px solid #EDE9F7;
             border-radius: 16px;
             background: #FAFAFC;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain; /* el scroll de la lista no “roba” el de la página al llegar al final */
             width: 100%;
             max-width: 100%;
-            /* evita que el scroll vertical genere scroll horizontal */
-            scrollbar-gutter: stable;
+            touch-action: pan-y;
         }
 
         .country-list::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
         }
         .country-list::-webkit-scrollbar-thumb {
             background: #D1D5DB;
@@ -234,7 +263,8 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 16px;
+            padding: 12px 14px;
+            min-height: 48px; /* touch target */
             cursor: pointer;
             border-bottom: 1px solid #F3F0FA;
             transition: background 0.15s ease;
@@ -265,6 +295,7 @@
             object-fit: cover;
             flex-shrink: 0;
             display: block;
+            max-width: none;
         }
 
         .country-option span {
@@ -284,7 +315,8 @@
         .btn-enter {
             width: 100%;
             max-width: 100%;
-            padding: 14px 20px;
+            min-height: 48px;
+            padding: 14px 18px;
             background: #7C6BC4;
             color: #FFFFFF;
             border: none;
@@ -316,8 +348,8 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            margin-top: 20px;
-            font-size: 0.8rem;
+            margin-top: 18px;
+            font-size: 0.78rem;
             color: #6B7280;
             text-decoration: none;
             padding: 8px 12px;
@@ -326,21 +358,30 @@
             border: 1px solid #F3F4F6;
             transition: background 0.15s ease;
             max-width: 100%;
+            word-wrap: break-word;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .whatsapp-chip:hover {
             background: #F3F4F6;
         }
 
+        .whatsapp-chip svg {
+            flex-shrink: 0;
+            width: 14px;
+            height: 14px;
+        }
+
         .site-footer {
-            margin-top: 28px;
-            padding-top: 18px;
+            margin-top: 24px;
+            padding-top: 16px;
             border-top: 1px solid #F3F0FA;
             text-align: center;
         }
 
         .footer-note {
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             color: #9CA3AF;
             margin-bottom: 10px;
         }
@@ -349,14 +390,15 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 14px;
+            gap: 12px 14px;
             margin-bottom: 12px;
         }
 
         .site-footer-links a {
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             color: #7C6BC4;
             text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .site-footer-links a:hover {
@@ -364,63 +406,119 @@
         }
 
         .site-footer-legal {
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             color: #9CA3AF;
-            line-height: 1.4;
+            line-height: 1.45;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
-        /* BREAKPOINTS IN-APP */
+        /* ── ≤440px ── */
         @media (max-width: 440px) {
             body {
-                padding: 16px max(12px, env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left));
+                padding:
+                    max(12px, env(safe-area-inset-top, 0px))
+                    max(10px, env(safe-area-inset-right, 0px))
+                    calc(24px + env(safe-area-inset-bottom, 0px))
+                    max(10px, env(safe-area-inset-left, 0px));
             }
             .card {
                 border-radius: 22px;
             }
             .hero {
-                height: 280px;
+                height: 260px;
+                max-height: 38vh;
             }
             .content {
-                padding: 8px 20px 24px;
+                padding: 8px 18px 22px;
             }
         }
 
-        @media (max-width: 360px) {
+        /* ── ≤380px ── */
+        @media (max-width: 380px) {
             body {
-                padding: 12px max(10px, env(safe-area-inset-right)) calc(24px + env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left));
+                padding:
+                    max(10px, env(safe-area-inset-top, 0px))
+                    max(8px, env(safe-area-inset-right, 0px))
+                    calc(20px + env(safe-area-inset-bottom, 0px))
+                    max(8px, env(safe-area-inset-left, 0px));
             }
             .card {
                 max-width: 100%;
                 border-radius: 18px;
             }
             .hero {
-                height: 240px;
+                height: 220px;
+                max-height: 34vh;
             }
             .content {
-                padding: 8px 16px 20px;
+                padding: 6px 14px 18px;
             }
             .title {
-                font-size: 1.35rem;
+                font-size: 1.28rem;
             }
             .name {
-                font-size: 1.2rem;
+                font-size: 1.15rem;
+            }
+            .subtitle {
+                font-size: 0.85rem;
             }
             .country-option {
-                padding: 10px 12px;
+                padding: 11px 12px;
                 gap: 10px;
+                min-height: 46px;
+            }
+            .country-option span {
+                font-size: 0.88rem;
             }
             .btn-enter {
-                padding: 12px 16px;
+                padding: 13px 14px;
                 font-size: 0.9rem;
+            }
+            .country-list {
+                max-height: min(200px, 36vh);
             }
         }
 
-        /* Fix para webviews que fuerzan scrollbar horizontal */
-        @supports not (overflow: clip) {
-            html, body {
-                overflow-x: hidden;
+        /* ── ≤320px ── */
+        @media (max-width: 320px) {
+            body {
+                padding:
+                    max(8px, env(safe-area-inset-top, 0px))
+                    max(6px, env(safe-area-inset-right, 0px))
+                    calc(16px + env(safe-area-inset-bottom, 0px))
+                    max(6px, env(safe-area-inset-left, 0px));
+            }
+            .content {
+                padding: 4px 12px 16px;
+            }
+            .title {
+                font-size: 1.18rem;
+            }
+            .hero {
+                height: 190px;
+            }
+            .btn-enter {
+                font-size: 0.85rem;
+                padding: 12px 12px;
             }
         }
+
+        /* Landscape / poca altura: scroll de página prioritario, hero más bajo */
+        @media (max-height: 560px) {
+            .hero {
+                height: 160px;
+                max-height: 28vh;
+            }
+            .country-list {
+                max-height: min(160px, 30vh);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .spinner { animation: none; }
+        }
+
     </style>
 </head>
 <body>
